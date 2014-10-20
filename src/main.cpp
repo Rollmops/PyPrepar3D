@@ -15,7 +15,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/regex.hpp>
 
-#include "module_test.hpp"
+#include "module_loader.hpp"
 
 void run_scipts(const boost::filesystem::path &p, PyObject *m)
 {
@@ -27,10 +27,10 @@ void run_scipts(const boost::filesystem::path &p, PyObject *m)
 		{
 			std::ifstream input(p.string().c_str());
 
-			if( input.is_open() ) {
+			if (input.is_open())
+			{
 				std::string str((std::istreambuf_iterator<char>(input)),
-								 std::istreambuf_iterator<char>());
-
+						std::istreambuf_iterator<char>());
 
 				PyRun_String(str.c_str(), Py_file_input, m, m);
 				input.close();
@@ -44,7 +44,7 @@ int main(int argc, char **argv)
 	using namespace boost;
 	Py_SetProgramName(argv[0]);
 	Py_Initialize();
-	PyObject *m = init();
+	PyObject *mainModule = PyImport_AddModule("__main__");
 	filesystem::path workingDir = filesystem::path(filesystem::current_path());
 
 	if (filesystem::is_directory(workingDir))
@@ -52,7 +52,7 @@ int main(int argc, char **argv)
 		for (boost::filesystem::directory_iterator itr(workingDir);
 				itr != boost::filesystem::directory_iterator(); ++itr)
 		{
-			run_scipts(*itr, m);
+			run_scipts(*itr, PyModule_GetDict(mainModule));
 		}
 
 	}

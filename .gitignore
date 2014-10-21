@@ -4,3 +4,7 @@
 /dist/
 /prepy3d.egg-info/
 /prepar3d.egg-info/
+/.cproject
+/.project
+/.pydevproject
+/.settings/

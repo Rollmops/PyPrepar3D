@@ -5,7 +5,7 @@ from setuptools import setup, Extension, find_packages
 import glob
 
 BOOST_DIR=os.environ.get('BOOST_DIR', 'C:\\SDK\\boost_1_56_0')
-PREPAR3D_SDK_DIR=os.environ.get('PREPAR3D_DIR', 'C:\\SDK\Prepar3D v2 SDK 2.4.11570.0')
+PREPAR3D_SDK_DIR=os.environ.get('PREPAR3D_SDK_DIR', 'C:\\SDK\Prepar3D v2 SDK 2.4.11570.0')
 SIMCONNECT_DIR=os.path.join(PREPAR3D_SDK_DIR, 'Utilities\SimConnect SDK')
 
 def get_boost_lib_name(name):

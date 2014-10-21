@@ -1,13 +1,9 @@
+#include "module_simconnect.hpp"
 
-#include <boost/python.hpp>
-
-char const *greet()
+BOOST_PYTHON_MODULE(simconnect)
 {
-	return "Hello World!";
-}
+	using namespace boost::python;
 
-BOOST_PYTHON_MODULE(ext_module)
-{
-	boost::python::def("greet", greet);
+	//boost::python::def("open", simconnect_open);
 }
 

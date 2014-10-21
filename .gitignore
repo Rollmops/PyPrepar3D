@@ -1,2 +1,5 @@
 /Debug/
 /Release/
+/build/
+/dist/
+/prepy3d.egg-info/

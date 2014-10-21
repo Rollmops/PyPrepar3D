@@ -1,5 +1,6 @@
-import unittest
 from prepar3d import _simconnect
+import unittest
+
 
 class TestCaseSimconnectConstants(unittest.TestCase):
     def test_win_constants(self):

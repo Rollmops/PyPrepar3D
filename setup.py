@@ -1,7 +1,8 @@
 #!/usr/bin/env python
-from setuptools import setup, Extension, find_packages
-import os
 import glob
+import os
+from setuptools import setup, Extension, find_packages
+
 
 BOOST_DIR=os.environ.get('BOOST_DIR', 'C:\\SDK\\boost_1_56_0')
 PREPAR3D_SDK_DIR=os.environ.get('PREPAR3D_DIR', 'C:\\SDK\Prepar3D v2 SDK 2.4.11570.0')

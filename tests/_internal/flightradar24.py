@@ -1,13 +1,14 @@
 
-import unittest
 import os.path
+from prepar3d._internal.flightradar24 import Flightradar24
 import re
+import unittest
+
 
 airports = [("EDDF", "Frankfurt Airport"),
             ("EDDC", "Dresden Airport"),
     ("CYXX", "Abbotsford International Airport")]
 
-from prepar3d._internal.flightradar24 import Flightradar24
 
 class TestCaseFlightradar24(unittest.TestCase):
     def setUp(self):

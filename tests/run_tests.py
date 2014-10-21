@@ -1,6 +1,6 @@
-from unittest import TestLoader, TestSuite
-from simconnect.constants import TestCaseSimconnectConstants
 from _internal.flightradar24 import TestCaseFlightradar24
+from simconnect.constants import TestCaseSimconnectConstants
+from unittest import TestLoader, TestSuite
 
 
 def get_suite(test_modules):

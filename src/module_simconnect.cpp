@@ -6,7 +6,11 @@ BOOST_PYTHON_MODULE(_simconnect)
 
 	scope().attr("S_OK") = S_OK;
 	scope().attr("S_FALSE") = S_FALSE;
+	scope().attr("E_FAIL") = E_FAIL;
+	scope().attr("E_INVALIDARG") = E_INVALIDARG;
+	scope().attr("SIMCONNECT_OPEN_CONFIGINDEX_LOCAL") = SIMCONNECT_OPEN_CONFIGINDEX_LOCAL;
 
-	boost::python::def("open", prepy3d::simconnect_open);
+	def("open", prepar3d::simconnect_open);
+	def("close", prepar3d::simconnect_close);
 }
 

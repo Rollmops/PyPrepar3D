@@ -15,13 +15,14 @@
 #include <boost/python.hpp>
 #include <iostream>
 
-namespace prepy3d {
+namespace prepar3d {
 
-void simconnect_open(const std::string &test)
-{
-	std::cout << "Toll: " << test << std::endl;
-}
+boost::python::tuple simconnect_open(LPCSTR szName, HWND  hWnd, DWORD  UserEventWin32, HANDLE  hEventHandle, DWORD  ConfigIndex);
+HRESULT simconnect_close(PyObject *handle);
 
-} // end namespace prepy3d
+
+void test_handle(HANDLE han);
+
+} // end namespace prepar3d
 
 #endif /* __PREPY3D_MODULE_SIMCONNECT_HPP_ */

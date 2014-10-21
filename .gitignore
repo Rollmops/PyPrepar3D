@@ -8,3 +8,4 @@
 /.project
 /.pydevproject
 /.settings/
+*.pyc

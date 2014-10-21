@@ -13,9 +13,15 @@
 #include <stdio.h>
 #include "SimConnect.h"
 #include <boost/python.hpp>
+#include <iostream>
 
 namespace prepy3d {
 
+void simconnect_open(const std::string &test)
+{
+	std::cout << "Toll: " << test << std::endl;
 }
+
+} // end namespace prepy3d
 
 #endif /* __PREPY3D_MODULE_SIMCONNECT_HPP_ */

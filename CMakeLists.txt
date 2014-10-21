@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.4)
 
-project(prepy3d_tools)
+project(prepar3d)
 
 find_package(PythonLibs 2.7 REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem system regex )

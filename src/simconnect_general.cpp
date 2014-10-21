@@ -32,6 +32,11 @@ HRESULT simconnect_close(PyObject *handle) {
 	return ret;
 }
 
+HRESULT simconnect_subscribe_to_system_event(PyObject *handle, SIMCONNECT_CLIENT_EVENT_ID eventID, const char *systemEventName)
+{
+	return SimConnect_SubscribeToSystemEvent(PyCObject_AsVoidPtr(handle), eventID, systemEventName);
+}
+
 HRESULT simconnect_calldispatch(PyObject *handle, object callback,
 		PyObject *content) {
 	_internal::__callback__ = &callback;

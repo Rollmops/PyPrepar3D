@@ -1,14 +1,21 @@
 from prepar3d import _simconnect
 import time
 
+frames = 0
+
+
 def f(pData, cbData, pContext):
-    print "inside: "
-    print pData.dwID 
+    global frames
+    frames += 1  
 
 
 (ret, handle) = _simconnect.open("Test", None, 0, None, 0)
 print ret
 
+_simconnect.subscribe_to_system_event(handle, 1, 'Frame')
+
 while True:
     _simconnect.call_dispatch(handle, f, None) 
-    time.sleep(1)
+    time.sleep(2)
+    global frames
+    print frames

@@ -19,7 +19,7 @@ namespace prepar3d {
 
 boost::python::tuple simconnect_open(LPCSTR szName, HWND  hWnd, DWORD  UserEventWin32, HANDLE  hEventHandle, DWORD  ConfigIndex);
 HRESULT simconnect_close(PyObject *handle);
-
+HRESULT simconnect_calldispatch(PyObject *handle, boost::python::object callback, PyObject *content);
 
 void test_handle(HANDLE han);
 

@@ -9,3 +9,4 @@
 /.pydevproject
 /.settings/
 *.pyc
+/parsed_file.txt

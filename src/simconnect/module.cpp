@@ -1,13 +1,13 @@
-#include "module.hpp"
+#include "wrapper.hpp"
 #include "converter.hpp"
 
 BOOST_PYTHON_MODULE(_simconnect)
 {
 	using namespace boost::python;
 
-	to_python_converter<DWORD, prepar3d::converter::FROM_DWORD>();
-	to_python_converter<char, prepar3d::converter::FROM_CHAR>();
-	to_python_converter<unsigned char [8], prepar3d::converter::FROM_TYPE_ARRAY<unsigned char, 8> >();
+	to_python_converter<DWORD, prepar3d::simconnect::converter::FROM_DWORD>();
+	to_python_converter<char, prepar3d::simconnect::converter::FROM_CHAR>();
+	to_python_converter<unsigned char [8], prepar3d::simconnect::converter::FROM_TYPE_ARRAY<unsigned char, 8> >();
 
 	boost::python::class_<GUID>("GUID")
 			.add_property("Data1", &GUID::Data1)
@@ -19,26 +19,28 @@ BOOST_PYTHON_MODULE(_simconnect)
 //  function section
 //#######################################################################################
 
-	def("open", prepar3d::simconnect_open);
-	def("close", prepar3d::simconnect_close);
-	def("call_dispatch", prepar3d::simconnect_calldispatch);
-	def("subscribe_to_system_event", prepar3d::simconnect_subscribe_to_system_event);
+	def("addClientEventToNotificationGroup", prepar3d::simconnect::wrapper::addClientEventToNotificationGroup);
+	def("addToClientDataDefinition", prepar3d::simconnect::wrapper::addToClientDataDefinition);
+	def("open", prepar3d::simconnect::wrapper::open);
+	def("close", prepar3d::simconnect::wrapper::close);
+	def("callDispatch", prepar3d::simconnect::wrapper::callDispatch);
+	def("subscribeToSystemEvent", prepar3d::simconnect::wrapper::subscribeToSystemEvent);
 
-	to_python_converter<SIMCONNECT_DATA_GROUND_INFO [1], prepar3d::converter::FROM_TYPE_ARRAY<SIMCONNECT_DATA_GROUND_INFO, 1> >();
-	to_python_converter<char [128], prepar3d::converter::FROM_CHAR_ARRAY<128> >();
-	to_python_converter<char [64], prepar3d::converter::FROM_CHAR_ARRAY<64> >();
-	to_python_converter<SIMCONNECT_DATA_FACILITY_VOR [1], prepar3d::converter::FROM_TYPE_ARRAY<SIMCONNECT_DATA_FACILITY_VOR, 1> >();
-	to_python_converter<SIMCONNECT_DATA_FACILITY_TACAN [1], prepar3d::converter::FROM_TYPE_ARRAY<SIMCONNECT_DATA_FACILITY_TACAN, 1> >();
-	to_python_converter<SIMCONNECT_DATA_FACILITY_NDB [1], prepar3d::converter::FROM_TYPE_ARRAY<SIMCONNECT_DATA_FACILITY_NDB, 1> >();
-	to_python_converter<SIMCONNECT_DATA_FACILITY_WAYPOINT [1], prepar3d::converter::FROM_TYPE_ARRAY<SIMCONNECT_DATA_FACILITY_WAYPOINT, 1> >();
-	to_python_converter<SIMCONNECT_DATA_FACILITY_AIRPORT [1], prepar3d::converter::FROM_TYPE_ARRAY<SIMCONNECT_DATA_FACILITY_AIRPORT, 1> >();
-	to_python_converter<char [9], prepar3d::converter::FROM_CHAR_ARRAY<9> >();
-	to_python_converter<char [50], prepar3d::converter::FROM_CHAR_ARRAY<50> >();
-	to_python_converter<char [30], prepar3d::converter::FROM_CHAR_ARRAY<30> >();
-	to_python_converter<BYTE [1], prepar3d::converter::FROM_TYPE_ARRAY<BYTE, 1> >();
-	to_python_converter<char [1], prepar3d::converter::FROM_CHAR_ARRAY<1> >();
-	to_python_converter<char [MAX_PATH], prepar3d::converter::FROM_CHAR_ARRAY<MAX_PATH> >();
-	to_python_converter<char [256], prepar3d::converter::FROM_CHAR_ARRAY<256> >();
+	to_python_converter<SIMCONNECT_DATA_GROUND_INFO [1], prepar3d::simconnect::converter::FROM_TYPE_ARRAY<SIMCONNECT_DATA_GROUND_INFO, 1> >();
+	to_python_converter<char [128], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<128> >();
+	to_python_converter<char [64], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<64> >();
+	to_python_converter<SIMCONNECT_DATA_FACILITY_VOR [1], prepar3d::simconnect::converter::FROM_TYPE_ARRAY<SIMCONNECT_DATA_FACILITY_VOR, 1> >();
+	to_python_converter<SIMCONNECT_DATA_FACILITY_TACAN [1], prepar3d::simconnect::converter::FROM_TYPE_ARRAY<SIMCONNECT_DATA_FACILITY_TACAN, 1> >();
+	to_python_converter<SIMCONNECT_DATA_FACILITY_NDB [1], prepar3d::simconnect::converter::FROM_TYPE_ARRAY<SIMCONNECT_DATA_FACILITY_NDB, 1> >();
+	to_python_converter<SIMCONNECT_DATA_FACILITY_WAYPOINT [1], prepar3d::simconnect::converter::FROM_TYPE_ARRAY<SIMCONNECT_DATA_FACILITY_WAYPOINT, 1> >();
+	to_python_converter<SIMCONNECT_DATA_FACILITY_AIRPORT [1], prepar3d::simconnect::converter::FROM_TYPE_ARRAY<SIMCONNECT_DATA_FACILITY_AIRPORT, 1> >();
+	to_python_converter<char [9], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<9> >();
+	to_python_converter<char [50], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<50> >();
+	to_python_converter<char [30], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<30> >();
+	to_python_converter<BYTE [1], prepar3d::simconnect::converter::FROM_TYPE_ARRAY<BYTE, 1> >();
+	to_python_converter<char [1], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<1> >();
+	to_python_converter<char [MAX_PATH], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<MAX_PATH> >();
+	to_python_converter<char [256], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<256> >();
 
 //----------------------------------------------------------------------------
 //        Constants

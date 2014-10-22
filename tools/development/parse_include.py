@@ -44,11 +44,11 @@ def parse_structs(content, output):
             if matches:
                 if matches.group(3):
                     if matches.group(1) == 'char':
-                        _l = '\tto_python_converter<char [%s], prepar3d::converter::FROM_CHAR_ARRAY<%s> >();\n' % (matches.group(3), matches.group(3))
+                        _l = '\tto_python_converter<char [%s], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<%s> >();\n' % (matches.group(3), matches.group(3))
                         if _l not in output:
                             output.insert(0, _l)
                     else:
-                        _l = '\tto_python_converter<%s [%s], prepar3d::converter::FROM_TYPE_ARRAY<%s, %s> >();\n' % (matches.group(1), matches.group(3), matches.group(1), matches.group(3))
+                        _l = '\tto_python_converter<%s [%s], prepar3d::simconnect::converter::FROM_TYPE_ARRAY<%s, %s> >();\n' % (matches.group(1), matches.group(3), matches.group(1), matches.group(3))
                         if _l not in output:
                             output.insert(0, _l)
                 if matches.group(4):

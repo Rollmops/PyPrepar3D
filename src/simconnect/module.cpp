@@ -7,6 +7,13 @@ BOOST_PYTHON_MODULE(_simconnect)
 
 	to_python_converter<DWORD, prepar3d::converter::FROM_DWORD>();
 	to_python_converter<char, prepar3d::converter::FROM_CHAR>();
+	to_python_converter<unsigned char [8], prepar3d::converter::FROM_TYPE_ARRAY<unsigned char, 8> >();
+
+	boost::python::class_<GUID>("GUID")
+			.add_property("Data1", &GUID::Data1)
+			.add_property("Data2", &GUID::Data2)
+			.add_property("Data3", &GUID::Data3)
+			.add_property("Data4", &GUID::Data4);
 
 //#######################################################################################
 //  function section

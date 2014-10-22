@@ -32,6 +32,7 @@ struct FROM_CHAR_ARRAY {
 	}
 };
 
+
 template<typename TYPE, unsigned int LENGTH>
 struct FROM_TYPE_ARRAY {
 	static PyObject *convert(TYPE array[LENGTH]) {

@@ -1,4 +1,4 @@
-#include "module_simconnect.hpp"
+#include "module.hpp"
 
 BOOST_PYTHON_MODULE(_simconnect)
 {

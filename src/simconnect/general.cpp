@@ -1,5 +1,6 @@
-#include "module_simconnect.hpp"
 #include <boost/function.hpp>
+
+#include "module.hpp"
 
 namespace prepar3d {
 

@@ -21,8 +21,20 @@ BOOST_PYTHON_MODULE(_simconnect)
 
 	def("addClientEventToNotificationGroup", prepar3d::simconnect::wrapper::addClientEventToNotificationGroup);
 	def("addToClientDataDefinition", prepar3d::simconnect::wrapper::addToClientDataDefinition);
-	def("open", prepar3d::simconnect::wrapper::open);
+	def("addToDataDefinition", prepar3d::simconnect::wrapper::addToDataDefinition);
+	def("changeVehicle", prepar3d::simconnect::wrapper::changeVehicle);
+	def("clearClientDataDefinition", prepar3d::simconnect::wrapper::clearClientDataDefinition);
+	def("clearDataDefinition", prepar3d::simconnect::wrapper::clearDataDefinition);
+	def("clearInputGroup", prepar3d::simconnect::wrapper::clearInputGroup);
 	def("close", prepar3d::simconnect::wrapper::close);
+	def("createClientData", prepar3d::simconnect::wrapper::createClientData);
+	def("flightLoad", prepar3d::simconnect::wrapper::flightLoad);
+	def("flightPlanLoad", prepar3d::simconnect::wrapper::flightPlanLoad);
+	def("getLastSentPacketID", prepar3d::simconnect::wrapper::getLastSentPacketID);
+	def("getNextDispatch", prepar3d::simconnect::wrapper::getNextDispatch);
+
+	def("open", prepar3d::simconnect::wrapper::open);
+
 	def("callDispatch", prepar3d::simconnect::wrapper::callDispatch);
 	def("subscribeToSystemEvent", prepar3d::simconnect::wrapper::subscribeToSystemEvent);
 

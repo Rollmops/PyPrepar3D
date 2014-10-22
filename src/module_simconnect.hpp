@@ -5,16 +5,16 @@
  *      Author: qxh6010
  */
 
-#ifndef __PREPY3D_MODULE_SIMCONNECT_HPP_
-#define __PREPY3D_MODULE_SIMCONNECT_HPP_
+#ifndef __PYPREPAR3D_MODULE_SIMCONNECT_HPP_
+#define __PYPREPAR3D_MODULE_SIMCONNECT_HPP_
 
 #include <windows.h>
 #include <tchar.h>
 #include <stdio.h>
-#include "SimConnect.h"
-#include <boost/python.hpp>
 #include <iostream>
+#include <boost/python.hpp>
 
+#include "SimConnect.h"
 
 #define ADD_ATTRIBUTE(SCOPE, ATTRIBUTE) SCOPE->attr(#ATTRIBUTE) = ATTRIBUTE
 
@@ -32,4 +32,4 @@ void test_handle(HANDLE han);
 
 } // end namespace prepar3d
 
-#endif /* __PREPY3D_MODULE_SIMCONNECT_HPP_ */
+#endif /* __PYPREPAR3D_MODULE_SIMCONNECT_HPP_ */

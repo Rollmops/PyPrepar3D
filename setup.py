@@ -18,7 +18,7 @@ simconnect_module = Extension('prepar3d._simconnect',
                                          get_boost_lib_name('system'), 
                                          get_boost_lib_name('filesystem'),
                                          'SimConnect', 'Ole32', 'odbccp32', 'shell32', 'user32', 'AdvAPI32' ],
-                              extra_compile_args=['/EHsc', '/MP4']
+                              extra_compile_args=['/EHsc', '/MP4', '/GR']
                               )
 
 setup(name='prepar3d',

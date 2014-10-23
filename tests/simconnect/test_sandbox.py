@@ -1,11 +1,8 @@
 from prepar3d import _simconnect
-import time
 
-a = _simconnect.SIMCONNECT_RECV_EVENT_OBJECT_ADDREMOVE()
+a = _simconnect.getNextDispatch(None)
 
-a.eObjType = _simconnect.SIMCONNECT_SIMOBJECT_TYPE.SIMCONNECT_SIMOBJECT_TYPE_GROUND
-
-print type(a.eObjType)
+print a
 
 #frames = 0
 

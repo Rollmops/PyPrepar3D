@@ -5,22 +5,20 @@ from setuptools import setup, Extension, find_packages
 import glob
 
 BOOST_DIR=os.environ.get('BOOST_DIR', 'C:\\SDK\\boost_1_56_0')
-PREPAR3D_SDK_DIR=os.environ.get('PREPAR3D_SDK_DIR', 'C:\\SDK\Prepar3D v2 SDK 2.4.11570.0')
-SIMCONNECT_DIR=os.path.join(PREPAR3D_SDK_DIR, 'Utilities\SimConnect SDK')
 
 def get_boost_lib_name(name):
     return 'boost_%s-vc100-mt-1_56' % name
 
 simconnect_module = Extension('prepar3d._simconnect',
                               sources=glob.glob('src/simconnect/*.cpp'),
-                              include_dirs=[BOOST_DIR, os.path.join(SIMCONNECT_DIR, 'Inc')],
-                              library_dirs=['lib', os.path.join(SIMCONNECT_DIR, 'lib')],
+                            include_dirs=[BOOST_DIR, 'inc'],
+                              library_dirs=['lib'],
                               libraries=[get_boost_lib_name('python'),
                                          get_boost_lib_name('regex'),
                                          get_boost_lib_name('system'), 
                                          get_boost_lib_name('filesystem'),
                                          'SimConnect', 'Ole32', 'odbccp32', 'shell32', 'user32', 'AdvAPI32' ],
-                              extra_compile_args=['-EHsc']
+                              extra_compile_args=['/EHsc', '/MP4']
                               )
 
 setup(name='prepar3d',

@@ -31,7 +31,7 @@ BOOST_PYTHON_MODULE(_simconnect)
 	def("flightLoad", prepar3d::simconnect::wrapper::flightLoad);
 	def("flightPlanLoad", prepar3d::simconnect::wrapper::flightPlanLoad);
 	def("getLastSentPacketID", prepar3d::simconnect::wrapper::getLastSentPacketID);
-	def("getNextDispatch", prepar3d::simconnect::wrapper::getNextDispatch);
+	def("getNextDispatch", prepar3d::simconnect::wrapper::getNextDispatch, return_value_policy<manage_new_object>());
 
 	def("open", prepar3d::simconnect::wrapper::open);
 
@@ -385,6 +385,7 @@ BOOST_PYTHON_MODULE(_simconnect)
 //----------------------------------------------------------------------------
 //        Struct definitions
 //----------------------------------------------------------------------------
+
 	boost::python::class_<SIMCONNECT_RECV>("SIMCONNECT_RECV")
 		// record size
 		.add_property("dwSize", &SIMCONNECT_RECV::dwSize)
@@ -392,6 +393,18 @@ BOOST_PYTHON_MODULE(_simconnect)
 		.add_property("dwVersion", &SIMCONNECT_RECV::dwVersion)
 		// see SIMCONNECT_RECV_ID
 		.add_property("dwID", &SIMCONNECT_RECV::dwID);
+
+	// when dwID == SIMCONNECT_RECV_ID_EVENT
+	boost::python::class_<SIMCONNECT_RECV_EVENT_BASE, bases<SIMCONNECT_RECV> >("SIMCONNECT_RECV_EVENT_BASE")
+		.def_readonly("UNKNOWN_GROUP", SIMCONNECT_RECV_EVENT_BASE::UNKNOWN_GROUP)
+		.add_property("uGroupID", &SIMCONNECT_RECV_EVENT_BASE::uGroupID)
+		.add_property("uEventID", &SIMCONNECT_RECV_EVENT_BASE::uEventID)
+		// uEventID-dependent context
+		.add_property("dwData", &SIMCONNECT_RECV_EVENT_BASE::dwData);
+
+	// when dwID == SIMCONNECT_RECV_ID_EVENT
+	boost::python::class_<SIMCONNECT_RECV_EVENT, bases<SIMCONNECT_RECV_EVENT_BASE> >("SIMCONNECT_RECV_EVENT")
+		.add_property("dwFlags", &SIMCONNECT_RECV_EVENT::dwFlags);
 
 	// when dwID == SIMCONNECT_RECV_ID_EXCEPTION
 	boost::python::class_<SIMCONNECT_RECV_EXCEPTION, bases<SIMCONNECT_RECV> >("SIMCONNECT_RECV_EXCEPTION")
@@ -420,18 +433,6 @@ BOOST_PYTHON_MODULE(_simconnect)
 
 	// when dwID == SIMCONNECT_RECV_ID_QUIT
 	boost::python::class_<SIMCONNECT_RECV_QUIT, bases<SIMCONNECT_RECV> >("SIMCONNECT_RECV_QUIT");
-
-	// when dwID == SIMCONNECT_RECV_ID_EVENT
-	boost::python::class_<SIMCONNECT_RECV_EVENT_BASE, bases<SIMCONNECT_RECV> >("SIMCONNECT_RECV_EVENT_BASE")
-		.def_readonly("UNKNOWN_GROUP", SIMCONNECT_RECV_EVENT_BASE::UNKNOWN_GROUP)
-		.add_property("uGroupID", &SIMCONNECT_RECV_EVENT_BASE::uGroupID)
-		.add_property("uEventID", &SIMCONNECT_RECV_EVENT_BASE::uEventID)
-		// uEventID-dependent context
-		.add_property("dwData", &SIMCONNECT_RECV_EVENT_BASE::dwData);
-
-	// when dwID == SIMCONNECT_RECV_ID_EVENT
-	boost::python::class_<SIMCONNECT_RECV_EVENT, bases<SIMCONNECT_RECV_EVENT_BASE> >("SIMCONNECT_RECV_EVENT")
-		.add_property("dwFlags", &SIMCONNECT_RECV_EVENT::dwFlags);
 
 	// when dwID == SIMCONNECT_RECV_ID_EVENT_FILENAME
 	boost::python::class_<SIMCONNECT_RECV_EVENT_FILENAME, bases<SIMCONNECT_RECV_EVENT_BASE> >("SIMCONNECT_RECV_EVENT_FILENAME")
@@ -975,9 +976,6 @@ BOOST_PYTHON_MODULE(_simconnect)
 	boost::python::class_<SIMCONNECT_RECV_EXTERNAL_SIM_EVENT, bases<SIMCONNECT_RECV_EXTERNAL_SIM_BASE> >("SIMCONNECT_RECV_EXTERNAL_SIM_EVENT")
 		.add_property("uEventID", &SIMCONNECT_RECV_EXTERNAL_SIM_EVENT::uEventID)
 		.add_property("dwData", &SIMCONNECT_RECV_EXTERNAL_SIM_EVENT::dwData);
-
-
-
 
 }
 

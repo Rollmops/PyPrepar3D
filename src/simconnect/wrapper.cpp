@@ -110,12 +110,12 @@ tuple getLastSentPacketID(PyObject *handle)
 	return make_tuple(result, id);
 }
 
-tuple getNextDispatch(PyObject *handle )
+SIMCONNECT_RECV *getNextDispatch(PyObject *handle)
 {
-	SIMCONNECT_RECV *pData;
+	SIMCONNECT_RECV* pData;
 	DWORD cbData;
 	HRESULT result = SimConnect_GetNextDispatch(PyCObject_AsVoidPtr(handle), &pData, &cbData);
-	return make_tuple(result, *pData, cbData);
+	return pData;
 }
 
 tuple open(PCSTR szName, HWND hWnd, DWORD UserEventWin32, HANDLE hEventHandle,

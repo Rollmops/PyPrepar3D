@@ -11,7 +11,7 @@ def get_boost_lib_name(name):
 
 simconnect_module = Extension('prepar3d._simconnect',
                               sources=glob.glob('src/simconnect/*.cpp'),
-                            include_dirs=[BOOST_DIR, 'inc'],
+                              include_dirs=[BOOST_DIR, 'inc'],
                               library_dirs=['lib'],
                               libraries=[get_boost_lib_name('python'),
                                          get_boost_lib_name('regex'),

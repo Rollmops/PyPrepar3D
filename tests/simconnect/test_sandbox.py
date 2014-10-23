@@ -1,6 +1,10 @@
 from prepar3d import _simconnect
+import time
+handle = _simconnect.open("huhu", None, 0, None, 0)
 
-a = _simconnect.getNextDispatch(None)
+time.sleep(1)
+
+a = _simconnect.getNextDispatch(handle)
 
 print a
 

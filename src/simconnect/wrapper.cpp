@@ -1,14 +1,13 @@
 #include "wrapper.hpp"
 
+#include "dispatch_receiver.hpp"
+
 namespace prepar3d
 {
 namespace simconnect
 {
 namespace wrapper
 {
-
-using namespace boost::python;
-
 namespace _internal
 {
 static object *__callback__;
@@ -110,12 +109,15 @@ tuple getLastSentPacketID(PyObject *handle)
 	return make_tuple(result, id);
 }
 
-SIMCONNECT_RECV *getNextDispatch(PyObject *handle)
+void registerSimConnectRecvId(SIMCONNECT_RECV_ID id)
 {
-	SIMCONNECT_RECV* pData;
-	DWORD cbData;
-	HRESULT result = SimConnect_GetNextDispatch(PyCObject_AsVoidPtr(handle), &pData, &cbData);
-	return pData;
+	util::Singletons::get<DispatchReceiver, 1>().registerID(id);
+}
+
+ tuple getNextDispatch(PyObject *handle)
+{
+	 DispatchReceiver &receiver = util::Singletons::get<DispatchReceiver, 1>();
+	 return receiver(PyCObject_AsVoidPtr(handle));
 }
 
 tuple open(PCSTR szName, HWND hWnd, DWORD UserEventWin32, HANDLE hEventHandle,

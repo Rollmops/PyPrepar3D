@@ -10,4 +10,15 @@
 
 #include "SimConnect.h"
 
+#include "singletons.hpp"
+
+using namespace boost::python;
+
+namespace prepar3d {
+namespace simconnect {
+
+
+} // end namespace simconnect
+} // end namespace prepar3d
+
 #endif // __PYPREPAR3D_SIMCONNECT_COMMON_HPP_

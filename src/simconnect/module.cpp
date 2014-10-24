@@ -3,8 +3,6 @@
 
 BOOST_PYTHON_MODULE(simconnect)
 {
-	using namespace boost::python;
-
 	to_python_converter<DWORD, prepar3d::simconnect::converter::FROM_DWORD>();
 	to_python_converter<char, prepar3d::simconnect::converter::FROM_CHAR>();
 	to_python_converter<unsigned char [8], prepar3d::simconnect::converter::FROM_TYPE_ARRAY<unsigned char, 8> >();
@@ -31,7 +29,8 @@ BOOST_PYTHON_MODULE(simconnect)
 	def("SimConnect_FlightLoad", prepar3d::simconnect::wrapper::flightLoad);
 	def("SimConnect_FlightPlanLoad", prepar3d::simconnect::wrapper::flightPlanLoad);
 	def("SimConnect_GetLastSentPacketID", prepar3d::simconnect::wrapper::getLastSentPacketID);
-	def("SimConnect_GetNextDispatch", prepar3d::simconnect::wrapper::getNextDispatch, return_value_policy<manage_new_object>());
+	def("SimConnect_GetNextDispatch", prepar3d::simconnect::wrapper::getNextDispatch);
+	def("SimConnect_RegisterIDForDispatch", prepar3d::simconnect::wrapper::registerSimConnectRecvId);
 
 	def("SimConnect_Open", prepar3d::simconnect::wrapper::open);
 

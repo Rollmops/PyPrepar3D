@@ -11,8 +11,10 @@ def get_boost_lib_name(name):
     return 'boost_%s-vc100-mt-1_56' % name
 
 simconnect_module = Extension('prepar3d._internal.simconnect',
-                              sources=glob.glob('src/simconnect/*.cpp'),
-                              include_dirs=[BOOST_DIR, 
+                              sources=glob.glob('src/simconnect/*.cpp') 
+                                + glob.glob('src/util/*.cpp'),
+                              include_dirs=['src/util/', 
+                                            BOOST_DIR, 
                                             os.path.join(PREPAR3D_SDK_DIR, 'Utilities', 'SimConnect SDK', 'Inc')],
                               library_dirs=['lib', 
                                             os.path.join(PREPAR3D_SDK_DIR, 'Utilities', 'SimConnect SDK', 'lib')],

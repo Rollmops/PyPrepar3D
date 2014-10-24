@@ -16,13 +16,12 @@ BOOST_PYTHON_MODULE(simconnect)
 // advanced classes
 //#######################################################################################
 
-	class_<prepar3d::simconnect::DispatchReceiver>("DispatchReceiver", init<PyObject*>())
-			.def("registerID", &prepar3d::simconnect::DispatchReceiver::registerID)
-			.def("getNextDispatch",	&prepar3d::simconnect::DispatchReceiver::getNextDispatch);
+	class_<prepar3d::simconnect::DispatchReceiver>("DispatchReceiver", init<PyObject*>()).def("registerID",
+			&prepar3d::simconnect::DispatchReceiver::registerID).def("getNextDispatch",
+			&prepar3d::simconnect::DispatchReceiver::getNextDispatch);
 
-	class_<prepar3d::simconnect::DispatchListener>("DispatchListener", init<PyObject*>())
-			.def("subscribeSystemEvent", &prepar3d::simconnect::DispatchListener::subscribeSystemEvent)
-			.def("listen", &prepar3d::simconnect::DispatchListener::listen);
+	class_<prepar3d::simconnect::DispatchListener>("DispatchListener", init<PyObject*>()).def("subscribeSystemEvent",
+			&prepar3d::simconnect::DispatchListener::subscribeSystemEvent).def("listen", &prepar3d::simconnect::DispatchListener::listen);
 
 //#######################################################################################
 //  function section

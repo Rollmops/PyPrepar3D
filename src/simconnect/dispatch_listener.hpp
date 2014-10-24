@@ -36,7 +36,6 @@ private:
 
 };
 
-
 } // end namespace simconnect
 } // end namespace prepar3d
 

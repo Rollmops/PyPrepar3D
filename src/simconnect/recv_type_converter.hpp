@@ -22,9 +22,12 @@ class RecvTypeConverter
 	typedef boost::function<object(SIMCONNECT_RECV*)> FunctionType;
 public:
 
-	RecvTypeConverter() { init(); }
+	RecvTypeConverter()
+	{
+		init();
+	}
 
-	object operator()( SIMCONNECT_RECV *recv) const;
+	object operator()(SIMCONNECT_RECV *recv) const;
 
 	const FunctionType &getConverterForID(const SIMCONNECT_RECV_ID &id) const
 	{
@@ -39,7 +42,8 @@ private:
 namespace _internal
 {
 template<typename TYPE>
-object castToRecvType(SIMCONNECT_RECV * const & source) {
+object castToRecvType(SIMCONNECT_RECV * const & source)
+{
 	return object((TYPE *) source);
 }
 } // end namespace _internal

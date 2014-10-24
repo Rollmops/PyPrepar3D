@@ -12,12 +12,15 @@ Singletons &Singletons::getMaster()
 }
 Singletons::~Singletons()
 {
-	while ( !map.empty() ) {
+	while (!map.empty())
+	{
 		map.begin()->second();
-		map.erase( map.begin() );
+		map.erase(map.begin());
 	}
 }
-Singletons::Singletons() {}
+Singletons::Singletons()
+{
+}
 
 }
 }

@@ -43,8 +43,9 @@ void DispatchListener::subscribe(const SIMCONNECT_RECV_ID &id, object callable)
 
 HRESULT DispatchListener::subscribeSystemEvent(const char *eventName, const SIMCONNECT_RECV_ID &recvID, object callable)
 {
+	static int id = 0;
+	id++;
 	// TODO check for correct eventName
-	DWORD id = 0;
 	HRESULT res = SimConnect_SubscribeToSystemEvent(PyCObject_AsVoidPtr(_handle), id, eventName);
 	if (res == S_OK)
 	{

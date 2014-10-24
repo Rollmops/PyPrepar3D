@@ -40,7 +40,6 @@ simconnect_module = Extension('prepar3d._internal.simconnect',
                                          get_boost_lib_name('regex'),
                                          get_boost_lib_name('system'), 
                                          get_boost_lib_name('filesystem'),
-                                         get_boost_lib_name('thread'),
                                          'SimConnect', 'Ole32', 'odbccp32', 'shell32', 'user32', 'AdvAPI32' ],
                               extra_compile_args=['/EHsc']
                               )

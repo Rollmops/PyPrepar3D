@@ -1,7 +1,7 @@
 #include "wrapper.hpp"
 #include "converter.hpp"
 
-BOOST_PYTHON_MODULE(_simconnect)
+BOOST_PYTHON_MODULE(simconnect)
 {
 	using namespace boost::python;
 
@@ -19,24 +19,24 @@ BOOST_PYTHON_MODULE(_simconnect)
 //  function section
 //#######################################################################################
 
-	def("addClientEventToNotificationGroup", prepar3d::simconnect::wrapper::addClientEventToNotificationGroup);
-	def("addToClientDataDefinition", prepar3d::simconnect::wrapper::addToClientDataDefinition);
-	def("addToDataDefinition", prepar3d::simconnect::wrapper::addToDataDefinition);
-	def("changeVehicle", prepar3d::simconnect::wrapper::changeVehicle);
-	def("clearClientDataDefinition", prepar3d::simconnect::wrapper::clearClientDataDefinition);
-	def("clearDataDefinition", prepar3d::simconnect::wrapper::clearDataDefinition);
-	def("clearInputGroup", prepar3d::simconnect::wrapper::clearInputGroup);
-	def("close", prepar3d::simconnect::wrapper::close);
-	def("createClientData", prepar3d::simconnect::wrapper::createClientData);
-	def("flightLoad", prepar3d::simconnect::wrapper::flightLoad);
-	def("flightPlanLoad", prepar3d::simconnect::wrapper::flightPlanLoad);
-	def("getLastSentPacketID", prepar3d::simconnect::wrapper::getLastSentPacketID);
-	def("getNextDispatch", prepar3d::simconnect::wrapper::getNextDispatch, return_value_policy<manage_new_object>());
+	def("SimConnect_AddClientEventToNotificationGroup", prepar3d::simconnect::wrapper::addClientEventToNotificationGroup);
+	def("SimConnect_AddToClientDataDefinition", prepar3d::simconnect::wrapper::addToClientDataDefinition);
+	def("SimConnect_AddToDataDefinition", prepar3d::simconnect::wrapper::addToDataDefinition);
+	def("SimConnect_ChangeVehicle", prepar3d::simconnect::wrapper::changeVehicle);
+	def("SimConnect_ClearClientDataDefinition", prepar3d::simconnect::wrapper::clearClientDataDefinition);
+	def("SimConnect_ClearDataDefinition", prepar3d::simconnect::wrapper::clearDataDefinition);
+	def("SimConnect_ClearInputGroup", prepar3d::simconnect::wrapper::clearInputGroup);
+	def("SimConnect_Close", prepar3d::simconnect::wrapper::close);
+	def("SimConnect_CreateClientData", prepar3d::simconnect::wrapper::createClientData);
+	def("SimConnect_FlightLoad", prepar3d::simconnect::wrapper::flightLoad);
+	def("SimConnect_FlightPlanLoad", prepar3d::simconnect::wrapper::flightPlanLoad);
+	def("SimConnect_GetLastSentPacketID", prepar3d::simconnect::wrapper::getLastSentPacketID);
+	def("SimConnect_GetNextDispatch", prepar3d::simconnect::wrapper::getNextDispatch, return_value_policy<manage_new_object>());
 
-	def("open", prepar3d::simconnect::wrapper::open);
+	def("SimConnect_Open", prepar3d::simconnect::wrapper::open);
 
-	def("callDispatch", prepar3d::simconnect::wrapper::callDispatch);
-	def("subscribeToSystemEvent", prepar3d::simconnect::wrapper::subscribeToSystemEvent);
+	def("SimConnect_CallDispatch", prepar3d::simconnect::wrapper::callDispatch);
+	def("SimConnect_SubscribeToSystemEvent", prepar3d::simconnect::wrapper::subscribeToSystemEvent);
 
 	to_python_converter<SIMCONNECT_DATA_GROUND_INFO [1], prepar3d::simconnect::converter::FROM_TYPE_ARRAY<SIMCONNECT_DATA_GROUND_INFO, 1> >();
 	to_python_converter<char [128], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<128> >();

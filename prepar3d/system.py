@@ -1,20 +1,19 @@
 from prepar3d._internal.system import regkey_value
-
+import _winreg
+import os
 
 class PathType:
-    BASE = 0
-
-
-def get_base_path():
-    """get the Prepar3d base installation path
-
-    :return: installation path
-    :rtype: str
-    :raises WindowsError:  if installation path not found
-    """
-    #TODO
-    return regkey_value(r"HKEY_CURRENT_USER\Software\Python\PythonCore\2.7\InstallPath", "", None)
-
-
-def get_path(type=PathType.BASE):
-    pass
+    SIM_BASE = [(_winreg.HKEY_CURRENT_USER, 'Software\Lockheed Martin\Prepar3D v2', 'AppPath'),
+                (_winreg.HKEY_LOCAL_MACHINE, 'Software\Lockheed Martin\Prepar3D v2', 'AppPath'),
+                (_winreg.HKEY_CURRENT_USER, 'SOFTWARE\Wow6432Node\Lockheed Martin\Prepar3D v2', 'AppPath'),
+                (_winreg.HKEY_LOCAL_MACHINE, 'SOFTWARE\Wow6432Node\Lockheed Martin\Prepar3D v2')]
+    
+def get_path(type=PathType.SIM_BASE):
+    for reg_path in type:
+        try:
+            spath = regkey_value(reg_path[0], reg_path[1], reg_path[2])
+            if spath is not None and os.path.isdir(spath):
+                return spath
+        except WindowsError:
+            continue
+    return None

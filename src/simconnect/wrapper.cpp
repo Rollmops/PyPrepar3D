@@ -117,7 +117,7 @@ void registerSimConnectRecvId(SIMCONNECT_RECV_ID id)
  tuple getNextDispatch(PyObject *handle)
 {
 	 DispatchReceiver &receiver = util::Singletons::get<DispatchReceiver, 1>();
-	 return receiver(PyCObject_AsVoidPtr(handle));
+	 return receiver.getNextDispatchForHandle(handle);
 }
 
 tuple open(PCSTR szName, HWND hWnd, DWORD UserEventWin32, HANDLE hEventHandle,

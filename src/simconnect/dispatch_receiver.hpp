@@ -11,22 +11,35 @@ namespace prepar3d {
 namespace simconnect {
 
 class DispatchReceiver {
-	typedef boost::function<tuple (SIMCONNECT_RECV*) > FunctionType;
+	typedef boost::function<object (SIMCONNECT_RECV*) > FunctionType;
 public:
-	DispatchReceiver();
+	DispatchReceiver() {init();}
+	DispatchReceiver(PyObject *handle) : _handle(handle) {init();}
 
-	tuple operator()(HANDLE handle) ;
 	void registerID(SIMCONNECT_RECV_ID id);
+
+	tuple getNextDispatch() {
+		return getNextDispatchForHandle(_handle);
+	}
+	tuple getNextDispatchForHandle(PyObject *handle) ;
 private:
+
+	void init();
+
 	std::map<SIMCONNECT_RECV_ID, FunctionType > _functionMap;
 	std::map<SIMCONNECT_RECV_ID, FunctionType > _registeredIdList;
+
+	PyObject *_handle;
 };
 
+namespace _internal {
 template<typename TYPE>
-tuple castToRecvType(SIMCONNECT_RECV *source) {
-	return make_tuple(static_cast<TYPE*>(source));
+object castToRecvType(const SIMCONNECT_RECV *&source)
+{
+	return handle<>(source);
 }
 
+} // end namspace _internal
 } // end namespace simconnect
 } // end namespace prepar3d
 

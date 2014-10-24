@@ -1,5 +1,6 @@
 #include "wrapper.hpp"
 #include "converter.hpp"
+#include "dispatch_receiver.hpp"
 
 BOOST_PYTHON_MODULE(simconnect)
 {
@@ -12,6 +13,15 @@ BOOST_PYTHON_MODULE(simconnect)
 			.add_property("Data2", &GUID::Data2)
 			.add_property("Data3", &GUID::Data3)
 			.add_property("Data4", &GUID::Data4);
+
+
+//#######################################################################################
+// advanced classes
+//#######################################################################################
+
+	class_<prepar3d::simconnect::DispatchReceiver>("DispatchReceiver", init<PyObject*>())
+			.def("registerID", &prepar3d::simconnect::DispatchReceiver::registerID)
+			.def("getNextDispatch", &prepar3d::simconnect::DispatchReceiver::getNextDispatch);
 
 //#######################################################################################
 //  function section

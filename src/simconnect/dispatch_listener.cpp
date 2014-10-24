@@ -24,8 +24,7 @@ void CALLBACK __dispatchCallback__(SIMCONNECT_RECV* pData, DWORD cbData, void *p
 		if (callback != iter->second.end())
 		{
 			const RecvTypeConverter &converter = util::Singletons::get<RecvTypeConverter, 1>();
-			object &callFunc = callback->second;
-			callFunc.operator ()(converter(pData), cbData, handle<>(PyCObject_FromVoidPtr(pContext, NULL)));
+			callback->second.operator ()(converter(pData), cbData, handle<>(PyCObject_FromVoidPtr(pContext, NULL)));
 		}
 	}
 

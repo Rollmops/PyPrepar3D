@@ -36,8 +36,7 @@ HRESULT flightSave(PyObject *, const char*, const char*, const char*, DWORD);
 
 tuple getLastSentPacketID(PyObject *);
 
-void registerSimConnectRecvId(SIMCONNECT_RECV_ID id);
-tuple getNextDispatch(PyObject *);
+//tuple getNextDispatch(PyObject *);
 
 tuple open(LPCSTR szName, HWND hWnd, DWORD UserEventWin32, HANDLE hEventHandle, DWORD ConfigIndex);
 

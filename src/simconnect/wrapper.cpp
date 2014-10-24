@@ -92,16 +92,11 @@ tuple getLastSentPacketID(PyObject *handle)
 	return make_tuple(result, id);
 }
 
-void registerSimConnectRecvId(SIMCONNECT_RECV_ID id)
-{
-	util::Singletons::get<DispatchReceiver, 1>().registerID(id);
-}
-
-tuple getNextDispatch(PyObject *handle)
-{
-	DispatchReceiver &receiver = util::Singletons::get<DispatchReceiver, 1>();
-	return receiver.getNextDispatchForHandle(handle);
-}
+//tuple getNextDispatch(PyObject *handle)
+//{
+//	DispatchReceiver &receiver = util::Singletons::get<DispatchReceiver, 1>();
+//	return receiver.getNextDispatchForHandle(handle);
+//}
 
 tuple open(PCSTR szName, HWND hWnd, DWORD UserEventWin32, HANDLE hEventHandle, DWORD ConfigIndex)
 {

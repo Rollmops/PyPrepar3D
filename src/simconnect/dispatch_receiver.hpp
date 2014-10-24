@@ -7,6 +7,8 @@
 #include <utility>
 #include <boost/function.hpp>
 
+#define MAP_TO_FUNC(NAME) _functionMap[SIMCONNECT_RECV_ID_ ## NAME] = _internal::castToRecvType<SIMCONNECT_RECV_ ## NAME>
+
 namespace prepar3d {
 namespace simconnect {
 

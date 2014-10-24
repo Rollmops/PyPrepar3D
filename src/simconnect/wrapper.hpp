@@ -3,9 +3,12 @@
 
 #include "common.hpp"
 
-namespace prepar3d {
-namespace simconnect {
-namespace wrapper {
+namespace prepar3d
+{
+namespace simconnect
+{
+namespace wrapper
+{
 
 HRESULT addClientEventToNotificationGroup(PyObject *, SIMCONNECT_NOTIFICATION_GROUP_ID, SIMCONNECT_CLIENT_EVENT_ID, bool);
 HRESULT addToClientDataDefinition(PyObject *, SIMCONNECT_CLIENT_DATA_DEFINITION_ID, DWORD, DWORD, float, DWORD);

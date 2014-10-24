@@ -9,23 +9,29 @@
 
 #define MAP_TO_FUNC(NAME) _functionMap[SIMCONNECT_RECV_ID_ ## NAME] = _internal::castToRecvType<SIMCONNECT_RECV_ ## NAME>
 
-namespace prepar3d {
-namespace simconnect {
+namespace prepar3d
+{
+namespace simconnect
+{
 
-class DispatchReceiver {
+class DispatchReceiver
+{
 	typedef boost::function<object(SIMCONNECT_RECV*)> FunctionType;
 public:
-	DispatchReceiver() {
+	DispatchReceiver()
+	{
 		init();
 	}
 	DispatchReceiver(PyObject *handle) :
-			_handle(handle) {
+			_handle(handle)
+	{
 		init();
 	}
 
 	void registerID(SIMCONNECT_RECV_ID id);
 
-	tuple getNextDispatch() {
+	tuple getNextDispatch()
+	{
 		return getNextDispatchForHandle(_handle);
 	}
 	tuple getNextDispatchForHandle(PyObject *handle);
@@ -39,9 +45,11 @@ private:
 	PyObject *_handle;
 };
 
-namespace _internal {
+namespace _internal
+{
 template<typename TYPE>
-object castToRecvType(SIMCONNECT_RECV * const & source) {
+object castToRecvType(SIMCONNECT_RECV * const & source)
+{
 	return object((TYPE *) source);
 }
 

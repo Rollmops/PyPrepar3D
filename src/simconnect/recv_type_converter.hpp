@@ -39,8 +39,7 @@ private:
 namespace _internal
 {
 template<typename TYPE>
-object castToRecvType(SIMCONNECT_RECV * const & source)
-{
+object castToRecvType(SIMCONNECT_RECV * const & source) {
 	return object((TYPE *) source);
 }
 } // end namespace _internal

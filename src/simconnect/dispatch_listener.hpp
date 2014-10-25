@@ -9,6 +9,7 @@
 #define __PREPAR3D_SIMCONNECT_DISPATCH_LISTENER_HPP_
 
 #include "common.hpp"
+#include <vector>
 #include <map>
 
 namespace prepar3d
@@ -18,7 +19,7 @@ namespace simconnect
 class DispatchListener
 {
 public:
-	typedef std::map<DWORD, object> EventIDCallbackType;
+	typedef std::vector<object> EventIDCallbackType;
 	typedef std::map<SIMCONNECT_RECV_ID, EventIDCallbackType> SystemEventMapType;
 
 	DispatchListener(PyObject *handle);

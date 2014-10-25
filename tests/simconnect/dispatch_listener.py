@@ -13,7 +13,9 @@ print result
 
 listener = simconnect.DispatchListener(handle)
 
-print listener.subscribeSystemEvent("Frame", simconnect.SIMCONNECT_RECV_ID.SIMCONNECT_RECV_ID_EVENT_FRAME, got_frame)
+listener.subscribeSystemEvent("Frame", simconnect.SIMCONNECT_RECV_ID.SIMCONNECT_RECV_ID_EVENT_FRAME, got_frame)
+
+
 
 listener.listen()
 

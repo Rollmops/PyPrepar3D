@@ -17,17 +17,17 @@ namespace _internal
 static DispatchListener *__listener__;
 void CALLBACK __dispatchCallback__(SIMCONNECT_RECV* pData, DWORD cbData, void *pContext)
 {
-	DispatchListener::SystemEventMapType::iterator iter = __listener__->systemEventMap.find(static_cast<SIMCONNECT_RECV_ID>(pData->dwID));
+	DispatchListener::SystemEventMapType::const_iterator iter = __listener__->systemEventMap.find(
+			static_cast<SIMCONNECT_RECV_ID>(pData->dwID));
 	if (iter != __listener__->systemEventMap.end())
 	{
-		DispatchListener::EventIDCallbackType::iterator callback = iter->second.find(((SIMCONNECT_RECV_EVENT_BASE *) pData)->uEventID);
-		if (callback != iter->second.end())
+		if (((SIMCONNECT_RECV_EVENT_BASE*) pData)->uEventID < iter->second.size())
 		{
 			const RecvTypeConverter &converter = util::Singletons::get<RecvTypeConverter, 1>();
-			callback->second.operator ()(converter(pData), cbData, handle<>(PyCObject_FromVoidPtr(pContext, NULL)));
+			iter->second[((SIMCONNECT_RECV_EVENT_BASE*) pData)->uEventID].operator ()(converter(pData), cbData,
+					handle<>(PyCObject_FromVoidPtr(pContext, NULL)));
 		}
 	}
-
 }
 } // end namepsace _internal
 
@@ -43,13 +43,12 @@ void DispatchListener::subscribe(const SIMCONNECT_RECV_ID &id, object callable)
 
 HRESULT DispatchListener::subscribeSystemEvent(const char *eventName, const SIMCONNECT_RECV_ID &recvID, object callable)
 {
-	static int id = 0;
-	id++;
 	// TODO check for correct eventName
-	HRESULT res = SimConnect_SubscribeToSystemEvent(PyCObject_AsVoidPtr(_handle), id, eventName);
+	EventIDCallbackType &callbackVector = systemEventMap[recvID];
+	HRESULT res = SimConnect_SubscribeToSystemEvent(PyCObject_AsVoidPtr(_handle), callbackVector.size(), eventName);
 	if (res == S_OK)
 	{
-		systemEventMap[recvID][id] = callable;
+		callbackVector.push_back(callable);
 	}
 	return res;
 }

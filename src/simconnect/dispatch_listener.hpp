@@ -27,13 +27,12 @@ public:
 	void subscribe(const SIMCONNECT_RECV_ID &id, object callable);
 	HRESULT DispatchListener::subscribeSystemEvent(const char *eventName, const SIMCONNECT_RECV_ID &recvID, object callable);
 
-	void listen();
+	void listen(const float &frequency);
 
 	SystemEventMapType systemEventMap;
 
 private:
 	PyObject *_handle;
-	DWORD _sleepTime;
 
 };
 

@@ -32,7 +32,7 @@ void CALLBACK __dispatchCallback__(SIMCONNECT_RECV* pData, DWORD cbData, void *p
 } // end namepsace _internal
 
 DispatchListener::DispatchListener(PyObject *handle) :
-		_handle(handle), _sleepTime(100)
+		_handle(handle)
 {
 	_internal::__listener__ = this;
 }
@@ -53,13 +53,14 @@ HRESULT DispatchListener::subscribeSystemEvent(const char *eventName, const SIMC
 	return res;
 }
 
-void DispatchListener::listen()
+void DispatchListener::listen(const float &frequency)
 {
+	const DWORD sleepTime = (float)1000 / frequency;
 	HRESULT res = S_OK;
 	while (res == S_OK)
 	{
 		res = SimConnect_CallDispatch(PyCObject_AsVoidPtr(_handle), _internal::__dispatchCallback__, NULL);
-		Sleep(_sleepTime);
+		Sleep(sleepTime);
 	}
 }
 

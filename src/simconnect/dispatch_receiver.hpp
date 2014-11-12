@@ -16,11 +16,6 @@ class DispatchReceiver
 {
 	typedef boost::function<object(SIMCONNECT_RECV*)> FunctionType;
 public:
-	DispatchReceiver()
-	{
-	}
-	;
-
 	DispatchReceiver(PyObject *handle) :
 			_handle(handle)
 	{

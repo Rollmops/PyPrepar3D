@@ -85,6 +85,11 @@ HRESULT flightSave(PyObject *handle, const char *fileName, const char *title, co
 	return SimConnect_FlightSave(PyCObject_AsVoidPtr(handle), fileName, title, description, flags);
 }
 
+HRESULT mapInputEventToClientEvent(PyObject *handle, const int &eventGroup, const char *inputTrigger, const int &id)
+{
+	return SimConnect_MapInputEventToClientEvent(PyCObject_AsVoidPtr(handle), eventGroup, inputTrigger, id);
+}
+
 tuple getLastSentPacketID(PyObject *handle)
 {
 	DWORD id;

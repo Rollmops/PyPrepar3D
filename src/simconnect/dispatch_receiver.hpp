@@ -17,7 +17,7 @@ class DispatchReceiver
 	typedef boost::function<object(SIMCONNECT_RECV*)> FunctionType;
 public:
 	DispatchReceiver(PyObject *handle) :
-			_handle(handle)
+			_handle(boost::shared_ptr<PyObject>(handle))
 	{
 	}
 
@@ -27,12 +27,12 @@ public:
 	{
 		return getNextDispatchForHandle(_handle);
 	}
-	tuple getNextDispatchForHandle(PyObject *handle);
+	tuple getNextDispatchForHandle(const boost::shared_ptr<PyObject> &handle);
 private:
 
 	std::map<SIMCONNECT_RECV_ID, FunctionType> _registeredIdList;
 
-	PyObject *_handle;
+	boost::shared_ptr<PyObject> _handle;
 };
 
 } // end namespace simconnect

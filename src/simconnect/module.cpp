@@ -1,13 +1,11 @@
 #include "wrapper.hpp"
 #include "converter.hpp"
 #include "dispatch_receiver.hpp"
-#include "dispatch_listener.hpp"
+#include "event_listener.hpp"
 
 BOOST_PYTHON_MODULE(simconnect)
 {
-	to_python_converter<DWORD, prepar3d::simconnect::converter::FROM_DWORD>();
-	to_python_converter<char, prepar3d::simconnect::converter::FROM_CHAR>();
-	to_python_converter<unsigned char[8], prepar3d::simconnect::converter::FROM_TYPE_ARRAY<unsigned char, 8> >();
+	prepar3d::simconnect::converter::initializeConverters();
 
 	boost::python::class_<GUID>("GUID").add_property("Data1", &GUID::Data1).add_property("Data2", &GUID::Data2).add_property("Data3",
 			&GUID::Data3).add_property("Data4", &GUID::Data4);
@@ -20,8 +18,11 @@ BOOST_PYTHON_MODULE(simconnect)
 			&prepar3d::simconnect::DispatchReceiver::registerID).def("getNextDispatch",
 			&prepar3d::simconnect::DispatchReceiver::getNextDispatch);
 
-	class_<prepar3d::simconnect::DispatchListener>("DispatchListener", init<PyObject*>()).def("subscribeSystemEvent",
-			&prepar3d::simconnect::DispatchListener::subscribeSystemEvent).def("listen", &prepar3d::simconnect::DispatchListener::listen, ( arg ( "frequency" ) ) );
+	class_<prepar3d::simconnect::EventListener>("EventListener", init<PyObject*>())
+			.def("subscribeSystemEvent", &prepar3d::simconnect::EventListener::subscribeSystemEvent)
+			.def("subscribeInputEvent", &prepar3d::simconnect::EventListener::subscribeInputEvent)
+			.def("listen", &prepar3d::simconnect::EventListener::listen, ( arg ( "frequency" ) ) )
+			;
 
 //#######################################################################################
 //  function section
@@ -43,27 +44,13 @@ BOOST_PYTHON_MODULE(simconnect)
 
 	def("SimConnect_Open", prepar3d::simconnect::wrapper::open);
 
+
+	def("SimConnect_MapInputEventToClientEvent", prepar3d::simconnect::wrapper::mapInputEventToClientEvent);
+
 	def("SimConnect_CallDispatch", prepar3d::simconnect::wrapper::callDispatch);
 	def("SimConnect_SubscribeToSystemEvent", prepar3d::simconnect::wrapper::subscribeToSystemEvent);
 
-	to_python_converter<SIMCONNECT_DATA_GROUND_INFO[1], prepar3d::simconnect::converter::FROM_TYPE_ARRAY<SIMCONNECT_DATA_GROUND_INFO, 1> >();
-	to_python_converter<char[128], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<128> >();
-	to_python_converter<char[64], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<64> >();
-	to_python_converter<SIMCONNECT_DATA_FACILITY_VOR[1], prepar3d::simconnect::converter::FROM_TYPE_ARRAY<SIMCONNECT_DATA_FACILITY_VOR, 1> >();
-	to_python_converter<SIMCONNECT_DATA_FACILITY_TACAN[1],
-			prepar3d::simconnect::converter::FROM_TYPE_ARRAY<SIMCONNECT_DATA_FACILITY_TACAN, 1> >();
-	to_python_converter<SIMCONNECT_DATA_FACILITY_NDB[1], prepar3d::simconnect::converter::FROM_TYPE_ARRAY<SIMCONNECT_DATA_FACILITY_NDB, 1> >();
-	to_python_converter<SIMCONNECT_DATA_FACILITY_WAYPOINT[1],
-			prepar3d::simconnect::converter::FROM_TYPE_ARRAY<SIMCONNECT_DATA_FACILITY_WAYPOINT, 1> >();
-	to_python_converter<SIMCONNECT_DATA_FACILITY_AIRPORT[1],
-			prepar3d::simconnect::converter::FROM_TYPE_ARRAY<SIMCONNECT_DATA_FACILITY_AIRPORT, 1> >();
-	to_python_converter<char[9], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<9> >();
-	to_python_converter<char[50], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<50> >();
-	to_python_converter<char[30], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<30> >();
-	to_python_converter<BYTE[1], prepar3d::simconnect::converter::FROM_TYPE_ARRAY<BYTE, 1> >();
-	to_python_converter<char[1], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<1> >();
-	to_python_converter<char[MAX_PATH], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<MAX_PATH> >();
-	to_python_converter<char[256], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<256> >();
+
 
 //----------------------------------------------------------------------------
 //        Constants

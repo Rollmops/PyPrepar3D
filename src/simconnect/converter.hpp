@@ -9,6 +9,15 @@ namespace simconnect
 {
 namespace converter
 {
+void initializeConverters();
+
+struct FROM_BOOST_SHARED_PTR
+{
+	static PyObject *convert(const boost::shared_ptr<PyObject> &value)
+	{
+		return value.get();
+	}
+};
 
 struct FROM_DWORD
 {

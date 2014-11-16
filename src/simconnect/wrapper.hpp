@@ -34,6 +34,8 @@ HRESULT flightPlanLoad(PyObject *, const char*);
 
 HRESULT flightSave(PyObject *, const char*, const char*, const char*, DWORD);
 
+HRESULT mapInputEventToClientEvent(PyObject *, const int &eventGroup, const char *inputTrigger, const int &id);
+
 tuple getLastSentPacketID(PyObject *);
 
 //tuple getNextDispatch(PyObject *);

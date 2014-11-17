@@ -21,7 +21,6 @@ void CALLBACK __eventCallback__(SIMCONNECT_RECV* pData, DWORD cbData, void *pCon
 	EventListener::EventMapType::const_iterator iter = __listener__->eventMap.find(static_cast<SIMCONNECT_RECV_ID>(pData->dwID));
 	if (iter != __listener__->eventMap.end())
 	{
-		std::cout << "dwData: " << ((SIMCONNECT_RECV_EVENT_BASE*) pData)->dwData  << std::endl;
 		const object &callback = iter->second.at(((SIMCONNECT_RECV_EVENT_BASE*) pData)->uEventID);
 		callback(converter(pData), cbData, handle<>(PyCObject_FromVoidPtr(pContext, NULL)));
 	}

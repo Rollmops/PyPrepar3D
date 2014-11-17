@@ -1,5 +1,6 @@
-from prepar3d._internal.util import get_json_from_url
 import urlparse
+
+from prepar3d._internal.util import get_json_from_url
 
 
 class Flightradar24:

@@ -21,6 +21,7 @@ BOOST_PYTHON_MODULE(simconnect)
 	class_<prepar3d::simconnect::EventListener>("EventListener", init<PyObject*>())
 			.def("subscribeSystemEvent", &prepar3d::simconnect::EventListener::subscribeSystemEvent)
 			.def("subscribeInputEvent", &prepar3d::simconnect::EventListener::subscribeInputEvent)
+			.def("subscribe", &prepar3d::simconnect::EventListener::subscribe)
 			.def("listen", &prepar3d::simconnect::EventListener::listen, ( arg ( "frequency" ) ) )
 			;
 

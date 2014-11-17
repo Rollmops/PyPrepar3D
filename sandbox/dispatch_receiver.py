@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
-from prepar3d._internal import simconnect
 import time
+
+from prepar3d._internal import simconnect
+
 
 (result, handle) = simconnect.SimConnect_Open("Test", None, 0, None, 0)
 

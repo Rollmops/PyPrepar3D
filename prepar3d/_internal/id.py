@@ -1,5 +1,7 @@
 from itertools import count
+
 from singleton import Singleton
+
 
 class Id():
     __metaclass__ = Singleton

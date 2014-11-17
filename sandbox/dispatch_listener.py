@@ -1,9 +1,12 @@
 #!/usr/bin/env python
+from multiprocessing import freeze_support
+
+import numpy
 import prepar3d
 from prepar3d._internal import simconnect
+
 import matplotlib.pyplot as plt
-import numpy
-from multiprocessing import freeze_support
+
 
 plt.ion()
 

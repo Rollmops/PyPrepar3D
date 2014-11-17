@@ -1,32 +1,19 @@
 import prepar3d
-
-class PauseEvent(prepar3d.Event):
-    
-    def __init__(self):
-        super(PauseEvent, self).__init__('Paused')
-        
-    def occur(self, event, cbData, context):
-        print('Paused')
+from prepar3d._internal import simconnect
 
 
-class FrameEvent(prepar3d.Event):
-    
-    def __init__(self):
-        super(FrameEvent, self).__init__('Frame')
-        
-    def occur(self, event, cbData, context):
-        print('Frame')
+def ai_added(event, data, context):
+    print 'X pressed'
 
+def error(event, data, context):
+    print event.dwException
+    print('Error occurred: %s' % event.dwException)
 
 if __name__ == '__main__':
     
-    connection = prepar3d.Connection('EventTest', open=True)
+    prepar3d.Connection().open('EventTest')
     
-    event_listener = prepar3d.EventListener(connection=connection)
-    event_listener.register_event(FrameEvent())
-    event_listener.register_event(PauseEvent())
-
-    event_listener.listen()
+    prepar3d.SystemEvent('Frame', callback=ai_added)
     
+    prepar3d.EventListener().listen()
         
-    connection.close()

@@ -1,6 +1,8 @@
-from prepar3d._internal.system import regkey_value
 import _winreg
 import os
+
+from prepar3d._internal.system import regkey_value
+
 
 class PathType:
     SIM_BASE = [(_winreg.HKEY_CURRENT_USER, 'Software\Lockheed Martin\Prepar3D v2', 'AppPath'),

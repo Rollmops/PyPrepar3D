@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
-import sys
-import re
-import os
 import linecache
+import os
+import re
+import sys
+
 
 def parse_structs(content, output):
     
@@ -96,7 +97,7 @@ def parse_constants(content, output):
     for line in content:
         matches = re.match(r'^\s*static\s+const\s+\w+\s+(\w+).*', line)
         if matches:
-            output.append('\tscope().attr(\"%s\") = %s;\n' % ( matches.group(1), matches.group(1)))
+            output.append('\tscope().attr(\"%s\") = %s;\n' % (matches.group(1), matches.group(1)))
             
             
 if __name__ == '__main__':

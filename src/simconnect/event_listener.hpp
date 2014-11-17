@@ -19,17 +19,19 @@ namespace simconnect
 class EventListener
 {
 public:
-	typedef std::vector<object> EventIDCallbackType;
-	typedef std::map<int, EventIDCallbackType> EventMapType;
+	typedef std::map<DWORD, object> EventIDCallbackType;
+	typedef std::map<DWORD, EventIDCallbackType> EventMapType;
 
 	EventListener(PyObject *handle);
 
-	HRESULT subscribeSystemEvent(const char *eventName, const int &recvID, object callable);
-	HRESULT subscribeInputEvent(const char *inputTrigger, const int &recvID, object callable);
+	HRESULT subscribeSystemEvent(const char *eventName, const DWORD &recvID, object callable, const DWORD &id);
+	HRESULT subscribeInputEvent(const char *inputTrigger, const DWORD &recvID, object callable, const DWORD &id);
+	void EventListener::subscribe(const DWORD &recvID, object callable);
 
 	void listen(const float &frequency);
 
 	EventMapType eventMap;
+	EventIDCallbackType genericEventMap;
 
 	boost::shared_ptr<PyObject> getHandle() const
 	{

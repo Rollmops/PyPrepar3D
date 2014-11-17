@@ -1,6 +1,6 @@
-from prepar3d._internal import id
-
 import unittest
+
+from prepar3d._internal import id
 
 
 class Test(unittest.TestCase):

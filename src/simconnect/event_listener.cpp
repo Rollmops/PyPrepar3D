@@ -17,15 +17,18 @@ namespace _internal
 static EventListener *__listener__;
 void CALLBACK __eventCallback__(SIMCONNECT_RECV* pData, DWORD cbData, void *pContext)
 {
+	const RecvTypeConverter &converter = util::Singletons::get<RecvTypeConverter, 1>();
 	EventListener::EventMapType::const_iterator iter = __listener__->eventMap.find(static_cast<SIMCONNECT_RECV_ID>(pData->dwID));
 	if (iter != __listener__->eventMap.end())
 	{
-		if (((SIMCONNECT_RECV_EVENT_BASE*) pData)->uEventID < iter->second.size())
-		{
-			const RecvTypeConverter &converter = util::Singletons::get<RecvTypeConverter, 1>();
-			iter->second[((SIMCONNECT_RECV_EVENT_BASE*) pData)->uEventID].operator ()(converter(pData), cbData,
-					handle<>(PyCObject_FromVoidPtr(pContext, NULL)));
-		}
+		const object &callback = iter->second.at(((SIMCONNECT_RECV_EVENT_BASE*) pData)->uEventID);
+		callback(converter(pData), cbData, handle<>(PyCObject_FromVoidPtr(pContext, NULL)));
+	}
+
+	EventListener::EventIDCallbackType::const_iterator cb = __listener__->genericEventMap.find(static_cast<SIMCONNECT_RECV_ID>(pData->dwID));
+	if( cb != __listener__->genericEventMap.end())
+	{
+		cb->second(converter(pData), cbData, handle<>(PyCObject_FromVoidPtr(pContext, NULL)));
 	}
 }
 } // end namepsace _internal
@@ -36,34 +39,38 @@ EventListener::EventListener(PyObject *handle) :
 	_internal::__listener__ = this;
 }
 
-
-HRESULT EventListener::subscribeSystemEvent(const char *eventName, const int &recvID, object callable)
+HRESULT EventListener::subscribeSystemEvent(const char *eventName, const DWORD &recvID, object callable, const DWORD &id)
 {
 	// TODO check for correct eventName
 	EventIDCallbackType &callbackVector = eventMap[recvID];
-	HRESULT res = SimConnect_SubscribeToSystemEvent(PyCObject_AsVoidPtr(_handle.get()), callbackVector.size(), eventName);
+	HRESULT res = SimConnect_SubscribeToSystemEvent(PyCObject_AsVoidPtr(_handle.get()), id, eventName);
 	if (res == S_OK)
 	{
-		callbackVector.push_back(callable);
+		callbackVector[id] = callable;
 	}
 	return res;
 }
 
-HRESULT EventListener::subscribeInputEvent(const char *inputTrigger, const int &recvID, object callable)
+HRESULT EventListener::subscribeInputEvent(const char *inputTrigger, const DWORD &recvID, object callable, const DWORD &id)
 {
 	EventIDCallbackType &callbackVector = eventMap[recvID];
 	// create a private event
-	HRESULT res1 = SimConnect_MapClientEventToSimEvent(PyCObject_AsVoidPtr(_handle.get()), callbackVector.size());
-	HRESULT res2 = SimConnect_MapInputEventToClientEvent(PyCObject_AsVoidPtr(_handle.get()), 0, inputTrigger, callbackVector.size());
+	HRESULT res1 = SimConnect_MapInputEventToClientEvent(PyCObject_AsVoidPtr(_handle.get()), 0, inputTrigger, id);
 	// sign up for notifications
-	HRESULT res3 = SimConnect_AddClientEventToNotificationGroup(PyCObject_AsVoidPtr(_handle.get()), 0, callbackVector.size());
+	HRESULT res2 = SimConnect_AddClientEventToNotificationGroup(PyCObject_AsVoidPtr(_handle.get()), 0, id);
+
+	HRESULT res3 = SimConnect_SetInputGroupState(PyCObject_AsVoidPtr(_handle.get()), 0, SIMCONNECT_STATE_ON);
 
 	if ((res1 || res2 || res3) == S_OK)
 	{
-		callbackVector.push_back(callable);
+		callbackVector[id] = callable;
 	}
-	std::cout << res1 << ":" << res2 << ":" << res3 << std::endl;
 	return (res1 || res2 || res3);
+}
+
+void EventListener::subscribe( const DWORD &recvID, object callable )
+{
+	genericEventMap[recvID] = callable;
 }
 
 void EventListener::listen(const float &frequency)

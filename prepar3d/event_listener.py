@@ -1,11 +1,13 @@
 import abc
 import threading
+
 from prepar3d._internal.simconnect import EventListenerInternal
-from prepar3d.connection import Connection
 from prepar3d._internal.singleton import Singleton
+from prepar3d.connection import Connection
 from prepar3d.input_event import InputEvent
-from prepar3d.system_event import SystemEvent
 from prepar3d.recv_id_event import RecvIdEvent
+from prepar3d.system_event import SystemEvent
+
 
 class EventListener(object):
     __metaclass__ = Singleton
@@ -31,7 +33,7 @@ class EventListener(object):
             return self._listener.subscribe(event._recv_id, event._callback) == 0
             
         else:
-            #TODO exception
+            # TODO exception
             pass
          
     def listen(self, frequency=10):

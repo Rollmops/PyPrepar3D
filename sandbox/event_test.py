@@ -26,7 +26,7 @@ if __name__ == '__main__':
     
     frameEvent = prepar3d.SystemEvent('Frame', callback=frame, state=prepar3d.SIMCONNECT_STATE.SIMCONNECT_STATE_OFF)
     
-    prepar3d.InputEvent('z', callback=lambda _,__,___: frameEvent.set_state(prepar3d.SIMCONNECT_STATE.SIMCONNECT_STATE_ON) )
+    prepar3d.InputEvent('z', callback=lambda _, __, ___: frameEvent.set_state(prepar3d.SIMCONNECT_STATE.SIMCONNECT_STATE_ON))
     
     
     

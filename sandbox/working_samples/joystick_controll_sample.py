@@ -11,9 +11,10 @@
 # we need this to enable print inside a lambda function in python 2.7
 from __future__ import print_function
 
-import prepar3d
-import sys
 from collections import deque
+
+import prepar3d
+
 
 class ControlRotation(prepar3d.InputEvent):
     
@@ -34,7 +35,6 @@ if __name__ == '__main__':
         prepar3d.Connection().open('Joystick Input', auto_close=True)
     except prepar3d.OpenConnectionException:
         print('Uups! Is Prepar3d running?')
-        sys.exit(1)
     
     joystickEvents = [prepar3d.InputEvent('joystick:0:slider', callback=lambda e, d, c: print('slider: %d' % e.dwData), enabled=False),
                       prepar3d.InputEvent('joystick:0:XAxis', callback=lambda e, d, c: print('XAxis: %d' % e.dwData), enabled=False),

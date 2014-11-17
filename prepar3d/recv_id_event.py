@@ -1,5 +1,6 @@
-from prepar3d._internal.base_event import BaseEvent
 import prepar3d
+from prepar3d._internal.base_event import BaseEvent
+
 
 class RecvIdEvent(BaseEvent):
     

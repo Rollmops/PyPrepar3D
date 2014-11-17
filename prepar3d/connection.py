@@ -1,8 +1,9 @@
-from prepar3d._internal.simconnect import SimConnect_Close, SimConnect_Open
-from prepar3d._internal.singleton import Singleton
 from prepar3d import Prepar3dException
 from prepar3d import SystemEvent
 from prepar3d._internal.simconnect import SIMCONNECT_RECV_ID_QUIT
+from prepar3d._internal.simconnect import SimConnect_Close, SimConnect_Open
+from prepar3d._internal.singleton import Singleton
+
 
 class ConnectionException(Prepar3dException):
     def __init__(self, name):

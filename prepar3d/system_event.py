@@ -1,8 +1,7 @@
 import prepar3d
-from prepar3d._internal.simconnect import SimConnect_SetSystemEventState, SIMCONNECT_STATE
 from prepar3d._internal import simconnect
-
 from prepar3d._internal.base_event import BaseEvent
+from prepar3d._internal.simconnect import SimConnect_SetSystemEventState, SIMCONNECT_STATE
 
 
 class SystemEvent(BaseEvent):

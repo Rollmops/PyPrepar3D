@@ -1,6 +1,7 @@
+import prepar3d
 from prepar3d._internal.base_event import BaseEvent
 from prepar3d._internal.simconnect import SIMCONNECT_GROUP_PRIORITY_HIGHEST, SimConnect_SetInputGroupState, SIMCONNECT_STATE
-import prepar3d
+
 
 class InputEvent(BaseEvent):
     def __init__(self, trigger, callback=None, state=SIMCONNECT_STATE.SIMCONNECT_STATE_ON, priority=SIMCONNECT_GROUP_PRIORITY_HIGHEST, register=True, enabled=None):

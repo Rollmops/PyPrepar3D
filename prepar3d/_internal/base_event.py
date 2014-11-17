@@ -1,7 +1,9 @@
 import abc
-from prepar3d._internal.simconnect import SIMCONNECT_GROUP_PRIORITY_HIGHEST, SIMCONNECT_STATE, SimConnect_SetInputGroupState
-from prepar3d._internal.id import Id
+
 import prepar3d
+from prepar3d._internal.id import Id
+from prepar3d._internal.simconnect import SIMCONNECT_GROUP_PRIORITY_HIGHEST, SIMCONNECT_STATE, SimConnect_SetInputGroupState
+
 
 class BaseEvent(object):
     __metaclass__ = abc.ABCMeta

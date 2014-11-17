@@ -90,6 +90,26 @@ HRESULT mapInputEventToClientEvent(PyObject *handle, const int &eventGroup, cons
 	return SimConnect_MapInputEventToClientEvent(PyCObject_AsVoidPtr(handle), eventGroup, inputTrigger, id);
 }
 
+HRESULT setInputGroupState(PyObject *handle, const int &id, const int &state)
+{
+	return SimConnect_SetInputGroupState(PyCObject_AsVoidPtr(handle), id, state);
+}
+
+HRESULT setInputGroupPriority(PyObject *handle, const int &id, const DWORD &priorioty)
+{
+	return SimConnect_SetInputGroupPriority(PyCObject_AsVoidPtr(handle), id, priorioty);
+}
+
+HRESULT setNotificationGroupPriority(PyObject *handle, const int &groupId, const DWORD &priorioty)
+{
+	return SimConnect_SetNotificationGroupPriority(PyCObject_AsVoidPtr(handle), groupId, priorioty);
+}
+
+HRESULT setSystemEventState(PyObject *handle, const DWORD &eventId, const int &state)
+{
+	return SimConnect_SetSystemEventState(PyCObject_AsVoidPtr(handle), eventId, static_cast<SIMCONNECT_STATE>(state));
+}
+
 tuple getLastSentPacketID(PyObject *handle)
 {
 	DWORD id;

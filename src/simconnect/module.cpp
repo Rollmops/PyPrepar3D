@@ -18,7 +18,7 @@ BOOST_PYTHON_MODULE(simconnect)
 			&prepar3d::simconnect::DispatchReceiver::registerID).def("getNextDispatch",
 			&prepar3d::simconnect::DispatchReceiver::getNextDispatch);
 
-	class_<prepar3d::simconnect::EventListener>("EventListener", init<PyObject*>())
+	class_<prepar3d::simconnect::EventListener>("EventListenerInternal", init<PyObject*>())
 			.def("subscribeSystemEvent", &prepar3d::simconnect::EventListener::subscribeSystemEvent)
 			.def("subscribeInputEvent", &prepar3d::simconnect::EventListener::subscribeInputEvent)
 			.def("subscribe", &prepar3d::simconnect::EventListener::subscribe)
@@ -47,6 +47,11 @@ BOOST_PYTHON_MODULE(simconnect)
 
 
 	def("SimConnect_MapInputEventToClientEvent", prepar3d::simconnect::wrapper::mapInputEventToClientEvent);
+	def("SimConnect_SetInputGroupState", prepar3d::simconnect::wrapper::setInputGroupState);
+	def("SimConnect_SetInputGroupPriority", prepar3d::simconnect::wrapper::setInputGroupPriority);
+	def("SimConnect_SetNotificationGroupPriority", prepar3d::simconnect::wrapper::setNotificationGroupPriority);
+	def("SimConnect_SetSystemEventState", prepar3d::simconnect::wrapper::setSystemEventState);
+
 
 	def("SimConnect_CallDispatch", prepar3d::simconnect::wrapper::callDispatch);
 	def("SimConnect_SubscribeToSystemEvent", prepar3d::simconnect::wrapper::subscribeToSystemEvent);

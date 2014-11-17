@@ -36,6 +36,13 @@ HRESULT flightSave(PyObject *, const char*, const char*, const char*, DWORD);
 
 HRESULT mapInputEventToClientEvent(PyObject *, const int &eventGroup, const char *inputTrigger, const int &id);
 
+HRESULT setInputGroupState(PyObject *, const int &, const int &);
+HRESULT setInputGroupPriority(PyObject *, const int &, const DWORD &);
+
+HRESULT setNotificationGroupPriority(PyObject *, const int &, const DWORD &);
+
+HRESULT setSystemEventState(PyObject *, const DWORD &, const int &);
+
 tuple getLastSentPacketID(PyObject *);
 
 //tuple getNextDispatch(PyObject *);

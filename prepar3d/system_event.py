@@ -1,7 +1,8 @@
 import prepar3d
+from prepar3d._internal.simconnect import SimConnect_SetSystemEventState, SIMCONNECT_STATE
 from prepar3d._internal import simconnect
 
-from base_event import BaseEvent
+from prepar3d._internal.base_event import BaseEvent
 
 
 class SystemEvent(BaseEvent):
@@ -33,21 +34,27 @@ class SystemEvent(BaseEvent):
          'ObjectRemoved': simconnect.SIMCONNECT_RECV_ID.SIMCONNECT_RECV_ID_EVENT_OBJECT_ADDREMOVE
     }
         
-    def __init__(self, trigger, callback=None, register=True):
-        super(SystemEvent, self).__init__(callback)
-        if trigger not in SystemEvent.__SYSTEM_EVENTS__.keys():
+    def __init__(self, trigger, callback=None, state=SIMCONNECT_STATE.SIMCONNECT_STATE_ON, register=True, enabled=None):
+        
+        # check if we know the system trigger
+        if trigger.lower() not in [key.lower() for key in SystemEvent.__SYSTEM_EVENTS__.keys()]:
             # TODO rause
             pass
+        
         self._trigger = trigger
         self._recv_id = SystemEvent.__SYSTEM_EVENTS__[trigger]
         
-        if register:
-            self.register()
+        super(SystemEvent, self).__init__(callback, state, None, register, enabled)
+
         
-    def register(self):
-        prepar3d.EventListener().register_event(self)
-        self._registered = True    
-    
-    def occur(self, event, data, context):
+    def set_state(self, state):
+        self._state = state
+        if self._registered:
+            SimConnect_SetSystemEventState(prepar3d.Connection()._handle, self._id, self._state)
+
+    def set_priority(self, priority):
+        return
+
+    def event(self, event, data, context):
         return
     

@@ -1,22 +1,23 @@
+from prepar3d._internal.base_event import BaseEvent
+from prepar3d._internal.simconnect import SIMCONNECT_GROUP_PRIORITY_HIGHEST, SimConnect_SetInputGroupState, SIMCONNECT_STATE
 import prepar3d
-from prepar3d._internal import simconnect
-
-from base_event import BaseEvent
-
 
 class InputEvent(BaseEvent):
-    def __init__(self, trigger, callback=None, register=True):
-        super(InputEvent, self).__init__(callback)
+    def __init__(self, trigger, callback=None, state=SIMCONNECT_STATE.SIMCONNECT_STATE_ON, priority=SIMCONNECT_GROUP_PRIORITY_HIGHEST, register=True, enabled=None):
         self._trigger = trigger
-        self._recv_id = simconnect.SIMCONNECT_RECV_ID.SIMCONNECT_RECV_ID_EVENT
+        super(InputEvent, self).__init__(callback, state, priority, register, enabled)
         
-        if register:
-            self.register()
+    def set_state(self, state):
+        self._state = state
+        if self._registered:
+            SimConnect_SetInputGroupState(prepar3d.Connection()._handle, self._id, self._state)
 
-    def register(self):
-        prepar3d.EventListener().register_event(self)
-        self._registered = True
+    def set_priority(self, priority):
+        self._priority = priority
+        if self._registered:
+            SimConnect_SetInputGroupPriority(prepar3d.Connection()._handle, self._id, self._priority)
+            
 
-    def occur(self, event, data, context):
+    def event(self, event, data, context):
         return
         

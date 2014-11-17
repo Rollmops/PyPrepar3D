@@ -23,6 +23,7 @@ class ControlRotation(prepar3d.InputEvent):
         self.events = deque(events)    
 
     def event(self, event, data, context):
+        # sort of tricky approach to loop through joystick events and enable only one with each iteration
         self.events.rotate()
         [e[1].set_enabled(e[0] == 0) for e in enumerate(self.events)]
         

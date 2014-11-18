@@ -13,6 +13,8 @@ class EventListener(object):
     __metaclass__ = Singleton
     
     def __init__(self):
+        self._allow_running_sim_for_all_events = False
+        
         self._listener = EventListenerInternal(Connection()._handle)
         self._sim_start_events = list()
         
@@ -38,14 +40,22 @@ class EventListener(object):
             # TODO exception
             pass
         
+    def set_allow_running_sim_for_all_events(self, allow):
+        ''' Ignore at_sim_start option for all events.
+        This allows the developer to test python scripts 
+        and receive events with option at_sim_start=True
+        even if the sim is already running. 
+        
+        '''
+        self._allow_running_sim_for_all_events = allow
         
     def register_event(self, event):
-        if event._at_sim_start:
+        if event._at_sim_start and not self._allow_running_sim_for_all_events:
             self._sim_start_events.append(event)
             if not self._sim_start_registered:
                 self._sim_start_registered = True
                 # register SimStart event 
-                SystemEvent('SimStart', callback=self._register_events, sim_start=False)
+                SystemEvent('SimStart', callback=self._register_events, at_sim_start=False)
             return True
         else:
             return self._register_event(event)

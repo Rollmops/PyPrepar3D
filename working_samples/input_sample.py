@@ -28,6 +28,6 @@ if __name__ == '__main__':
     
     print('Connected to Prepar3d!')
         
-    prepar3d.InputEvent('shift', callback=lambda e, d, c: print('brakes!'), sim_event='brakes')
+    prepar3d.InputEvent('shift+ctrl+u', callback=lambda e, d, c: print('brakes!'), sim_event='brakes')
     
     prepar3d.EventListener().listen()

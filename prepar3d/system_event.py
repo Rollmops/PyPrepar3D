@@ -33,7 +33,7 @@ class SystemEvent(BaseEvent):
          'ObjectRemoved': simconnect.SIMCONNECT_RECV_ID.SIMCONNECT_RECV_ID_EVENT_OBJECT_ADDREMOVE
     }
         
-    def __init__(self, trigger, callback=None, state=SIMCONNECT_STATE.SIMCONNECT_STATE_ON, register=True, enabled=None):
+    def __init__(self, trigger, callback=None, state=SIMCONNECT_STATE.SIMCONNECT_STATE_ON, register=True, enabled=None, at_sim_start=False):
         
         # check if we know the system trigger
         if trigger.lower() not in [key.lower() for key in SystemEvent.__SYSTEM_EVENTS__.keys()]:
@@ -43,7 +43,7 @@ class SystemEvent(BaseEvent):
         self._trigger = trigger
         self._recv_id = SystemEvent.__SYSTEM_EVENTS__[trigger]
         
-        super(SystemEvent, self).__init__(callback, state, None, register, enabled)
+        super(SystemEvent, self).__init__(callback, state, None, register, enabled, at_sim_start)
 
         
     def set_state(self, state):

@@ -4,9 +4,9 @@ from prepar3d._internal.simconnect import SIMCONNECT_GROUP_PRIORITY_HIGHEST, Sim
 
 
 class InputEvent(BaseEvent):
-    def __init__(self, trigger, callback=None, state=SIMCONNECT_STATE.SIMCONNECT_STATE_ON, priority=SIMCONNECT_GROUP_PRIORITY_HIGHEST, register=True, enabled=None):
+    def __init__(self, trigger, callback=None, state=SIMCONNECT_STATE.SIMCONNECT_STATE_ON, priority=SIMCONNECT_GROUP_PRIORITY_HIGHEST, register=True, enabled=None, at_sim_start=False):
         self._trigger = trigger
-        super(InputEvent, self).__init__(callback, state, priority, register, enabled)
+        super(InputEvent, self).__init__(callback, state, priority, register, enabled, at_sim_start)
         
     def set_state(self, state):
         self._state = state

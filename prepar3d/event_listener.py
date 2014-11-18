@@ -11,18 +11,20 @@ from prepar3d.system_event import SystemEvent
 
 class EventListener(object):
     __metaclass__ = Singleton
-
     
     def __init__(self):
         self._listener = EventListenerInternal(Connection()._handle)
-        self._events = list()
+        self._sim_start_events = list()
         
-        
+        self._sim_start_registered = False
 
 
-    def register_event(self, event):
-        self._events.append(event)
+    def _register_events(self, _, __, ___):
+        for event in self._sim_start_events:
+            self._register_event(event)
+            
         
+    def _register_event(self, event):
         if isinstance(event, InputEvent):
             return self._listener.subscribeInputEvent(event._trigger, event._callback, event._id, event._state, event._priority) == 0
         
@@ -35,9 +37,20 @@ class EventListener(object):
         else:
             # TODO exception
             pass
+        
+        
+    def register_event(self, event):
+        if event._at_sim_start:
+            self._sim_start_events.append(event)
+            if not self._sim_start_registered:
+                self._sim_start_registered = True
+                # register SimStart event 
+                SystemEvent('SimStart', callback=self._register_events, sim_start=False)
+            return True
+        else:
+            return self._register_event(event)
+
          
-    def listen(self, frequency=10):
+    def listen(self, frequency=100):
         self._listener.listen(frequency)
 
-    def get_events(self):
-        return self._events

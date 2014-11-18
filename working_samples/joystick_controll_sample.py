@@ -12,6 +12,7 @@
 from __future__ import print_function
 
 from collections import deque
+import sys
 
 import prepar3d
 
@@ -36,6 +37,9 @@ if __name__ == '__main__':
         prepar3d.Connection().open('Joystick Input', auto_close=True)
     except prepar3d.OpenConnectionException:
         print('Uups! Is Prepar3d running?')
+        sys.exit(1)
+    
+    print('Connected to Prepar3d!')
     
     joystickEvents = [prepar3d.InputEvent('joystick:0:slider', callback=lambda e, d, c: print('slider: %d' % e.dwData), enabled=False),
                       prepar3d.InputEvent('joystick:0:XAxis', callback=lambda e, d, c: print('XAxis: %d' % e.dwData), enabled=False),
@@ -46,7 +50,7 @@ if __name__ == '__main__':
     
     ControlRotation(joystickEvents) 
     
-    prepar3d.EventListener().listen(frequency=5)
+    prepar3d.EventListener().listen(frequency=100)
     
     
     

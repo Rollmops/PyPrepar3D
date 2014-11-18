@@ -1,8 +1,8 @@
 from prepar3d import Prepar3dException
-from prepar3d import SystemEvent
-from prepar3d._internal.simconnect import SIMCONNECT_RECV_ID_QUIT
+from prepar3d._internal.simconnect import SIMCONNECT_RECV_ID
 from prepar3d._internal.simconnect import SimConnect_Close, SimConnect_Open
 from prepar3d._internal.singleton import Singleton
+from prepar3d.recv_id_event import RecvIdEvent
 
 
 class ConnectionException(Prepar3dException):
@@ -37,7 +37,6 @@ class Connection(object):
         self._connected = False
         self._handle = None
         self._name = None
-        pass
         
     def open(self, name, window_handle=None, user_event_win32=0, event_handle=None, config_index=0, auto_close=True):
         self._name = name
@@ -48,9 +47,9 @@ class Connection(object):
             raise OpenConnectionException(self._name, result)
         
         if auto_close:        
-            SystemEvent(SIMCONNECT_RECV_ID_QUIT, self.close())
+            RecvIdEvent(SIMCONNECT_RECV_ID.SIMCONNECT_RECV_ID_QUIT, self.close)
         
-    def close(self):
+    def close(self, _, __, ___):
         if self._connected and self._handle is not None:
             result = SimConnect_Close(self._handle)
             if result == 0:

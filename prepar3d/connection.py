@@ -50,6 +50,7 @@ class Connection(object):
             RecvIdEvent(SIMCONNECT_RECV_ID.SIMCONNECT_RECV_ID_QUIT, self.close)
         
     def close(self, _, __, ___):
+        print('Received close!')
         if self._connected and self._handle is not None:
             result = SimConnect_Close(self._handle)
             if result == 0:

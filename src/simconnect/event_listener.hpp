@@ -25,7 +25,7 @@ public:
 	EventListener(PyObject *handle);
 
 	HRESULT subscribeSystemEvent(const char *eventName, const DWORD &recvID, object callable, const int &id, const SIMCONNECT_STATE &state);
-	HRESULT subscribeInputEvent(const char *inputTrigger, object callable, const int &id, const SIMCONNECT_STATE &state, const DWORD &priority);
+	HRESULT subscribeInputEvent(const char *inputTrigger, object callable, const int &id, const SIMCONNECT_STATE &state, const DWORD &priority, const char *simEvent);
 	void subscribe(const DWORD &recvID, object callable);
 
 	void listen(const float &frequency);

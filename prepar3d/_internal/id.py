@@ -13,5 +13,5 @@ class Id():
         if id_type in self._ids:
             return self._ids[id_type].next()
         else:
-            self._ids[id_type] = count()
+            self._ids[id_type] = count(start=1)
             return self._ids[id_type].next()

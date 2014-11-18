@@ -26,7 +26,7 @@ class EventListener(object):
         
     def _register_event(self, event):
         if isinstance(event, InputEvent):
-            return self._listener.subscribeInputEvent(event._trigger, event._callback, event._id, event._state, event._priority) == 0
+            return self._listener.subscribeInputEvent(event._trigger, event._callback, event._id, event._state, event._priority, event._sim_event) == 0
         
         elif isinstance(event, SystemEvent):        
             return self._listener.subscribeSystemEvent(event._trigger, event._recv_id, event._callback, event._id, event._state) == 0

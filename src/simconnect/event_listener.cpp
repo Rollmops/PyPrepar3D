@@ -53,23 +53,26 @@ HRESULT EventListener::subscribeSystemEvent(const char *eventName, const DWORD &
 	return res;
 }
 
-HRESULT EventListener::subscribeInputEvent(const char *inputTrigger, object callable, const int &id, const SIMCONNECT_STATE &state, const DWORD &priority)
+HRESULT EventListener::subscribeInputEvent(const char *inputTrigger, object callable, const int &id, const SIMCONNECT_STATE &state, const DWORD &priority, const char *simEvent)
 {
-
+	assert(id>0);
 	EventIDCallbackType &callbackMap = eventMap[SIMCONNECT_RECV_ID_EVENT];
 	HANDLE handle = PyCObject_AsVoidPtr(_handle.get());
-	HRESULT hr;
-    hr = SimConnect_MapClientEventToSimEvent(handle, id);
+	const HRESULT hr1 = SimConnect_MapClientEventToSimEvent(handle, id, simEvent);
 
-    // we are using -1 for the init group
-    hr = SimConnect_AddClientEventToNotificationGroup(handle, -1, id);
-    hr = SimConnect_SetNotificationGroupPriority(handle, -1, priority);
+    // we are using 0 for the init group
+	const HRESULT hr2 = SimConnect_AddClientEventToNotificationGroup(handle, 0, id);
+	const HRESULT hr3 = SimConnect_SetNotificationGroupPriority(handle, 0, priority);
 
-    hr = SimConnect_MapInputEventToClientEvent(handle, id, inputTrigger, id);
-    hr = SimConnect_SetInputGroupState(handle, id, state);
-    callbackMap[id] = callable;
+	const HRESULT hr4 = SimConnect_MapInputEventToClientEvent(handle, id, inputTrigger, id);
+	const HRESULT hr5 = SimConnect_SetInputGroupState(handle, id, state);
 
-	return S_OK;
+	if ((hr1 || hr2 || hr3 || hr4 || hr5) == 0) {
+		callbackMap[id] = callable;
+		return S_OK;
+	} else {
+		return E_FAIL;
+	}
 }
 
 void EventListener::subscribe( const DWORD &recvID, object callable )

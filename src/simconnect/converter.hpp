@@ -40,7 +40,11 @@ struct FROM_CHAR_ARRAY
 {
 	static PyObject *convert(char array[LENGTH])
 	{
+#if PY_MAJOR_VERSION <= 2
 		return PyString_FromString(array);
+#else
+		return PyBytes_FromString(array);
+#endif
 	}
 };
 

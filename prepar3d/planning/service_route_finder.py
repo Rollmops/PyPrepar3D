@@ -54,9 +54,3 @@ class ServiceRouteFinder(ServiceBase):
             
             route_repsonse = urllib2.urlopen(route_request, request_data).read()
             
-            print route_repsonse
-            
-            
-        
-        
-        

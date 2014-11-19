@@ -6,9 +6,8 @@ class Prepar3dException(Exception):
         return 'A Prepar3d-related error occurred'
     
 
-import _internal
-from _internal.simconnect import *
-from connection import Connection, ConnectionException, OpenConnectionException, CloseConnectionException
+import prepar3d._internal
+from prepar3d.connection import Connection, ConnectionException, OpenConnectionException, CloseConnectionException
 from event_listener import EventListener
 from input_event import InputEvent
 from recv_id_event import RecvIdEvent

@@ -17,7 +17,7 @@ tuple DispatchReceiver::getNextDispatchForHandle(const boost::shared_ptr<PyObjec
 	{
 		SIMCONNECT_RECV* pData;
 		DWORD cbData;
-		HRESULT res = SimConnect_GetNextDispatch(PyCObject_AsVoidPtr(handle.get()), &pData, &cbData);
+		HRESULT res = SimConnect_GetNextDispatch(PyCapsule_GetPointer(handle.get(), NULL), &pData, &cbData);
 		std::map<SIMCONNECT_RECV_ID, FunctionType>::iterator iter = _registeredIdList.find(static_cast<SIMCONNECT_RECV_ID>(pData->dwID));
 		if (iter != _registeredIdList.end())
 		{

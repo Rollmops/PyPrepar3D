@@ -34,5 +34,5 @@ if __name__ == '__main__':
           packages=find_packages(),
           ext_modules=[simconnect_module],
           zip_safe=False,
-          data_files=[('prepar3d/_internal', ['lib/boost_python-vc100-mt-1_56.dll'])]
+          data_files=[('prepar3d/_internal', glob.glob('lib/*.dll'))]
           )

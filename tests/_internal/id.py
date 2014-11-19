@@ -1,12 +1,9 @@
 import unittest
-
 from prepar3d._internal import id
-
 
 class Test(unittest.TestCase):
 
     def setUp(self):
-        
         self.ids = [id.Id().get() for _ in range(0, 10000)]
 
     def test_id(self):

@@ -30,8 +30,7 @@ class CloseConnectionException(ConnectionException):
         return 'Closing the connection \'%s\' failed with result \'%d\'' % (self.name, self.result)
 
 
-class Connection(object):
-    __metaclass__ = Singleton
+class Connection(metaclass=Singleton):
     
     def __init__(self):
         self._connected = False

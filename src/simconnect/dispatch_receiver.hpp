@@ -14,7 +14,7 @@ namespace simconnect
 
 class DispatchReceiver
 {
-	typedef boost::function<object(SIMCONNECT_RECV*)> FunctionType;
+	typedef boost::function<boost::python::object(SIMCONNECT_RECV*)> FunctionType;
 public:
 	DispatchReceiver(PyObject *handle) :
 			_handle(boost::shared_ptr<PyObject>(handle))

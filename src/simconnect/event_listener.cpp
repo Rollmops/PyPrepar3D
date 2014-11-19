@@ -22,13 +22,13 @@ void CALLBACK __eventCallback__(SIMCONNECT_RECV* pData, DWORD cbData, void *pCon
 	if (iter != __listener__->eventMap.end())
 	{
 		const object &callback = iter->second.at(((SIMCONNECT_RECV_EVENT_BASE*) pData)->uEventID);
-		callback(converter(pData), cbData, handle<>(PyCObject_FromVoidPtr(pContext, NULL)));
+		callback(converter(pData), cbData, handle<>(PyCapsule_New(pContext, NULL, NULL)));
 	}
 
 	EventListener::EventIDCallbackType::const_iterator cb = __listener__->genericEventMap.find(static_cast<SIMCONNECT_RECV_ID>(pData->dwID));
 	if( cb != __listener__->genericEventMap.end())
 	{
-		cb->second(converter(pData), cbData, handle<>(PyCObject_FromVoidPtr(pContext, NULL)));
+		cb->second(converter(pData), cbData, handle<>(PyCapsule_New(pContext, NULL, NULL)));
 	}
 }
 } // end namepsace _internal
@@ -43,7 +43,7 @@ HRESULT EventListener::subscribeSystemEvent(const char *eventName, const DWORD &
 {
 	// TODO check for correct eventName
 	EventIDCallbackType &callbackMap = eventMap[recvID];
-	HANDLE handle = PyCObject_AsVoidPtr(_handle.get());
+	HANDLE handle = PyCapsule_GetPointer(_handle.get(), NULL);
 	HRESULT res = SimConnect_SubscribeToSystemEvent(handle, id, eventName);
 	SimConnect_SetSystemEventState(handle, id, state);
 	if (res == S_OK)
@@ -57,7 +57,7 @@ HRESULT EventListener::subscribeInputEvent(const char *inputTrigger, object call
 {
 	assert(id>0);
 	EventIDCallbackType &callbackMap = eventMap[SIMCONNECT_RECV_ID_EVENT];
-	HANDLE handle = PyCObject_AsVoidPtr(_handle.get());
+	HANDLE handle = PyCapsule_GetPointer(_handle.get(), NULL);
 	const HRESULT hr1 = SimConnect_MapClientEventToSimEvent(handle, id, simEvent);
 
     // we are using 0 for the init group
@@ -86,7 +86,7 @@ void EventListener::listen(const float &frequency)
 	HRESULT res = S_OK;
 	while (res == S_OK)
 	{
-		res = SimConnect_CallDispatch(PyCObject_AsVoidPtr(_handle.get()), _internal::__eventCallback__, NULL);
+		res = SimConnect_CallDispatch(PyCapsule_GetPointer(_handle.get(), NULL), _internal::__eventCallback__, NULL);
 		Sleep(sleepTime);
 	}
 }

@@ -9,8 +9,7 @@ from prepar3d.recv_id_event import RecvIdEvent
 from prepar3d.system_event import SystemEvent
 
 
-class EventListener(object):
-    __metaclass__ = Singleton
+class EventListener(metaclass=Singleton):
     
     def __init__(self):
         self._allow_running_sim_for_all_events = False

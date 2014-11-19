@@ -10,9 +10,6 @@
 #                Press x to load them with their waypoint lists 
 #------------------------------------------------------------------------------
 
-# we need this to enable print inside a lambda function in python 2.7
-from __future__ import print_function
-
 import prepar3d 
 
 if __name__ == '__main__':

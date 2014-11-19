@@ -12,9 +12,6 @@
 # Apparently this is not the way it works cause pressing the default brakes key triggers the InputEvent and the
 # key combination shift+ctrl+u does nothing at all!
 
-# we need this to enable print inside a lambda function in python 2.7
-from __future__ import print_function
-
 import prepar3d 
 
 if __name__ == '__main__':

@@ -8,9 +8,6 @@
 #                including X,Y,Z axes, Slider and Hat switch 
 #------------------------------------------------------------------------------ 
 
-# we need this to enable print inside a lambda function in python 2.7
-from __future__ import print_function
-
 from collections import deque
 import sys
 

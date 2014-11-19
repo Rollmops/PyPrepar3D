@@ -1,0 +1,17 @@
+SIMCONNECT_DATA_INITPOSITION Init; 
+
+// Initialize Mooney aircraft just in front of user aircraft 
+// User aircraft is at 47 25.89 N, 122 18.48 W 
+
+Init.Altitude   = 433.0;                // Altitude of Sea-tac is 433 feet 
+Init.Latitude   = 47 + (25.91/60);        // Convert from 47 25.90 N 
+Init.Longitude  = -122 - (18.48/60);    // Convert from 122 18.48 W 
+Init.Pitch      =  0.0; 
+Init.Bank       =  0.0; 
+Init.Heading    = 360.0; 
+Init.OnGround   = 1; 
+Init.Airspeed    = 1;
+
+SimConnect_AICreateNonATCAircraft(hSimConnect, "Mooney Bravo", "N1001", Init, REQUEST_MOONEY);
+
+ -> LatLon -> Position -> Object -> Aircraft(ATC/NonATC)

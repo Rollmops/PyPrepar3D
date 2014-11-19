@@ -1,7 +1,7 @@
 import abc
 import threading
 
-from prepar3d._internal.simconnect import EventListenerInternal
+from prepar3d._internal.simconnect import DispatchHandler
 from prepar3d._internal.singleton import Singleton
 from prepar3d.connection import Connection
 from prepar3d.input_event import InputEvent
@@ -14,7 +14,7 @@ class EventListener(metaclass=Singleton):
     def __init__(self):
         self._allow_running_sim_for_all_events = False
         
-        self._listener = EventListenerInternal(Connection()._handle)
+        self._dispatch_handler = DispatchHandler(Connection()._handle)
         self._sim_start_events = list()
         
         self._sim_start_registered = False
@@ -27,13 +27,13 @@ class EventListener(metaclass=Singleton):
         
     def _register_event(self, event):
         if isinstance(event, InputEvent):
-            return self._listener.subscribeInputEvent(event._trigger, event._callback, event._id, event._state, event._priority, event._sim_event) == 0
+            return self._dispatch_handler.subscribeInputEvent(event._trigger, event._callback, event._id, event._state, event._priority, event._sim_event) == 0
         
         elif isinstance(event, SystemEvent):        
-            return self._listener.subscribeSystemEvent(event._trigger, event._recv_id, event._callback, event._id, event._state) == 0
+            return self._dispatch_handler.subscribeSystemEvent(event._trigger, event._recv_id, event._callback, event._id, event._state) == 0
             
         elif isinstance(event, RecvIdEvent):
-            return self._listener.subscribe(event._recv_id, event._callback) == 0
+            return self._dispatch_handler.subscribe(event._recv_id, event._callback) == 0
             
         else:
             # TODO exception
@@ -61,5 +61,5 @@ class EventListener(metaclass=Singleton):
 
          
     def listen(self, frequency=100):
-        self._listener.listen(frequency)
+        self._dispatch_handler.listen(1000/frequency)
 

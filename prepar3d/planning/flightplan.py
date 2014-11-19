@@ -6,7 +6,7 @@ class AirwayLevel:
     BOTH = 'B'
 
 
-class Route(list):
+class Flightplan(list):
     
     def __init__(self, departure, destination, flightlevel, cycle=None, level=AirwayLevel.BOTH, service=ServiceRouteFinder() ):
         self._departure = departure

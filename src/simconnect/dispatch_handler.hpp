@@ -5,8 +5,8 @@
  *      Author: Erik Tuerke
  */
 
-#ifndef __PREPAR3D_SIMCONNECT_EVENT_LISTENER_HPP_
-#define __PREPAR3D_SIMCONNECT_EVENT_LISTENER_HPP_
+#ifndef __PREPAR3D_SIMCONNECT_DISPATCH_HANDLER_HPP_
+#define __PREPAR3D_SIMCONNECT_DISPATCH_HANDLER_HPP_
 
 #include "common.hpp"
 #include <vector>
@@ -16,22 +16,22 @@ namespace prepar3d
 {
 namespace simconnect
 {
-class EventListener
+class DispatchHandler
 {
 public:
 	typedef std::map<DWORD, object> EventIDCallbackType;
 	typedef std::map<DWORD, EventIDCallbackType> EventMapType;
 
-	EventListener(PyObject *handle);
+	DispatchHandler(PyObject *handle);
 
 	HRESULT subscribeSystemEvent(const char *eventName, const DWORD &recvID, object callable, const int &id, const SIMCONNECT_STATE &state);
 	HRESULT subscribeInputEvent(const char *inputTrigger, object callable, const int &id, const SIMCONNECT_STATE &state, const DWORD &priority, const char *simEvent);
-	void subscribe(const DWORD &recvID, object callable);
+	void subscribeRecvIDEvent(const DWORD &recvID, object callable);
 
-	void listen(const float &frequency);
+	void listen(const DWORD &sleepTime);
 
 	EventMapType eventMap;
-	EventIDCallbackType genericEventMap;
+	EventIDCallbackType recvIdMap;
 
 	boost::shared_ptr<PyObject> getHandle() const
 	{
@@ -46,4 +46,4 @@ private:
 } // end namespace simconnect
 } // end namespace prepar3d
 
-#endif /* __PREPAR3D_SIMCONNECT_EVENT_LISTENER_HPP_ */
+#endif /* __PREPAR3D_SIMCONNECT_DISPATCH_HANDLER_HPP_ */

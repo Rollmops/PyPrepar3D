@@ -1,7 +1,7 @@
 #include "wrapper.hpp"
 #include "converter.hpp"
+#include "dispatch_handler.hpp"
 #include "dispatch_receiver.hpp"
-#include "event_listener.hpp"
 
 BOOST_PYTHON_MODULE(simconnect)
 {
@@ -18,11 +18,11 @@ BOOST_PYTHON_MODULE(simconnect)
 			&prepar3d::simconnect::DispatchReceiver::registerID).def("getNextDispatch",
 			&prepar3d::simconnect::DispatchReceiver::getNextDispatch);
 
-	class_<prepar3d::simconnect::EventListener>("EventListenerInternal", init<PyObject*>())
-			.def("subscribeSystemEvent", &prepar3d::simconnect::EventListener::subscribeSystemEvent)
-			.def("subscribeInputEvent", &prepar3d::simconnect::EventListener::subscribeInputEvent)
-			.def("subscribe", &prepar3d::simconnect::EventListener::subscribe)
-			.def("listen", &prepar3d::simconnect::EventListener::listen, ( arg ( "frequency" ) ) )
+	class_<prepar3d::simconnect::DispatchHandler>("DispatchListener", init<PyObject*>())
+			.def("subscribeSystemEvent", &prepar3d::simconnect::DispatchHandler::subscribeSystemEvent)
+			.def("subscribeInputEvent", &prepar3d::simconnect::DispatchHandler::subscribeInputEvent)
+			.def("subscribeRecvIDEvent", &prepar3d::simconnect::DispatchHandler::subscribeRecvIDEvent)
+			.def("listen", &prepar3d::simconnect::DispatchHandler::listen, ( arg ( "frequency" ) ) )
 			;
 
 //#######################################################################################

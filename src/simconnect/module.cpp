@@ -18,7 +18,7 @@ BOOST_PYTHON_MODULE(simconnect)
 			&prepar3d::simconnect::DispatchReceiver::registerID).def("getNextDispatch",
 			&prepar3d::simconnect::DispatchReceiver::getNextDispatch);
 
-	class_<prepar3d::simconnect::DispatchHandler>("DispatchListener", init<PyObject*>())
+	class_<prepar3d::simconnect::DispatchHandler>("DispatchHandler", init<PyObject*>())
 			.def("subscribeSystemEvent", &prepar3d::simconnect::DispatchHandler::subscribeSystemEvent)
 			.def("subscribeInputEvent", &prepar3d::simconnect::DispatchHandler::subscribeInputEvent)
 			.def("subscribeRecvIDEvent", &prepar3d::simconnect::DispatchHandler::subscribeRecvIDEvent)

@@ -27,7 +27,7 @@ if __name__ == '__main__':
     # Should be only used for testing purpose!
     prepar3d.EventListener().set_allow_running_sim_for_all_events(True)  
     
-    prepar3d.InputEvent('Z', callback=lambda e, d, c: print('Z'), at_sim_start=True)
-    prepar3d.InputEvent('X', callback=lambda e, d, c: print('X'), at_sim_start=True)
+    prepar3d.InputEvent('Z', callback=lambda e, d: print('Z'), at_sim_start=True)
+    prepar3d.InputEvent('X', callback=lambda e, d: print('X'), at_sim_start=True)
     
     prepar3d.EventListener().listen()

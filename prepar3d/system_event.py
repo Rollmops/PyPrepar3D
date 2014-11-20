@@ -54,6 +54,6 @@ class SystemEvent(BaseEvent):
     def set_priority(self, priority):
         return
 
-    def event(self, event, data, context):
+    def event(self, event, data):
         return
     

@@ -1,4 +1,4 @@
-from service_route_finder import ServiceRouteFinder
+from prepar3d.planning.service_route_finder import ServiceRouteFinder
 
 class AirwayLevel:
     HIGH = 'H'

@@ -26,14 +26,14 @@ void CALLBACK __dispatchCallback__(SIMCONNECT_RECV* pData, DWORD cbData, void *p
 	if (iter != __listener__->eventMap.end())
 	{
 		const object &callback = iter->second.at(((SIMCONNECT_RECV_EVENT_BASE*) pData)->uEventID);
-		callback(converter(pData), cbData, handle<>(PyCapsule_New(pContext, NULL, NULL)));
+		callback(converter(pData), cbData/*, handle<>(PyCapsule_New(pContext, NULL, NULL))*/);
 	}
 
 	// handle all the RecvID events such as Exception Event
 	DispatchHandler::EventIDCallbackType::const_iterator cb = __listener__->recvIdMap.find(static_cast<SIMCONNECT_RECV_ID>(pData->dwID));
 	if (cb != __listener__->recvIdMap.end())
 	{
-		cb->second(converter(pData), cbData, handle<>(PyCapsule_New(pContext, NULL, NULL)));
+		cb->second(converter(pData), cbData/*, handle<>(PyCapsule_New(pContext, NULL, NULL))*/);
 	}
 }
 } // end namepsace _internal

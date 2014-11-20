@@ -1,6 +1,6 @@
-from service_base import ServiceBase
-import urllib2
-from HTMLParser import HTMLParser
+from prepar3d.planning.service_base import ServiceBase
+import urllib
+from html.parser import HTMLParser
 import re
 
 class ServiceRouteFinder(ServiceBase):
@@ -27,7 +27,7 @@ class ServiceRouteFinder(ServiceBase):
 
         # retrieve k value from start page
         k_parser = ServiceRouteFinder._RouteFinderHTMLParser()
-        k_parser.feed(urllib2.urlopen(self._base_url).read())
+        k_parser.feed(urllib.urlopen(self._base_url).read())
                 
         if k_parser.k_value is not None:
             

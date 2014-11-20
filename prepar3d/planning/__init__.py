@@ -1,1 +1,1 @@
-from flightplan import Flightplan
+from prepar3d.planning.flightplan import Flightplan

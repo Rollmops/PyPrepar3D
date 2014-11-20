@@ -8,10 +8,10 @@ class Prepar3dException(Exception):
 
 import prepar3d._internal
 from prepar3d.connection import Connection, ConnectionException, OpenConnectionException, CloseConnectionException
-from event_listener import EventListener
-from input_event import InputEvent
-from recv_id_event import RecvIdEvent
-from system_event import SystemEvent
+from prepar3d.event_listener import EventListener
+from prepar3d.input_event import InputEvent
+from prepar3d.recv_id_event import RecvIdEvent
+from prepar3d.system_event import SystemEvent
 
-import planning
+import prepar3d.planning
 

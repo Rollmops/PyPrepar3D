@@ -20,6 +20,6 @@ class InputEvent(BaseEvent):
             SimConnect_SetInputGroupPriority(prepar3d.Connection()._handle, self._id, self._priority)
             
 
-    def event(self, event, data, context):
+    def event(self, event, data):
         return
         

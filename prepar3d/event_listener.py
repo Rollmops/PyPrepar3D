@@ -33,7 +33,7 @@ class EventListener(metaclass=Singleton):
             return self._dispatch_handler.subscribeSystemEvent(event._trigger, event._recv_id, event._callback, event._id, event._state) == 0
             
         elif isinstance(event, RecvIdEvent):
-            return self._dispatch_handler.subscribe(event._recv_id, event._callback) == 0
+            return self._dispatch_handler.subscribeRecvIDEvent(event._recv_id, event._callback) == 0
             
         else:
             # TODO exception
@@ -61,5 +61,5 @@ class EventListener(metaclass=Singleton):
 
          
     def listen(self, frequency=100):
-        self._dispatch_handler.listen(1000/frequency)
+        self._dispatch_handler.listen(int(1000 / frequency))
 

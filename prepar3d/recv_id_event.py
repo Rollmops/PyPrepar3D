@@ -8,7 +8,7 @@ class RecvIdEvent(BaseEvent):
         self._recv_id = recv_id
         super(RecvIdEvent, self).__init__(callback, register, at_sim_start)
     
-    def event(self, event, data, context):
+    def event(self, event, data):
         pass
     
     def set_priority(self, priority):

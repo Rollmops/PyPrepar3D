@@ -34,7 +34,7 @@ class BaseEvent(object):
         return
 
     @abc.abstractmethod
-    def event(self, event, data, context):
+    def event(self, event, data):
         return
         
     def get_priority(self):

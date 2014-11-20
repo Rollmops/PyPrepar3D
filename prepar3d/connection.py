@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from prepar3d import Prepar3dException
 from prepar3d._internal.simconnect import SIMCONNECT_RECV_ID
 from prepar3d._internal.simconnect import SimConnect_Close, SimConnect_Open
@@ -37,6 +38,7 @@ class Connection(metaclass=Singleton):
         self._handle = None
         self._name = None
         
+        
     def open(self, name, window_handle=None, user_event_win32=0, event_handle=None, config_index=0, auto_close=True):
         self._name = name
         (result, self._handle) = SimConnect_Open(self._name, window_handle, user_event_win32, event_handle, config_index)
@@ -48,8 +50,7 @@ class Connection(metaclass=Singleton):
         if auto_close:        
             RecvIdEvent(SIMCONNECT_RECV_ID.SIMCONNECT_RECV_ID_QUIT, self.close)
         
-    def close(self, _, __, ___):
-        print('Received close!')
+    def close(self, _=None, __=None, ___=None):
         if self._connected and self._handle is not None:
             result = SimConnect_Close(self._handle)
             if result == 0:
@@ -58,6 +59,8 @@ class Connection(metaclass=Singleton):
                 raise CloseConnectionException(self.name, result)
         return
     
+    def is_open(self):
+        return self._connected 
     
     def __del__(self):
         self.close()

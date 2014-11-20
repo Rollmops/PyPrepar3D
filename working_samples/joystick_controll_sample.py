@@ -20,7 +20,7 @@ class ControlRotation(prepar3d.InputEvent):
         super(ControlRotation, self).__init__('z')
         self.events = deque(events)    
 
-    def event(self, event, data, context):
+    def event(self, event, data):
         # sort of tricky approach to loop through joystick events and enable only one with each iteration
         self.events.rotate()
         [e[1].set_enabled(e[0] == 0) for e in enumerate(self.events)]
@@ -38,11 +38,11 @@ if __name__ == '__main__':
     
     print('Connected to Prepar3d!')
     
-    joystickEvents = [prepar3d.InputEvent('joystick:0:slider', callback=lambda e, d, c: print('slider: %d' % e.dwData), enabled=False),
-                      prepar3d.InputEvent('joystick:0:XAxis', callback=lambda e, d, c: print('XAxis: %d' % e.dwData), enabled=False),
-                      prepar3d.InputEvent('joystick:0:YAxis', callback=lambda e, d, c: print('YAxis: %d' % e.dwData), enabled=False),
-                      prepar3d.InputEvent('joystick:0:RzAxis', callback=lambda e, d, c: print('RzAxis: %d' % e.dwData), enabled=False),
-                      prepar3d.InputEvent('joystick:0:POV', callback=lambda e, d, c: print('POV: %d' % e.dwData), enabled=False)
+    joystickEvents = [prepar3d.InputEvent('joystick:0:slider', callback=lambda e, d: print('slider: %d' % e.dwData), enabled=False),
+                      prepar3d.InputEvent('joystick:0:XAxis', callback=lambda e, d: print('XAxis: %d' % e.dwData), enabled=False),
+                      prepar3d.InputEvent('joystick:0:YAxis', callback=lambda e, d: print('YAxis: %d' % e.dwData), enabled=False),
+                      prepar3d.InputEvent('joystick:0:RzAxis', callback=lambda e, d: print('RzAxis: %d' % e.dwData), enabled=False),
+                      prepar3d.InputEvent('joystick:0:POV', callback=lambda e, d: print('POV: %d' % e.dwData), enabled=False)
                       ]
     
     ControlRotation(joystickEvents) 

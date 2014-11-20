@@ -1,8 +1,10 @@
 import json
-import urllib2
+import codecs
+from urllib import request
 
 
 def get_json_from_url(url):
-    req = urllib2.Request(url)
-    opener = urllib2.build_opener()
-    return json.load(opener.open(req))
+    req = request.Request(url)
+    opener = request.build_opener()
+    reader = codecs.getreader("utf-8")
+    return json.load(reader(opener.open(req)))

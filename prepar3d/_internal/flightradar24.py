@@ -1,4 +1,4 @@
-import urlparse
+from urllib.parse import urlparse, urljoin
 
 from prepar3d._internal.util import get_json_from_url
 
@@ -14,7 +14,7 @@ class Flightradar24:
 
     def refresh_best_server(self):
             self.url_balance = "balance.json"
-            all_servers = get_json_from_url(urlparse.urljoin(self.url_base, self.url_balance))
+            all_servers = get_json_from_url(urljoin(self.url_base, self.url_balance))
             self.server = min(all_servers, key=all_servers.get)
 
     def refresh_data(self, server=None, zone="full"):
@@ -22,12 +22,12 @@ class Flightradar24:
             self.refresh_best_server()
         else:
             self.server = server
-        self.airports = get_json_from_url(urlparse.urljoin(self.url_base, "_json/airports.php"))["rows"]
-        self.airlines = get_json_from_url(urlparse.urljoin(self.url_base, "_json/airlines.php"))["rows"]
-        self.zones = get_json_from_url(urlparse.urljoin(self.url_base, "js/zones.js.php"))
+        self.airports = get_json_from_url(urljoin(self.url_base, "_json/airports.php"))["rows"]
+        self.airlines = get_json_from_url(urljoin(self.url_base, "_json/airlines.php"))["rows"]
+        self.zones = get_json_from_url(urljoin(self.url_base, "js/zones.js.php"))
 
         self.refresh_aircrafts(zone=zone)
 
     def refresh_aircrafts(self, zone="full"):
-        url = urlparse.urljoin("http://" + self.server, "zones/%s_all.json" % zone)
+        url = urljoin("http://" + self.server, "zones/%s_all.json" % zone)
         self.aircrafts = get_json_from_url(url)

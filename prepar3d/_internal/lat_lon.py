@@ -1,10 +1,11 @@
 import re
 from math import radians, cos, sin, asin, sqrt
+from prepar3d._internal.earth_properties import EARTH_SEMI_MAJOR_RADIUS_IN_METERS,\
+    EARTH_SEMI_MINOR_RADIUS_IN_METERS
 
 class LatLon(object):
     
     _MULTIPLICATOR = {'N':1, 'S':-1, 'W':-1, 'E':1}
-    _RADIUS_EARTH = 6371
 
     # N37 36' 26.00"
     _DEG_MIN_SEC_LAT_REGEX = re.compile(r'^(N|S)(\d+)\s+(\d+).\s+(\d{1,2}\.\d+).\s*$', re.IGNORECASE)
@@ -37,9 +38,9 @@ class LatLon(object):
         
         a = sin(dlat/2)**2 + cos(self._lat_rad) * cos(other._lat_rad) * sin(dlon/2)**2
         c = 2 * asin(sqrt(a)) 
-
-        # 6367 km is the radius of the Earth
-        km = LatLon._RADIUS_EARTH * c
+        
+        print(c)
+        km = EARTH_SEMI_MINOR_RADIUS_IN_METERS * c
         return abs(km)
     
     def move(self, meters, heading):

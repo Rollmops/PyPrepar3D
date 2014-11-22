@@ -11,6 +11,8 @@
 #include "common.hpp"
 #include <vector>
 #include <map>
+#include <utility>
+#include "recv_type_converter.hpp"
 
 namespace prepar3d
 {
@@ -19,7 +21,8 @@ namespace simconnect
 class DispatchHandler
 {
 public:
-	typedef std::map<DWORD, object> EventIDCallbackType;
+	typedef std::pair<object, RecvTypeConverter::ConvertFunctionType> EventCallbackConverterType;
+	typedef std::map<int, EventCallbackConverterType > EventIDCallbackType;
 	typedef std::map<DWORD, EventIDCallbackType> EventMapType;
 
 	DispatchHandler(PyObject *handle);
@@ -28,10 +31,13 @@ public:
 	HRESULT subscribeInputEvent(const char *inputTrigger, object callable, const int &id, const SIMCONNECT_STATE &state, const DWORD &priority, const char *simEvent);
 	void subscribeRecvIDEvent(const DWORD &recvID, object callable);
 
+	HRESULT subscribeDataEvent(list data_fields, const int &id, object callable);
+
 	void listen(const DWORD &sleepTime);
 
 	EventMapType eventMap;
 	EventIDCallbackType recvIdMap;
+	EventIDCallbackType dataEventMap;
 
 	boost::shared_ptr<PyObject> getHandle() const
 	{

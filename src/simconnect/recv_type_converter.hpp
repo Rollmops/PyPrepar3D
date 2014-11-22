@@ -19,9 +19,9 @@ namespace simconnect
 {
 class RecvTypeConverter
 {
-	typedef boost::function<object(SIMCONNECT_RECV*)> FunctionType;
-public:
 
+public:
+	typedef boost::function<object(SIMCONNECT_RECV*)> ConvertFunctionType;
 	RecvTypeConverter()
 	{
 		init();
@@ -29,14 +29,14 @@ public:
 
 	object operator()(SIMCONNECT_RECV *recv) const;
 
-	const FunctionType &getConverterForID(const SIMCONNECT_RECV_ID &id) const
+	const ConvertFunctionType &getConverterForID(const SIMCONNECT_RECV_ID &id) const
 	{
 		return _functionMap.at(id);
 	}
 private:
 	void init();
 
-	std::map<SIMCONNECT_RECV_ID, FunctionType> _functionMap;
+	std::map<SIMCONNECT_RECV_ID, ConvertFunctionType> _functionMap;
 
 };
 namespace _internal

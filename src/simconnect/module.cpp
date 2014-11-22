@@ -22,6 +22,7 @@ BOOST_PYTHON_MODULE(simconnect)
 			.def("subscribeSystemEvent", &prepar3d::simconnect::DispatchHandler::subscribeSystemEvent)
 			.def("subscribeInputEvent", &prepar3d::simconnect::DispatchHandler::subscribeInputEvent)
 			.def("subscribeRecvIDEvent", &prepar3d::simconnect::DispatchHandler::subscribeRecvIDEvent)
+			.def("subscribeDataEvent", &prepar3d::simconnect::DispatchHandler::subscribeDataEvent)
 			.def("listen", &prepar3d::simconnect::DispatchHandler::listen, ( arg ( "frequency" ) ) )
 			;
 

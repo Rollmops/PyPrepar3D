@@ -26,6 +26,8 @@ simconnect_module = Extension('prepar3d._internal.simconnect',
                                          'SimConnect', 'Ole32', 'odbccp32', 'shell32', 'user32', 'AdvAPI32' ],
                               extra_compile_args=['/EHsc']
                               )
+
+
 if __name__ == '__main__':
     setup(name='prepar3d',
           version='0.1.0',

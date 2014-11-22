@@ -8,6 +8,7 @@
 #include "dispatch_handler.hpp"
 
 #include "recv_type_converter.hpp"
+#include "data_type_converter.hpp"
 
 #include <boost/python/stl_iterator.hpp>
 
@@ -38,13 +39,28 @@ void CALLBACK __dispatchCallback__(SIMCONNECT_RECV* pData, DWORD cbData, void *p
 		callbackConverter.first(callbackConverter.second(pData), cbData/*, handle<>(PyCapsule_New(pContext, NULL, NULL))*/);
 	}
 
-//	if (pData->dwID == SIMCONNECT_RECV_ID_SIMOBJECT_DATA_BYTYPE)
-//	{
-//		const SIMCONNECT_RECV_SIMOBJECT_DATA_BYTYPE *pObjData = (const SIMCONNECT_RECV_SIMOBJECT_DATA_BYTYPE *) pData;
-//
-//		const object &callback = __listener__->dataEventMap.at(pObjData->dwRequestID);
-//
-//	}
+	if (pData->dwID == SIMCONNECT_RECV_ID_SIMOBJECT_DATA_BYTYPE)
+	{
+
+		const SIMCONNECT_RECV_SIMOBJECT_DATA_BYTYPE *pObjData = (const SIMCONNECT_RECV_SIMOBJECT_DATA_BYTYPE *) pData;
+		const DispatchHandler::DataEventObjectStructureInfoType &callbackDataTypeList = __listener__->dataEventMap.at(
+				pObjData->dwRequestID);
+		const object &callback = callbackDataTypeList.first;
+		const DispatchHandler::DataEventStructureInfoType &structureInfo = callbackDataTypeList.second;
+
+		assert(structureInfo.size() == pObjData->dwDefineCount);
+		size_t pos = 0;
+		// test
+		boost::python::dict structure;
+		for (DispatchHandler::DataEventStructureInfoType::const_iterator iter = structureInfo.begin(); iter != structureInfo.end(); ++iter)
+		{
+			structure[iter->first]
+					  = iter->second((void*)&((&pObjData->dwData)[pos]));
+			pos += sizeof(double);
+		}
+		callback(structure);
+
+	}
 }
 } // end namepsace _internal
 
@@ -104,29 +120,32 @@ void DispatchHandler::subscribeRecvIDEvent(const DWORD &recvID, object callable)
 
 HRESULT DispatchHandler::subscribeDataEvent(list data_fields, const int &id, object callable)
 {
-//	const boost::python::ssize_t n = boost::python::len(data_fields);
-//	const HANDLE handle = PyCapsule_GetPointer(_handle.get(), NULL);
-//
-//	char *dataName;
-//	char *unitsName;
-//	SIMCONNECT_DATATYPE dataType;
-//	for (boost::python::ssize_t i = 0; i < n; ++i)
-//	{
-//		boost::python::tuple elem = extract<tuple>(data_fields[i]);
-//		const boost::python::ssize_t length = boost::python::len(elem);
-//		assert(length >= 2);
-//		dataName = extract<char *>(elem[0]);
-//		unitsName = extract<char *>(elem[1]);
-//		dataType = SIMCONNECT_DATATYPE_FLOAT64;
-//		if (boost::python::len(elem) == 3)
-//		{
-//			dataType = extract<SIMCONNECT_DATATYPE>(elem[3]);
-//		}
-//		SimConnect_AddToDataDefinition(handle, 0, dataName, strlen(unitsName) == 0 ? NULL : unitsName, dataType);
-//	}
-//
-//	SimConnect_RequestDataOnSimObjectType(handle, id, 0, 0, SIMCONNECT_SIMOBJECT_TYPE_USER);
-//	dataEventMap[id] = callable;
+	const boost::python::ssize_t n = boost::python::len(data_fields);
+	const HANDLE handle = PyCapsule_GetPointer(_handle.get(), NULL);
+
+	char *dataName;
+	char *unitsName;
+	SIMCONNECT_DATATYPE dataType;
+	DataEventStructureInfoType dataTypeList;
+
+	for (boost::python::ssize_t i = 0; i < n; ++i)
+	{
+		boost::python::tuple elem = extract<tuple>(data_fields[i]);
+		const boost::python::ssize_t length = boost::python::len(elem);
+		assert(length >= 2);
+		dataName = extract<char *>(elem[0]);
+		unitsName = extract<char *>(elem[1]);
+		dataType = SIMCONNECT_DATATYPE_FLOAT64;
+		if (boost::python::len(elem) == 3)
+		{
+			dataType = extract<SIMCONNECT_DATATYPE>(elem[3]);
+		}
+		dataTypeList.push_back(std::make_pair(std::string(dataName), util::Singletons::get<DataTypeConverter, 1>().getConverter(dataType)));
+		SimConnect_AddToDataDefinition(handle, 0, dataName, strlen(unitsName) == 0 ? NULL : unitsName, dataType);
+	}
+
+	SimConnect_RequestDataOnSimObjectType(handle, id, 0, 0, SIMCONNECT_SIMOBJECT_TYPE_USER);
+	dataEventMap[id] = std::make_pair(callable, dataTypeList);
 	return S_OK;
 }
 

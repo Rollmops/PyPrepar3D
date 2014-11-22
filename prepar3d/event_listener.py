@@ -63,6 +63,6 @@ class EventListener(metaclass=Singleton):
             return self._register_event(event)
 
          
-    def listen(self, frequency=100):
-        self._dispatch_handler.listen(int(1000 / frequency))
+    def listen(self, period=100):
+        self._dispatch_handler.listen(period)
 

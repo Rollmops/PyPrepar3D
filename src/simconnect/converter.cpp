@@ -9,6 +9,7 @@ namespace converter
 
 void initializeConverters()
 {
+	to_python_converter<double, prepar3d::simconnect::converter::FROM_DOUBLE>();
 	to_python_converter<DWORD, prepar3d::simconnect::converter::FROM_DWORD>();
 	to_python_converter<char, prepar3d::simconnect::converter::FROM_CHAR>();
 	to_python_converter<unsigned char[8], prepar3d::simconnect::converter::FROM_TYPE_ARRAY<unsigned char, 8> >();

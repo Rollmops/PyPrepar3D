@@ -19,6 +19,14 @@ struct FROM_BOOST_SHARED_PTR
 	}
 };
 
+struct FROM_DOUBLE
+{
+	static PyObject *convert(const double &value)
+	{
+		return PyFloat_FromDouble(value);
+	}
+};
+
 struct FROM_DWORD
 {
 	static PyObject *convert(const DWORD &value)

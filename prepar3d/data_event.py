@@ -9,6 +9,7 @@ class DataEvent:
         self._data_fields = data_fields
         self._callback = self.event if callback is None else callback
         self._id = Id().get('DataEventID')
+        self._at_sim_start = False
         
         prepar3d.EventListener().register_event(self)
         

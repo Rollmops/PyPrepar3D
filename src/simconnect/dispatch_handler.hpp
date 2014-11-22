@@ -11,8 +11,10 @@
 #include "common.hpp"
 #include <vector>
 #include <map>
+#include <list>
 #include <utility>
 #include "recv_type_converter.hpp"
+#include "data_type_converter.hpp"
 
 namespace prepar3d
 {
@@ -20,15 +22,22 @@ namespace simconnect
 {
 class DispatchHandler
 {
+
 public:
-	typedef std::pair<object, RecvTypeConverter::ConvertFunctionType> EventCallbackConverterType;
-	typedef std::map<int, EventCallbackConverterType > EventIDCallbackType;
+	typedef std::pair<boost::python::object, RecvTypeConverter::ConvertFunctionType> EventCallbackConverterType;
+	typedef std::map<int, EventCallbackConverterType> EventIDCallbackType;
 	typedef std::map<DWORD, EventIDCallbackType> EventMapType;
+
+	// DataEvent specific
+	typedef std::list<std::pair<std::string, DataTypeConverter::FunctionType> > DataEventStructureInfoType;
+	typedef std::pair<boost::python::object, DataEventStructureInfoType> DataEventObjectStructureInfoType;
+	typedef std::map<int, DataEventObjectStructureInfoType> DataEventCallbackMap;
 
 	DispatchHandler(PyObject *handle);
 
 	HRESULT subscribeSystemEvent(const char *eventName, const DWORD &recvID, object callable, const int &id, const SIMCONNECT_STATE &state);
-	HRESULT subscribeInputEvent(const char *inputTrigger, object callable, const int &id, const SIMCONNECT_STATE &state, const DWORD &priority, const char *simEvent);
+	HRESULT subscribeInputEvent(const char *inputTrigger, object callable, const int &id, const SIMCONNECT_STATE &state,
+			const DWORD &priority, const char *simEvent);
 	void subscribeRecvIDEvent(const DWORD &recvID, object callable);
 
 	HRESULT subscribeDataEvent(list data_fields, const int &id, object callable);
@@ -37,7 +46,7 @@ public:
 
 	EventMapType eventMap;
 	EventIDCallbackType recvIdMap;
-	EventIDCallbackType dataEventMap;
+	DataEventCallbackMap dataEventMap;
 
 	boost::shared_ptr<PyObject> getHandle() const
 	{

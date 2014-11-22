@@ -47,7 +47,7 @@ if __name__ == '__main__':
     
     ControlRotation(joystickEvents) 
     
-    prepar3d.EventListener().listen(frequency=100)
+    prepar3d.EventListener().listen(period=10)
     
     
     

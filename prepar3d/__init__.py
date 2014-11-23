@@ -11,7 +11,7 @@ from prepar3d.connection import Connection, ConnectionException, OpenConnectionE
 from prepar3d.input_event import InputEvent
 from prepar3d.recv_id_event import RecvIdEvent
 from prepar3d.system_event import SystemEvent
-from prepar3d.data_event import DataEvent
+from prepar3d.data_event import SimulationVariable, DataEvent
 from prepar3d.event_listener import EventListener
 
 import prepar3d.planning

@@ -1,7 +1,5 @@
 #include "wrapper.hpp"
 
-#include "dispatch_receiver.hpp"
-
 namespace prepar3d
 {
 namespace simconnect
@@ -32,7 +30,8 @@ HRESULT addToClientDataDefinition(PyObject *handle, SIMCONNECT_CLIENT_DATA_DEFIN
 HRESULT addToDataDefinition(PyObject *hSimConnect, SIMCONNECT_DATA_DEFINITION_ID DefineID, const char* DatumName, const char* UnitsName,
 		SIMCONNECT_DATATYPE DatumType, float fEpsilon, DWORD DatumID)
 {
-	return SimConnect_AddToDataDefinition(PyCapsule_GetPointer(hSimConnect, NULL), DefineID, DatumName, UnitsName, DatumType, fEpsilon, DatumID);
+	return SimConnect_AddToDataDefinition(PyCapsule_GetPointer(hSimConnect, NULL), DefineID, DatumName, UnitsName, DatumType, fEpsilon,
+			DatumID);
 }
 
 HRESULT changeVehicle(PyObject* handle, const char *vehicleTitle)
@@ -116,12 +115,6 @@ tuple getLastSentPacketID(PyObject *handle)
 	HRESULT result = SimConnect_GetLastSentPacketID(PyCapsule_GetPointer(handle, NULL), &id);
 	return make_tuple(result, id);
 }
-
-//tuple getNextDispatch(PyObject *handle)
-//{
-//	DispatchReceiver &receiver = util::Singletons::get<DispatchReceiver, 1>();
-//	return receiver.getNextDispatchForHandle(handle);
-//}
 
 tuple open(PCSTR szName, HWND hWnd, DWORD UserEventWin32, HANDLE hEventHandle, DWORD ConfigIndex)
 {

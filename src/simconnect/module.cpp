@@ -1,7 +1,6 @@
 #include "wrapper.hpp"
 #include "converter.hpp"
 #include "dispatch_handler.hpp"
-#include "dispatch_receiver.hpp"
 
 BOOST_PYTHON_MODULE(simconnect)
 {
@@ -13,10 +12,6 @@ BOOST_PYTHON_MODULE(simconnect)
 //#######################################################################################
 // advanced classes
 //#######################################################################################
-
-	class_<prepar3d::simconnect::DispatchReceiver>("DispatchReceiver", init<PyObject*>()).def("registerID",
-			&prepar3d::simconnect::DispatchReceiver::registerID).def("getNextDispatch",
-			&prepar3d::simconnect::DispatchReceiver::getNextDispatch);
 
 	class_<prepar3d::simconnect::DispatchHandler>("DispatchHandler", init<PyObject*>())
 			.def("subscribeSystemEvent", &prepar3d::simconnect::DispatchHandler::subscribeSystemEvent)
@@ -42,7 +37,6 @@ BOOST_PYTHON_MODULE(simconnect)
 	def("SimConnect_FlightLoad", prepar3d::simconnect::wrapper::flightLoad);
 	def("SimConnect_FlightPlanLoad", prepar3d::simconnect::wrapper::flightPlanLoad);
 	def("SimConnect_GetLastSentPacketID", prepar3d::simconnect::wrapper::getLastSentPacketID);
-//	def("SimConnect_GetNextDispatch", prepar3d::simconnect::wrapper::getNextDispatch);
 
 	def("SimConnect_Open", prepar3d::simconnect::wrapper::open);
 

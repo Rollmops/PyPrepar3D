@@ -29,8 +29,8 @@ public:
 	typedef std::map<DWORD, EventIDCallbackType> EventMapType;
 
 	// DataEvent specific
-	typedef std::list<std::pair<std::string, DataTypeConverter::FunctionType> > DataEventStructureInfoType;
-	typedef std::pair<boost::python::object, DataEventStructureInfoType> DataEventObjectStructureInfoType;
+	typedef std::list<std::pair<std::string, DataTypeConverter::SizeFunctionType> > DataEventStructureInfoType;
+	typedef boost::tuple<boost::python::object, DataEventStructureInfoType, boost::shared_ptr<boost::python::dict> > DataEventObjectStructureInfoType;
 	typedef std::map<int, DataEventObjectStructureInfoType> DataEventCallbackMap;
 
 	DispatchHandler(PyObject *handle);
@@ -40,7 +40,7 @@ public:
 			const DWORD &priority, const char *simEvent);
 	void subscribeRecvIDEvent(const DWORD &recvID, object callable);
 
-	HRESULT subscribeDataEvent(list data_fields, const int &id, object callable);
+	HRESULT subscribeDataEvent(list data_fields, const int &id, object callable, const SIMCONNECT_PERIOD &period, const DWORD &flag);
 
 	void listen(const DWORD &sleepTime);
 

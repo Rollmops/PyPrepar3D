@@ -18,13 +18,17 @@ namespace simconnect
 {
 namespace _internal
 {
-static DispatchHandler *__listener__;
+struct DummyObject
+{
+};
+
+DispatchHandler *__dispatchHandler__;
 
 void CALLBACK __dispatchCallback__(SIMCONNECT_RECV* pData, DWORD cbData, void *pContext)
 {
 	// handle all system events and input events
-	DispatchHandler::EventMapType::const_iterator iter = __listener__->eventMap.find(static_cast<DWORD>(pData->dwID));
-	if (iter != __listener__->eventMap.end())
+	DispatchHandler::EventMapType::const_iterator iter = __dispatchHandler__->eventMap.find(static_cast<DWORD>(pData->dwID));
+	if (iter != __dispatchHandler__->eventMap.end())
 	{
 		const DispatchHandler::EventCallbackConverterType &callbackConverter = iter->second.at(
 				((SIMCONNECT_RECV_EVENT_BASE*) pData)->uEventID);
@@ -32,42 +36,39 @@ void CALLBACK __dispatchCallback__(SIMCONNECT_RECV* pData, DWORD cbData, void *p
 	}
 
 	// handle all the RecvID events such as Exception Event
-	DispatchHandler::EventIDCallbackType::const_iterator cb = __listener__->recvIdMap.find(static_cast<SIMCONNECT_RECV_ID>(pData->dwID));
-	if (cb != __listener__->recvIdMap.end())
+	DispatchHandler::EventIDCallbackType::const_iterator cb = __dispatchHandler__->recvIdMap.find(
+			static_cast<SIMCONNECT_RECV_ID>(pData->dwID));
+	if (cb != __dispatchHandler__->recvIdMap.end())
 	{
 		const DispatchHandler::EventCallbackConverterType &callbackConverter = cb->second;
 		callbackConverter.first(callbackConverter.second(pData), cbData/*, handle<>(PyCapsule_New(pContext, NULL, NULL))*/);
 	}
 
-	if (pData->dwID == SIMCONNECT_RECV_ID_SIMOBJECT_DATA_BYTYPE)
+	if (pData->dwID == SIMCONNECT_RECV_ID_SIMOBJECT_DATA)
 	{
-
-		const SIMCONNECT_RECV_SIMOBJECT_DATA_BYTYPE *pObjData = (const SIMCONNECT_RECV_SIMOBJECT_DATA_BYTYPE *) pData;
-		const DispatchHandler::DataEventObjectStructureInfoType &callbackDataTypeList = __listener__->dataEventMap.at(
+		const SIMCONNECT_RECV_SIMOBJECT_DATA *pObjData = (const SIMCONNECT_RECV_SIMOBJECT_DATA *) pData;
+		const DispatchHandler::DataEventObjectStructureInfoType &callbackDataTypeList = __dispatchHandler__->dataEventMap.at(
 				pObjData->dwRequestID);
-		const object &callback = callbackDataTypeList.first;
-		const DispatchHandler::DataEventStructureInfoType &structureInfo = callbackDataTypeList.second;
-
-		assert(structureInfo.size() == pObjData->dwDefineCount);
+		const DispatchHandler::DataEventStructureInfoType &structureInfo = callbackDataTypeList.get<1>();
 		size_t pos = 0;
-		// test
-		boost::python::dict structure;
+		boost::python::dict *dataStructure = callbackDataTypeList.get<2>().get();
 		for (DispatchHandler::DataEventStructureInfoType::const_iterator iter = structureInfo.begin(); iter != structureInfo.end(); ++iter)
 		{
-			structure[iter->first]
-					  = iter->second((void*)&((&pObjData->dwData)[pos]));
-			pos += sizeof(double);
-		}
-		callback(structure);
+			const DataTypeConverter::SizeFunctionType &sizeConverter = iter->second;
+			dataStructure->operator [](iter->first.c_str()) = sizeConverter.second((void*) &((&pObjData->dwData)[pos]));
+			pos += sizeConverter.first;
 
+		}
+		callbackDataTypeList.get<0>()(*dataStructure);
 	}
 }
-} // end namepsace _internal
+
+} // end namespace _internal
 
 DispatchHandler::DispatchHandler(PyObject *handle) :
 		_handle(boost::shared_ptr<PyObject>(handle))
 {
-	_internal::__listener__ = this;
+	_internal::__dispatchHandler__ = this;
 }
 
 HRESULT DispatchHandler::subscribeSystemEvent(const char *eventName, const DWORD &recvID, object callable, const int &id,
@@ -93,7 +94,7 @@ HRESULT DispatchHandler::subscribeInputEvent(const char *inputTrigger, object ca
 	HANDLE handle = PyCapsule_GetPointer(_handle.get(), NULL);
 	const HRESULT hr1 = SimConnect_MapClientEventToSimEvent(handle, id, simEvent);
 
-	// we are using 0 for the init group
+// we are using 0 for the init group
 	const HRESULT hr2 = SimConnect_AddClientEventToNotificationGroup(handle, 0, id);
 	const HRESULT hr3 = SimConnect_SetNotificationGroupPriority(handle, 0, priority);
 
@@ -118,35 +119,34 @@ void DispatchHandler::subscribeRecvIDEvent(const DWORD &recvID, object callable)
 			util::Singletons::get<RecvTypeConverter, 1>().getConverterForID(static_cast<SIMCONNECT_RECV_ID>(recvID)));
 }
 
-HRESULT DispatchHandler::subscribeDataEvent(list data_fields, const int &id, object callable)
+HRESULT DispatchHandler::subscribeDataEvent(list simulation_varaibles, const int &id, object callable, const SIMCONNECT_PERIOD &period,
+		const DWORD &flag)
 {
-	const boost::python::ssize_t n = boost::python::len(data_fields);
+	const boost::python::ssize_t n = boost::python::len(simulation_varaibles);
 	const HANDLE handle = PyCapsule_GetPointer(_handle.get(), NULL);
 
-	char *dataName;
-	char *unitsName;
-	SIMCONNECT_DATATYPE dataType;
 	DataEventStructureInfoType dataTypeList;
-
+	HRESULT ret = S_OK;
 	for (boost::python::ssize_t i = 0; i < n; ++i)
 	{
-		boost::python::tuple elem = extract<tuple>(data_fields[i]);
-		const boost::python::ssize_t length = boost::python::len(elem);
-		assert(length >= 2);
-		dataName = extract<char *>(elem[0]);
-		unitsName = extract<char *>(elem[1]);
-		dataType = SIMCONNECT_DATATYPE_FLOAT64;
-		if (boost::python::len(elem) == 3)
-		{
-			dataType = extract<SIMCONNECT_DATATYPE>(elem[3]);
-		}
-		dataTypeList.push_back(std::make_pair(std::string(dataName), util::Singletons::get<DataTypeConverter, 1>().getConverter(dataType)));
-		SimConnect_AddToDataDefinition(handle, 0, dataName, strlen(unitsName) == 0 ? NULL : unitsName, dataType);
+		boost::python::object simulation_variable = extract<object>(simulation_varaibles[i]);
+
+		const char * dataName = extract<const char *>(simulation_variable.attr("_name"));
+		const char * dataUnit = extract<const char *>(simulation_variable.attr("_unit"));
+		const char * attribute = extract<const char *>(simulation_variable.attr("_key"));
+		const SIMCONNECT_DATATYPE &dataType = extract<SIMCONNECT_DATATYPE>(simulation_variable.attr("_data_type"));
+
+		const DataTypeConverter::SizeFunctionType &sizeFunction = util::Singletons::get<DataTypeConverter, 1>().getConverter(dataType);
+		dataTypeList.push_back(std::make_pair(std::string(attribute), sizeFunction));
+		ret = ret || SimConnect_AddToDataDefinition(handle, id, dataName, strlen(dataUnit) > 0 ? dataUnit : NULL, dataType);
 	}
 
-	SimConnect_RequestDataOnSimObjectType(handle, id, 0, 0, SIMCONNECT_SIMOBJECT_TYPE_USER);
-	dataEventMap[id] = std::make_pair(callable, dataTypeList);
-	return S_OK;
+	ret = ret || SimConnect_RequestDataOnSimObject(handle, id, id, SIMCONNECT_OBJECT_ID_USER, period, flag);
+	if (ret == S_OK)
+	{
+		dataEventMap[id] = boost::make_tuple(callable, dataTypeList, boost::shared_ptr<boost::python::dict>(new boost::python::dict()));
+	}
+	return ret;
 }
 
 void DispatchHandler::listen(const DWORD &sleepTime)

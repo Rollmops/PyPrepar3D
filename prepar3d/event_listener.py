@@ -1,7 +1,7 @@
 import abc
 import threading
 
-from prepar3d._internal.simconnect import DispatchHandler
+from prepar3d._internal.simconnect import DispatchHandler, SIMCONNECT_PERIOD 
 from prepar3d._internal.singleton import Singleton
 from prepar3d.connection import Connection
 from prepar3d.input_event import InputEvent
@@ -37,7 +37,7 @@ class EventListener(metaclass=Singleton):
             return self._dispatch_handler.subscribeRecvIDEvent(event._recv_id, event._callback) == 0
             
         elif isinstance(event, DataEvent):
-            return self._dispatch_handler.subscribeDataEvent(event._data_fields, event._id, event._callback)
+            return self._dispatch_handler.subscribeDataEvent(event._variables, event._id, event._callback, event._period, event._flag )
         else:
             # TODO exception
             pass

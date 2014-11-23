@@ -27,6 +27,22 @@ struct FROM_DOUBLE
 	}
 };
 
+struct FROM_FLOAT
+{
+	static PyObject *convert(const float &value)
+	{
+		return PyFloat_FromDouble(value);
+	}
+};
+
+struct FROM_INT32
+{
+	static PyObject *convert(const int32_t &value) {
+		return PyLong_FromLong(value);
+	}
+};
+
+
 struct FROM_DWORD
 {
 	static PyObject *convert(const DWORD &value)
@@ -39,7 +55,16 @@ struct FROM_CHAR
 {
 	static PyObject *convert(const char &value)
 	{
+		std::cout << "FROM_CHAR: " << value << std::endl;
 		return boost::python::incref(boost::python::object(value).ptr());
+	}
+};
+
+struct FROM_CHAR_PTR
+{
+	static PyObject *convert( char * const & value)
+	{
+		return PyBytes_FromString(value);
 	}
 };
 

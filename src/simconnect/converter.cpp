@@ -10,8 +10,10 @@ namespace converter
 void initializeConverters()
 {
 	to_python_converter<double, prepar3d::simconnect::converter::FROM_DOUBLE>();
+	to_python_converter<float, prepar3d::simconnect::converter::FROM_FLOAT>();
 	to_python_converter<DWORD, prepar3d::simconnect::converter::FROM_DWORD>();
 	to_python_converter<char, prepar3d::simconnect::converter::FROM_CHAR>();
+	to_python_converter<int32_t, prepar3d::simconnect::converter::FROM_INT32>();
 	to_python_converter<unsigned char[8], prepar3d::simconnect::converter::FROM_TYPE_ARRAY<unsigned char, 8> >();
 	to_python_converter<boost::shared_ptr<PyObject>, prepar3d::simconnect::converter::FROM_BOOST_SHARED_PTR>();
 	to_python_converter<SIMCONNECT_DATA_GROUND_INFO[1], prepar3d::simconnect::converter::FROM_TYPE_ARRAY<SIMCONNECT_DATA_GROUND_INFO, 1> >();
@@ -32,6 +34,9 @@ void initializeConverters()
 	to_python_converter<char[1], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<1> >();
 	to_python_converter<char[MAX_PATH], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<MAX_PATH> >();
 	to_python_converter<char[256], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<256> >();
+	to_python_converter<char[32], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<32> >();
+	to_python_converter<char *, prepar3d::simconnect::converter::FROM_CHAR_PTR >();
+
 }
 
 }

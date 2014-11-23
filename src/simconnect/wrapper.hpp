@@ -36,6 +36,9 @@ HRESULT flightSave(PyObject *, const char*, const char*, const char*, DWORD);
 
 HRESULT mapInputEventToClientEvent(PyObject *, const int &eventGroup, const char *inputTrigger, const int &id);
 
+HRESULT requestDataOnSimObjectType(PyObject *, const SIMCONNECT_DATA_REQUEST_ID &id, const SIMCONNECT_DATA_DEFINITION_ID &dataDefinitionID,
+		const DWORD &radius, const SIMCONNECT_SIMOBJECT_TYPE &objetID);
+
 HRESULT setInputGroupState(PyObject *, const int &, const int &);
 HRESULT setInputGroupPriority(PyObject *, const int &, const DWORD &);
 

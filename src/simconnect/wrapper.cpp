@@ -89,6 +89,12 @@ HRESULT mapInputEventToClientEvent(PyObject *handle, const int &eventGroup, cons
 	return SimConnect_MapInputEventToClientEvent(PyCapsule_GetPointer(handle, NULL), eventGroup, inputTrigger, id);
 }
 
+HRESULT requestDataOnSimObjectType(PyObject *handle, const SIMCONNECT_DATA_REQUEST_ID &id,
+		const SIMCONNECT_DATA_DEFINITION_ID &dataDefinitionID, const DWORD &radius, const SIMCONNECT_SIMOBJECT_TYPE &objetID)
+{
+	return SimConnect_RequestDataOnSimObjectType(PyCapsule_GetPointer(handle, NULL), id, dataDefinitionID, radius, objetID);
+}
+
 HRESULT setInputGroupState(PyObject *handle, const int &id, const int &state)
 {
 	return SimConnect_SetInputGroupState(PyCapsule_GetPointer(handle, NULL), id, state);

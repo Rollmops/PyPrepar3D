@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include <boost/python.hpp>
+#include <boost/tuple/tuple.hpp>
 #include "capsulethunk.h"
 
 #include "SimConnect.h"

@@ -83,6 +83,7 @@ _SIMULATION_VARIABLES = WildCardDict({  'NUMBER OF ENGINES': _get_unit_type('num
                            'PLANE ALTITUDE': _get_unit_type('feet'),
                            'STRUCT SURFACE RELATIVE VELOCITY': ('', simconnect.SIMCONNECT_DATATYPE.SIMCONNECT_DATATYPE_XYZ),
                            'STRUCT WORLDVELOCITY': ('', simconnect.SIMCONNECT_DATATYPE.SIMCONNECT_DATATYPE_XYZ),
+                           'STRUCT LATLONALT': ('', simconnect.SIMCONNECT_DATATYPE.SIMCONNECT_DATATYPE_LATLONALT),
                            
                            # Aircraft Flight Instrumentation Data
                            'VERTICAL SPEED': _get_unit_type('feet per second'),

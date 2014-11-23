@@ -11,6 +11,7 @@
 #include "data_type_converter.hpp"
 
 #include <boost/python/stl_iterator.hpp>
+#include <boost/foreach.hpp>
 
 namespace prepar3d
 {
@@ -44,7 +45,7 @@ void CALLBACK __dispatchCallback__(SIMCONNECT_RECV* pData, DWORD cbData, void *p
 		callbackConverter.first(callbackConverter.second(pData), cbData/*, handle<>(PyCapsule_New(pContext, NULL, NULL))*/);
 	}
 
-	if (pData->dwID == SIMCONNECT_RECV_ID_SIMOBJECT_DATA)
+	if (pData->dwID == SIMCONNECT_RECV_ID_SIMOBJECT_DATA || pData->dwID == SIMCONNECT_RECV_ID_SIMOBJECT_DATA_BYTYPE)
 	{
 		const SIMCONNECT_RECV_SIMOBJECT_DATA *pObjData = (const SIMCONNECT_RECV_SIMOBJECT_DATA *) pData;
 		const DispatchHandler::DataEventObjectStructureInfoType &callbackDataTypeList = __dispatchHandler__->dataEventMap.at(
@@ -119,17 +120,24 @@ void DispatchHandler::subscribeRecvIDEvent(const DWORD &recvID, object callable)
 			util::Singletons::get<RecvTypeConverter, 1>().getConverterForID(static_cast<SIMCONNECT_RECV_ID>(recvID)));
 }
 
-HRESULT DispatchHandler::subscribeDataEvent(list simulation_varaibles, const int &id, object callable, const SIMCONNECT_PERIOD &period,
-		const DWORD &flag)
+HRESULT DispatchHandler::subscribeDataEvent(object event, const bool &radius)
 {
-	const boost::python::ssize_t n = boost::python::len(simulation_varaibles);
+	// retrieve data
+	const list simulation_variables = extract<list>(event.attr("_variables"));
+	const SIMCONNECT_DATA_REQUEST_ID id = extract<SIMCONNECT_DATA_REQUEST_ID>(event.attr("_id"));
+	const SIMCONNECT_DATA_DEFINITION_ID dataDefinitionID = extract<SIMCONNECT_DATA_DEFINITION_ID>(event.attr("_data_definition_id"));
+	const SIMCONNECT_PERIOD period = extract<SIMCONNECT_PERIOD>(event.attr("_period"));
+	const DWORD flags = extract<DWORD>(event.attr("_flags"));
+	object callback = extract<object>(event.attr("_callback"));
+
+	const boost::python::ssize_t n = boost::python::len(simulation_variables);
 	const HANDLE handle = PyCapsule_GetPointer(_handle.get(), NULL);
 
 	DataEventStructureInfoType dataTypeList;
 	HRESULT ret = S_OK;
 	for (boost::python::ssize_t i = 0; i < n; ++i)
 	{
-		boost::python::object simulation_variable = extract<object>(simulation_varaibles[i]);
+		boost::python::object simulation_variable = extract<object>(simulation_variables[i]);
 
 		const char * dataName = extract<const char *>(simulation_variable.attr("_name"));
 		const char * dataUnit = extract<const char *>(simulation_variable.attr("_unit"));
@@ -138,13 +146,27 @@ HRESULT DispatchHandler::subscribeDataEvent(list simulation_varaibles, const int
 
 		const DataTypeConverter::SizeFunctionType &sizeFunction = util::Singletons::get<DataTypeConverter, 1>().getConverter(dataType);
 		dataTypeList.push_back(std::make_pair(std::string(attribute), sizeFunction));
-		ret = ret || SimConnect_AddToDataDefinition(handle, id, dataName, strlen(dataUnit) > 0 ? dataUnit : NULL, dataType);
+		ret = ret
+				|| SimConnect_AddToDataDefinition(handle, dataDefinitionID, dataName, strlen(dataUnit) > 0 ? dataUnit : NULL, dataType,
+						extract<float>(simulation_variable.attr("_epsilon")), extract<int>(simulation_variable.attr("_id")));
 	}
-
-	ret = ret || SimConnect_RequestDataOnSimObject(handle, id, id, SIMCONNECT_OBJECT_ID_USER, period, flag);
+	if (radius == false)
+	{
+		ret = ret
+				|| SimConnect_RequestDataOnSimObject(handle, id, dataDefinitionID, extract<SIMCONNECT_OBJECT_ID>(event.attr("_object_id")),
+						period, flags);
+	}
+	else
+	{
+		SimConnect_RequestDataOnSimObjectType(handle, id, dataDefinitionID, extract<DWORD>(event.attr("_radius")),
+				extract<SIMCONNECT_SIMOBJECT_TYPE>(event.attr("_object_type")));
+		radiusDataEventList.push_back(
+				RadiusDataEventInfoType(id, dataDefinitionID, extract<DWORD>(event.attr("_radius")),
+						extract<SIMCONNECT_SIMOBJECT_TYPE>(event.attr("_object_type"))));
+	}
 	if (ret == S_OK)
 	{
-		dataEventMap[id] = boost::make_tuple(callable, dataTypeList, boost::shared_ptr<boost::python::dict>(new boost::python::dict()));
+		dataEventMap[id] = boost::make_tuple(callback, dataTypeList, boost::shared_ptr<boost::python::dict>(new boost::python::dict()));
 	}
 	return ret;
 }
@@ -152,9 +174,14 @@ HRESULT DispatchHandler::subscribeDataEvent(list simulation_varaibles, const int
 void DispatchHandler::listen(const DWORD &sleepTime)
 {
 	HRESULT res = S_OK;
+	const HANDLE handle = PyCapsule_GetPointer(_handle.get(), NULL);
 	while (res == S_OK)
 	{
-		res = SimConnect_CallDispatch(PyCapsule_GetPointer(_handle.get(), NULL), _internal::__dispatchCallback__, NULL);
+		BOOST_FOREACH( const DispatchHandler::RadiusDataEventInfoType &ref, radiusDataEventList)
+		{
+			SimConnect_RequestDataOnSimObjectType(handle, ref.get<0>(), ref.get<1>(), ref.get<2>(), ref.get<3>());
+		}
+		res = SimConnect_CallDispatch(handle, _internal::__dispatchCallback__, NULL);
 		Sleep(sleepTime);
 	}
 }

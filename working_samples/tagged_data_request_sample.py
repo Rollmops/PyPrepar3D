@@ -11,7 +11,8 @@ import prepar3d
 
 
 def data_callback(data):
-    print('received: ', (data['VERTICAL SPEED'] * 60))
+    latlonalt = data['STRUCT LATLONALT']
+    print('received: ', data['title'], latlonalt.Latitude, latlonalt.Longitude, latlonalt.Altitude)
     
 
 if __name__ == '__main__':
@@ -25,9 +26,9 @@ if __name__ == '__main__':
         
     print('Connected to Prepar3d!')
     
-    request_data = [prepar3d.SimulationVariable(variable) for variable in ['VERTICAL SPEED']]
+    request_data = [prepar3d.SimulationVariable(variable) for variable in ['title', 'STRUCT LATLONALT']]
     
-    prepar3d.DataEvent(request_data, callback=data_callback, at_sim_start=False)
+    prepar3d.RadiusDataEvent(request_data, radius=100, callback=data_callback, at_sim_start=False)
     
-    prepar3d.EventListener().listen()
+    prepar3d.EventListener().listen(period=1000)
       

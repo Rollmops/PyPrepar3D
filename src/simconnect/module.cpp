@@ -40,13 +40,12 @@ BOOST_PYTHON_MODULE(simconnect)
 
 	def("SimConnect_Open", prepar3d::simconnect::wrapper::open);
 
-
 	def("SimConnect_MapInputEventToClientEvent", prepar3d::simconnect::wrapper::mapInputEventToClientEvent);
 	def("SimConnect_SetInputGroupState", prepar3d::simconnect::wrapper::setInputGroupState);
 	def("SimConnect_SetInputGroupPriority", prepar3d::simconnect::wrapper::setInputGroupPriority);
 	def("SimConnect_SetNotificationGroupPriority", prepar3d::simconnect::wrapper::setNotificationGroupPriority);
 	def("SimConnect_SetSystemEventState", prepar3d::simconnect::wrapper::setSystemEventState);
-
+	def("SimConnect_RequestDataOnSimObjectType", prepar3d::simconnect::wrapper::requestDataOnSimObjectType);
 
 	def("SimConnect_CallDispatch", prepar3d::simconnect::wrapper::callDispatch);
 	def("SimConnect_SubscribeToSystemEvent", prepar3d::simconnect::wrapper::subscribeToSystemEvent);
@@ -265,7 +264,7 @@ BOOST_PYTHON_MODULE(simconnect)
 			"SIMCONNECT_SIMOBJECT_TYPE_AIRPLANE", SIMCONNECT_SIMOBJECT_TYPE_AIRPLANE).value("SIMCONNECT_SIMOBJECT_TYPE_HELICOPTER",
 			SIMCONNECT_SIMOBJECT_TYPE_HELICOPTER).value("SIMCONNECT_SIMOBJECT_TYPE_BOAT", SIMCONNECT_SIMOBJECT_TYPE_BOAT).value(
 			"SIMCONNECT_SIMOBJECT_TYPE_GROUND", SIMCONNECT_SIMOBJECT_TYPE_GROUND).value("SIMCONNECT_SIMOBJECT_TYPE_WEAPON",
-			SIMCONNECT_SIMOBJECT_TYPE_WEAPON);
+			SIMCONNECT_SIMOBJECT_TYPE_WEAPON).value("SIMCONNECT_SIMOBJECT_TYPE_AIRCRAFT", SIMCONNECT_SIMOBJECT_TYPE_AIRCRAFT);
 
 	boost::python::enum_<SIMCONNECT_STATE>("SIMCONNECT_STATE").value("SIMCONNECT_STATE_OFF", SIMCONNECT_STATE_OFF).value(
 			"SIMCONNECT_STATE_ON", SIMCONNECT_STATE_ON);

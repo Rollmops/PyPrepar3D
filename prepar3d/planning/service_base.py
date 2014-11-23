@@ -1,5 +1,6 @@
 import abc
 
+
 class ServiceBase(object):
     __metaclass__ = abc.ABCMeta
     

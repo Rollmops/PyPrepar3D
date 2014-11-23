@@ -1,7 +1,7 @@
-from prepar3d._internal.simconnect import SimConnect_AddToDataDefinition
-from prepar3d._internal.id import Id
-from prepar3d._internal import simconnect
 import prepar3d
+from prepar3d._internal import simconnect
+from prepar3d._internal.id import Id
+from prepar3d._internal.simconnect import SimConnect_AddToDataDefinition
 from prepar3d._internal.simulation_variables import _SIMULATION_VARIABLES
 
 
@@ -9,13 +9,12 @@ class SimulationVariable:
 
         
     def __init__(self, name, key=None, unit=None, data_type=None):
-        
         default = _SIMULATION_VARIABLES[name]
-
         self._name = name
         self._key = name if key is None else key
         self._unit = default[0] if unit is None else unit
         self._data_type = default[1] if data_type is None else data_type
+        self._id = Id.get('SimulationVariable')
         
 class DataEvent:
     

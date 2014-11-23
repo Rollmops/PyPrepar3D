@@ -8,8 +8,6 @@ import unittest
 from prepar3d._internal.singleton import Singleton
 
 
-
-
 class Test(unittest.TestCase):
 
     class MySingleton(metaclass=Singleton):
@@ -31,5 +29,5 @@ class Test(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testName']
+    # import sys;sys.argv = ['', 'Test.testName']
     unittest.main()

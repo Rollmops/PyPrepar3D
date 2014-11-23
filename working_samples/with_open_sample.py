@@ -10,6 +10,7 @@
 
 import prepar3d 
 
+
 if __name__ == '__main__':
     
     with prepar3d.Connection().open('With statement test'):

@@ -1,7 +1,9 @@
-import re
 from math import radians, cos, sin, asin, sqrt
-from prepar3d._internal.earth_properties import EARTH_SEMI_MAJOR_RADIUS_IN_METERS,\
+import re
+
+from prepar3d._internal.earth_properties import EARTH_SEMI_MAJOR_RADIUS_IN_METERS, \
     EARTH_SEMI_MINOR_RADIUS_IN_METERS
+
 
 class LatLon(object):
     
@@ -36,7 +38,7 @@ class LatLon(object):
         dlat = other._lat_rad - self._lat_rad
         dlon = other._lon_rad - self._lon_rad
         
-        a = sin(dlat/2)**2 + cos(self._lat_rad) * cos(other._lat_rad) * sin(dlon/2)**2
+        a = sin(dlat / 2) ** 2 + cos(self._lat_rad) * cos(other._lat_rad) * sin(dlon / 2) ** 2
         c = 2 * asin(sqrt(a)) 
         
         print(c)

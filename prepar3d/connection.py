@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+
 from prepar3d import Prepar3dException
 from prepar3d._internal.simconnect import SIMCONNECT_RECV_ID
 from prepar3d._internal.simconnect import SimConnect_Close, SimConnect_Open

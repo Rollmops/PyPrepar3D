@@ -4,10 +4,10 @@ import threading
 from prepar3d._internal.simconnect import DispatchHandler, SIMCONNECT_PERIOD 
 from prepar3d._internal.singleton import Singleton
 from prepar3d.connection import Connection
+from prepar3d.data_event import DataEvent
 from prepar3d.input_event import InputEvent
 from prepar3d.recv_id_event import RecvIdEvent
 from prepar3d.system_event import SystemEvent
-from prepar3d.data_event import DataEvent
 
 
 class EventListener(metaclass=Singleton):
@@ -37,7 +37,7 @@ class EventListener(metaclass=Singleton):
             return self._dispatch_handler.subscribeRecvIDEvent(event._recv_id, event._callback) == 0
             
         elif isinstance(event, DataEvent):
-            return self._dispatch_handler.subscribeDataEvent(event._variables, event._id, event._callback, event._period, event._flag )
+            return self._dispatch_handler.subscribeDataEvent(event._variables, event._id, event._callback, event._period, event._flag)
         else:
             # TODO exception
             pass

@@ -9,6 +9,7 @@
 #------------------------------------------------------------------------------ 
 import prepar3d 
 
+
 def data_callback(data):
     print('received: ', (data['VERTICAL SPEED'] * 60))
     

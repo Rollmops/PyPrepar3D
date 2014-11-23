@@ -1,7 +1,9 @@
-from prepar3d.planning.service_base import ServiceBase
-import urllib
 from html.parser import HTMLParser
 import re
+import urllib
+
+from prepar3d.planning.service_base import ServiceBase
+
 
 class ServiceRouteFinder(ServiceBase):
     
@@ -31,19 +33,19 @@ class ServiceRouteFinder(ServiceBase):
                 
         if k_parser.k_value is not None:
             
-            data = {'id1': departure, 
-                    'ic1':'', 
-                    'id2': destination, 
-                    'ic2':'',        
-                    'minalt': flightlevel_from, 
-                    'maxalt': flightlevel_to, 
+            data = {'id1': departure,
+                    'ic1':'',
+                    'id2': destination,
+                    'ic2':'',
+                    'minalt': flightlevel_from,
+                    'maxalt': flightlevel_to,
                     'lvl': level,
-                    'dbid': cycle, 
-                    'usesid':use_sid, 
-                    'usestar': use_star,        
-                    'easet':'Y', 
-                    'rnav':'Y', 
-                    'natis':'', 
+                    'dbid': cycle,
+                    'usesid':use_sid,
+                    'usestar': use_star,
+                    'easet':'Y',
+                    'rnav':'Y',
+                    'natis':'',
                     'k': k_parser.k_value}
             
             request_data = '&'.join(['%s=%s' % (key, value) for key, value in data.iteritems()])

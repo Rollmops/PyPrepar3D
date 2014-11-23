@@ -1,5 +1,7 @@
-from prepar3d._internal import simconnect
 import re
+
+from prepar3d._internal import simconnect
+
 
 class WildCardDict(dict):
     

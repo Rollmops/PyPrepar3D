@@ -1,8 +1,7 @@
 from math import radians, cos, sin, asin, sqrt
 import re
 
-from prepar3d._internal.earth_properties import EARTH_SEMI_MAJOR_RADIUS_IN_METERS, \
-    EARTH_SEMI_MINOR_RADIUS_IN_METERS
+from prepar3d._internal import earth_properties
 
 
 class LatLon(object):
@@ -40,10 +39,8 @@ class LatLon(object):
         
         a = sin(dlat / 2) ** 2 + cos(self._lat_rad) * cos(other._lat_rad) * sin(dlon / 2) ** 2
         c = 2 * asin(sqrt(a)) 
-        
-        print(c)
-        km = EARTH_SEMI_MINOR_RADIUS_IN_METERS * c
-        return abs(km)
+         
+        return abs(earth_properties.EARTH_SEMI_MINOR_RADIUS_IN_METERS * c)
     
     def move(self, meters, heading):
         pass

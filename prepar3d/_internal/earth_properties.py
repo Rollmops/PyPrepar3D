@@ -19,7 +19,7 @@ def radians_to_lon_meters(lon_radians, ref_lat_radians):
     return lon_radians * (EARTH_CIRCUMFERENCE_AROUND_EQUATOR_IN_METERS / (pi * 2.0)) * cos(ref_lat_radians)
 
 def degrees_to_lon_meters(lon_degrees, ref_lat_degrees):
-    return radians_to_lon_meters(radians(lon_degrees), radians(ref_lat_radians))
+    return radians_to_lon_meters(radians(lon_degrees), radians(ref_lat_degrees))
     
 def lat_meters_to_radians(lat_meters):
     return lat_meters * (1.0 / EARTH_SEMI_MINOR_RADIUS_IN_METERS)

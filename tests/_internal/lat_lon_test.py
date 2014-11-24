@@ -26,17 +26,39 @@ class Test(unittest.TestCase):
         self.assertNotEqual(lat_lon1, lat_lon2)
          
  
-    def test_distance(self):
-        lat_lon1 = LatLon.from_deg_min_sec(('N37 36. 26.00.', 'W13 22. 49.59.'))
-        lat_lon2 = LatLon.from_deg_min_sec(('N34 36. 26.00.', 'W122 22. 49.59.'))
+    def test_distance_lat(self):
+        lat_lon1 = LatLon.from_deg_min_sec(('N34 36. 26.00.', 'W121 22. 49.59.'))
+        lat_lon2 = LatLon.from_deg_min_sec(('N35 36. 26.00.', 'W121 22. 49.59.'))
+         
+        one_lat = 111130.55555555
+         
+        self.assertAlmostEqual(lat_lon1.distance(lat_lon2), one_lat, places=7)
+        self.assertEqual(lat_lon1.distance(lat_lon2), lat_lon2.distance(lat_lon1))
+         
+        lat_lon3 = LatLon.from_deg_min_sec(('N36 36. 26.00.', 'W121 22. 49.59.'))
+        self.assertAlmostEqual(lat_lon1.distance(lat_lon3), one_lat * 2, places=7)
  
-#         self.assertEqual(lat_lon1.distance(lat_lon2), 9159551.823944692)
-#         self.assertEqual(lat_lon2.distance(lat_lon1), 9159551.823944692)
-#         self.assertEqual(lat_lon1.distance(lat_lon1), 0)
+ 
+    def test_distance_lon(self):
+        lat_lon1 = LatLon.from_deg_min_sec(('N0 0. 0.00.', 'W121 22. 49.59.'))
+        lat_lon2 = LatLon.from_deg_min_sec(('N0 0. 0.00.', 'W122 22. 49.59.'))
+        lat_lon3 = LatLon.from_deg_min_sec(('N1 0. 0.00.', 'W121 22. 49.59.'))
+ 
+        self.assertAlmostEqual(lat_lon1.distance(lat_lon2), lat_lon1.distance(lat_lon3), places=7)
          
-        lat_lon3 = LatLon.from_deg_min_sec(('N34 36. 26.00.', 'W121 22. 49.59.'))
+        lat_lon4 = LatLon.from_deg_min_sec(('N90 0. 0.00.', 'W121 22. 49.59.'))
+        lat_lon5 = LatLon.from_deg_min_sec(('N90 0. 0.00.', 'W122 22. 49.59.'))
          
-        print('distance: ', lat_lon2.distance(lat_lon3))
+        self.assertAlmostEqual(lat_lon4.distance(lat_lon5), 0, places=10)
+
+    
+    def test_distance(self):
+        lat_lon1 = LatLon.from_deg_min_sec(('N0 0. 0.00.', 'W121 22. 49.59.'))
+        lat_lon2 = LatLon.from_deg_min_sec(('N1 0. 0.00.', 'W122 22. 49.59.'))
+        
+        self.assertAlmostEqual(lat_lon1.distance(lat_lon2), 157158.34911586, places=7)
+        
+
  
 if __name__ == "__main__":
     # import sys;sys.argv = ['', 'Test.testName']

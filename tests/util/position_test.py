@@ -4,8 +4,8 @@ Created on 24.11.2014
 @author: QXH6010
 '''
 import unittest
-from prepar3d.util.position import Position
-from prepar3d.util.lat_lon import LatLon
+from prepar3d.util import Position
+from prepar3d.util import LatLon
 from prepar3d._internal.earth_properties import FEET_TO_METERS_CONSTANT
 from math import sqrt
 

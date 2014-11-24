@@ -5,7 +5,7 @@ Created on Nov 19, 2014
 '''
 import unittest
 
-from prepar3d.util.lat_lon import LatLon
+from prepar3d.util import LatLon
 from math import radians
 
 class Test(unittest.TestCase):

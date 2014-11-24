@@ -31,6 +31,14 @@ class LatLon:
             return None
 
     @staticmethod
+    def from_simconnect_data_latlonalt(latlonalt):
+        return LatLon((latlonalt.Latitude, latlonalt.Longitude))
+
+    @staticmethod
+    def from_simconnect_data_initposition(initposition):
+        return LatLon.from_simconnect_data_latlonalt(initposition)
+
+    @staticmethod
     def _deg_min_sec_tuple(coord):
         deg = int(coord)
         min = int(60 * (coord - deg))

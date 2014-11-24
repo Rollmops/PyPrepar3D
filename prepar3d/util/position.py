@@ -9,7 +9,6 @@ class Position(LatLon):
         self._altitude_feet = altitude
         self._altitude_meters = altitude * FEET_TO_METERS_CONSTANT
         
-        
     @staticmethod
     def from_deg_min_sec_feet(lat_lon, altitude):
         return Position(LatLon.from_deg_min_sec(lat_lon)._lat_lon, altitude)  
@@ -27,9 +26,17 @@ class Position(LatLon):
         return Position.from_simconnect_data_latlonalt(initposition)
     
     def distance(self, other):
-        
         dalt = abs(self._altitude_meters - other._altitude_meters)
         return sqrt(super(Position, self).distance(other) ** 2 + dalt ** 2)
+
+    def move(self, distance_in_meters, heading, altitude_in_feet):
+        LatLon.move(self, distance_in_meters, heading)
+        if self._altitude_feet + altitude_in_feet < 0:
+            self._altitude_feet = 0
+        else:
+            self._altitude_feet += altitude_in_feet
+        
+        self._altitude_meters = self._altitude_feet * FEET_TO_METERS_CONSTANT
 
     def get_altitude_in_feet(self):
         return self._altitude_feet

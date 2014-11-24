@@ -19,6 +19,13 @@ class LatLon:
         self._lat_rad = radians(lat_lon[0])
         self._lon_rad = radians(lat_lon[1])
         
+    def _set_lat_lon(self, lat_lon):
+        self._lat = lat_lon[0] 
+        if abs(self._lat) > 180:
+            self._ 
+        
+        
+    
     @staticmethod
     def from_deg_min_sec(lat_lon):
         mlat = LatLon._DEG_MIN_SEC_LAT_REGEX.match(lat_lon[0])

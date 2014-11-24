@@ -47,16 +47,20 @@ void CALLBACK __dispatchCallback__(SIMCONNECT_RECV* pData, DWORD cbData, void *p
 
 	if (pData->dwID == SIMCONNECT_RECV_ID_SIMOBJECT_DATA || pData->dwID == SIMCONNECT_RECV_ID_SIMOBJECT_DATA_BYTYPE)
 	{
+		// since SIMCONNECT_RECV_ID_SIMOBJECT_DATA_BYTYPE is derived from SIMCONNECT_RECV_ID_SIMOBJECT_DATA we can do that
 		const SIMCONNECT_RECV_SIMOBJECT_DATA *pObjData = (const SIMCONNECT_RECV_SIMOBJECT_DATA *) pData;
+
+		// find our request id
 		const DispatchHandler::DataEventObjectStructureInfoType &callbackDataTypeList = __dispatchHandler__->dataEventMap.at(
 				pObjData->dwRequestID);
-		const DispatchHandler::DataEventStructureInfoType &structureInfo = callbackDataTypeList.get<1>();
+
 		size_t pos = 0;
 		boost::python::dict *dataStructure = callbackDataTypeList.get<2>().get();
-		for (DispatchHandler::DataEventStructureInfoType::const_iterator iter = structureInfo.begin(); iter != structureInfo.end(); ++iter)
+
+		BOOST_FOREACH( const DispatchHandler::DataEventStructureElemInfoType &ref, callbackDataTypeList.get<1>())
 		{
-			const DataTypeConverter::SizeFunctionType &sizeConverter = iter->second;
-			dataStructure->operator [](iter->first.c_str()) = sizeConverter.second((void*) &((&pObjData->dwData)[pos]));
+			const DataTypeConverter::SizeFunctionType &sizeConverter = ref.second;
+			dataStructure->operator [](ref.first.c_str()) = sizeConverter.second((void*) &((&pObjData->dwData)[pos]));
 			pos += sizeConverter.first;
 
 		}

@@ -29,7 +29,8 @@ public:
 	typedef std::map<DWORD, EventIDCallbackType> EventMapType;
 
 	// DataEvent specific
-	typedef std::list<std::pair<std::string, DataTypeConverter::SizeFunctionType> > DataEventStructureInfoType;
+	typedef std::pair<std::string, DataTypeConverter::SizeFunctionType> DataEventStructureElemInfoType;
+	typedef std::list<DataEventStructureElemInfoType > DataEventStructureInfoType;
 	typedef boost::tuple<boost::python::object, DataEventStructureInfoType, boost::shared_ptr<boost::python::dict> > DataEventObjectStructureInfoType;
 	typedef std::map<int, DataEventObjectStructureInfoType> DataEventCallbackMap;
 

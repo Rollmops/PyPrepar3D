@@ -31,7 +31,7 @@ class Position(LatLon):
 
     def move(self, distance_in_meters, heading, altitude_in_feet):
         LatLon.move(self, distance_in_meters, heading)
-        if self._altitude_feet + altitude_in_feet < 0:
+        if (self._altitude_feet + altitude_in_feet) < 0:
             self._altitude_feet = 0
         else:
             self._altitude_feet += altitude_in_feet

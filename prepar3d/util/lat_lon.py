@@ -3,6 +3,13 @@ from math import radians, cos, sin, asin, atan2, sqrt, degrees
 import re
 
 from prepar3d._internal import earth_properties
+from prepar3d._internal.loop_number import LoopNumber 
+
+class Longitude(LoopNumber):
+    def __init__(self, value):
+        super(Longitude, self).__init__(start=-180, end=180, value=value)
+        
+
 
 class LatLon:
     
@@ -18,13 +25,6 @@ class LatLon:
         self._lat_lon = lat_lon
         self._lat_rad = radians(lat_lon[0])
         self._lon_rad = radians(lat_lon[1])
-        
-    def _set_lat_lon(self, lat_lon):
-        self._lat = lat_lon[0] 
-        if abs(self._lat) > 180:
-            self._ 
-        
-        
     
     @staticmethod
     def from_deg_min_sec(lat_lon):

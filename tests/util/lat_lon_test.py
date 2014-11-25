@@ -6,10 +6,20 @@ Created on Nov 19, 2014
 import unittest
 
 from prepar3d.util import LatLon
+from prepar3d.util.lat_lon import Longitude
 from math import radians
 
 class Test(unittest.TestCase):
  
+    def test_longitude_value(self):
+        
+        l = Longitude(179)
+        self.assertEqual(l, 179)
+        
+        self.assertEqual(l+2, -179)
+
+        
+        
  
     def test_lat_lon_from_deg_min_sec(self):
         lat_lon1 = LatLon.from_deg_min_sec(('N37 36. 26.00.', 'W122 22. 49.59.'))

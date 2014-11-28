@@ -10,4 +10,3 @@ class Heading(LoopNumber):
         
     def turn_right(self, heading):
         self._value = self + heading
-    

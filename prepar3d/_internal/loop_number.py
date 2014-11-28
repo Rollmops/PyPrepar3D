@@ -5,7 +5,7 @@ class LoopNumber:
         assert(start < end)
         self._start = start
         self._end = end
-        self._span = end - start + 1
+        self._span = end - start
         self._value = start if value is None else value
     
     def set(self, value):
@@ -18,7 +18,7 @@ class LoopNumber:
     def __add__(self, other):
         v = self._value + (other % self._span)
         if v >= self._end:
-            v = self._start + (v - self._end + 1)
+            v = self._start + (v - self._end)
         return v
     
     def __sub__(self, other):
@@ -32,7 +32,7 @@ class LoopNumber:
         if isinstance(other, int) or isinstance(other, float):
             return self._value == other or self._start == other or self._end == other
         elif isinstance(other, LoopNumber):
-            return self._value == other._value
+            return self._value == other._value or other._value == self._start or other._value == self._end
         else:
             raise TypeError('Need int, float or LoopNumber for LoopNumber.__eq__()')
     

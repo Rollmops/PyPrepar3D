@@ -17,8 +17,11 @@ class Test(unittest.TestCase):
         self.assertEqual(l, 179)
         
         self.assertEqual(l+2, -179)
-
+        self.assertEqual(l+2.5, -178.5)
         
+        l.set(l+180)
+        self.assertEqual(l, 180)
+        self.assertEqual(l, -180)
         
  
     def test_lat_lon_from_deg_min_sec(self):

@@ -17,7 +17,6 @@ class Test(unittest.TestCase):
         self.assertEqual(h+10, 20)
         self.assertEqual(h+349, 359)
         self.assertEqual(h+350, 0)
-        self.assertEqual(h+350, 360)
         self.assertEqual(h+351, 1)
         self.assertEqual(h+360, 10)
         self.assertEqual(h+710, 0)

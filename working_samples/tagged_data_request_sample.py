@@ -8,11 +8,11 @@
 #                has changed 
 #------------------------------------------------------------------------------ 
 import prepar3d 
-
+from prepar3d.util import LatLon
 
 def data_callback(data):
-    latlonalt = data['STRUCT LATLONALT']
-    print('received: ', data['title'], latlonalt.Latitude, latlonalt.Longitude, latlonalt.Altitude)
+    lat_lon = LatLon.from_simconnect_data_latlonalt(data['STRUCT LATLONALT'])
+    print('Title [%s] at [%s]' % (data['title'], lat_lon))
     
 
 if __name__ == '__main__':
@@ -28,7 +28,10 @@ if __name__ == '__main__':
     
     request_data = [prepar3d.SimulationVariable(variable) for variable in ['title', 'STRUCT LATLONALT']]
     
-    prepar3d.RadiusDataEvent(request_data, radius=100, callback=data_callback, at_sim_start=False)
+    prepar3d.DataEvent(request_data, callback=data_callback, at_sim_start=False)
     
-    prepar3d.EventListener().listen(period=1000)
+    prepar3d.EventListener().listen()
+    
+    
+    
       

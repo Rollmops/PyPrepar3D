@@ -5,7 +5,6 @@ from prepar3d._internal.simconnect import DispatchHandler, SIMCONNECT_PERIOD
 from prepar3d._internal.singleton import Singleton
 from prepar3d.connection import Connection
 from prepar3d.data_event import DataEvent
-from prepar3d.radius_data_event import RadiusDataEvent
 from prepar3d.input_event import InputEvent
 from prepar3d.recv_id_event import RecvIdEvent
 from prepar3d.system_event import SystemEvent
@@ -37,10 +36,8 @@ class EventListener(metaclass=Singleton):
         elif isinstance(event, RecvIdEvent):
             return self._dispatch_handler.subscribeRecvIDEvent(event._recv_id, event._callback) == 0
             
-        elif isinstance(event, RadiusDataEvent):
-            return self._dispatch_handler.subscribeDataEvent(event, True)
         elif isinstance(event, DataEvent):
-            return self._dispatch_handler.subscribeDataEvent(event, False)
+            return self._dispatch_handler.subscribeDataEvent(event)
         else:
             # TODO exception
             pass

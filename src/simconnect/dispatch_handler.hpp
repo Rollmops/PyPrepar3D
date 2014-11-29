@@ -30,13 +30,13 @@ public:
 
 	// DataEvent specific
 	typedef std::pair<std::string, DataTypeConverter::SizeFunctionType> DataEventStructureElemInfoType;
-	typedef std::list<DataEventStructureElemInfoType > DataEventStructureInfoType;
+	typedef std::list<DataEventStructureElemInfoType> DataEventStructureInfoType;
 	typedef boost::tuple<boost::python::object, DataEventStructureInfoType, boost::shared_ptr<boost::python::dict> > DataEventObjectStructureInfoType;
 	typedef std::map<int, DataEventObjectStructureInfoType> DataEventCallbackMap;
 
 	// RadiusDataEvent specific
-	typedef boost::tuple<SIMCONNECT_DATA_REQUEST_ID, SIMCONNECT_DATA_DEFINITION_ID, DWORD, SIMCONNECT_SIMOBJECT_TYPE> RadiusDataEventInfoType;
-	typedef std::list<RadiusDataEventInfoType> RadiusDataEventInfoListType;
+	typedef boost::tuple<SIMCONNECT_DATA_REQUEST_ID, SIMCONNECT_DATA_DEFINITION_ID, DWORD, SIMCONNECT_SIMOBJECT_TYPE> RadiusDataInfoType;
+	typedef std::list<RadiusDataInfoType> RadiusDataInfoListType;
 
 	DispatchHandler(PyObject *handle);
 
@@ -45,7 +45,8 @@ public:
 			const DWORD &priority, const char *simEvent);
 	void subscribeRecvIDEvent(const DWORD &recvID, object callable);
 
-	HRESULT subscribeDataEvent(object event, const bool &radius);
+	HRESULT subscribeDataEvent(const object &event);
+	void DispatchHandler::subscribeRadiusData(const object &radiusData);
 
 	void listen(const DWORD &sleepTime);
 
@@ -53,7 +54,7 @@ public:
 	EventIDCallbackType recvIdMap;
 	DataEventCallbackMap dataEventMap;
 
-	RadiusDataEventInfoListType radiusDataEventList;
+	RadiusDataInfoListType radiusDataList;
 
 	boost::shared_ptr<PyObject> getHandle() const
 	{
@@ -61,6 +62,8 @@ public:
 	}
 
 private:
+	DataEventStructureInfoType dataToDefinition(HANDLE handle, const SIMCONNECT_DATA_DEFINITION_ID &dataDefinitionID,
+			const boost::python::list &dataList);
 	boost::shared_ptr<PyObject> _handle;
 
 };

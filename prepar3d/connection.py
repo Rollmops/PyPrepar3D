@@ -40,7 +40,14 @@ class Connection(metaclass=Singleton):
         self._name = None
         
         
-    def open(self, name, window_handle=None, user_event_win32=0, event_handle=None, config_index=0, auto_close=True):
+    def open(self,
+             name,
+             window_handle=None,
+             user_event_win32=0,
+             event_handle=None,
+             config_index=0,
+             auto_close=True):
+
         self._name = name
         (result, self._handle) = SimConnect_Open(self._name, window_handle, user_event_win32, event_handle, config_index)
         self._connected = result == 0 and self._handle is not None
@@ -50,7 +57,7 @@ class Connection(metaclass=Singleton):
         
         if auto_close:        
             RecvIdEvent(SIMCONNECT_RECV_ID.SIMCONNECT_RECV_ID_QUIT, self.close)
-        
+
     def close(self, _=None, __=None, ___=None):
         if self._connected and self._handle is not None:
             result = SimConnect_Close(self._handle)

@@ -29,7 +29,17 @@ void CALLBACK __dispatchCallback__(SIMCONNECT_RECV* pData, DWORD cbData, void *p
 {
 	if (pData->dwID == SIMCONNECT_RECV_ID_SIMOBJECT_DATA_BYTYPE)
 	{
+		const SIMCONNECT_RECV_SIMOBJECT_DATA_BYTYPE *pObjData = (const SIMCONNECT_RECV_SIMOBJECT_DATA_BYTYPE *) pData;
 
+		DispatchHandler::RadiusDataType &radiusData = __dispatchHandler__->radiusDataMap.at(pObjData->dwRequestID);
+
+		size_t pos = 0;
+		BOOST_FOREACH( const DispatchHandler::DataEventStructureElemInfoType &ref, radiusData.get<3>())
+		{
+			const DataTypeConverter::SizeFunctionType &sizeConverter = ref.second;
+			radiusData.get<4>().operator [](ref.first.c_str()) = sizeConverter.second((void*) &((&pObjData->dwData)[pos]));
+			pos += sizeConverter.first;
+		}
 	}
 	else if (pData->dwID == SIMCONNECT_RECV_ID_SIMOBJECT_DATA)
 	{
@@ -134,18 +144,17 @@ void DispatchHandler::subscribeRecvIDEvent(const DWORD &recvID, object callable)
 HRESULT DispatchHandler::subscribeDataEvent(const object &event)
 {
 	// retrieve data
-	const list simulation_variables = extract<list>(event.attr("_variables"));
+	const list simulationVariables = extract<list>(event.attr("_variables"));
 	const SIMCONNECT_DATA_REQUEST_ID id = extract<SIMCONNECT_DATA_REQUEST_ID>(event.attr("_id"));
 	const SIMCONNECT_DATA_DEFINITION_ID dataDefinitionID = extract<SIMCONNECT_DATA_DEFINITION_ID>(event.attr("_data_definition_id"));
 	const SIMCONNECT_PERIOD period = extract<SIMCONNECT_PERIOD>(event.attr("_period"));
 	const DWORD flags = extract<DWORD>(event.attr("_flags"));
 	object callback = extract<object>(event.attr("_callback"));
 
-	const boost::python::ssize_t n = boost::python::len(simulation_variables);
 	const HANDLE handle = PyCapsule_GetPointer(_handle.get(), NULL);
 
 	// register all data fields associated with this DataEvent
-	const DataEventStructureInfoType &dataTypeList = dataToDefinition(handle, dataDefinitionID, simulation_variables);
+	const DataEventStructureInfoType &dataTypeList = dataToDefinition(handle, dataDefinitionID, simulationVariables);
 
 	HRESULT ret = SimConnect_RequestDataOnSimObject(handle, id, dataDefinitionID, extract<SIMCONNECT_OBJECT_ID>(event.attr("_object_id")),
 			period, flags);
@@ -156,17 +165,23 @@ HRESULT DispatchHandler::subscribeDataEvent(const object &event)
 	return ret;
 }
 
-void DispatchHandler::subscribeRadiusData(const object &radiusData)
+HRESULT DispatchHandler::subscribeRadiusData(const object &radiusData)
 {
-//	{
-//		std::cout << "huhu5" << std::endl;
-//		SimConnect_RequestDataOnSimObjectType(handle, id, dataDefinitionID, extract<DWORD>(event.attr("_radius")),
-//				extract<SIMCONNECT_SIMOBJECT_TYPE>(event.attr("_object_type")));
-//		radiusDataEventList.push_back(
-//				RadiusDataEventInfoType(id, dataDefinitionID, extract<DWORD>(event.attr("_radius")),
-//						extract<SIMCONNECT_SIMOBJECT_TYPE>(event.attr("_object_type"))));
-//	}
+	// retrieve data
+	const list simulationVariables = extract<list>(radiusData.attr("_variables"));
+	const SIMCONNECT_DATA_REQUEST_ID id = extract<SIMCONNECT_DATA_REQUEST_ID>(radiusData.attr("_id"));
+	const SIMCONNECT_DATA_DEFINITION_ID dataDefinitionID = extract<SIMCONNECT_DATA_DEFINITION_ID>(radiusData.attr("_data_definition_id"));
+	const SIMCONNECT_SIMOBJECT_TYPE objectType = extract<SIMCONNECT_SIMOBJECT_TYPE>(radiusData.attr("_object_type"));
+	const DWORD radius = extract<DWORD>(radiusData.attr("_radius"));
+	boost::python::dict data = extract<boost::python::dict>(radiusData.attr("_data"));
+	const HANDLE handle = PyCapsule_GetPointer(_handle.get(), NULL);
 
+	// register all data fields associated with this DataEvent
+	const DataEventStructureInfoType &dataTypeList = dataToDefinition(handle, dataDefinitionID, simulationVariables);
+	HRESULT ret = SimConnect_RequestDataOnSimObjectType(handle, id, dataDefinitionID, radius, objectType);
+
+	radiusDataMap[id] = RadiusDataType(dataDefinitionID, radius, objectType, dataTypeList, data);
+	return ret;
 }
 
 DispatchHandler::DataEventStructureInfoType DispatchHandler::dataToDefinition(HANDLE handle,
@@ -198,6 +213,11 @@ void DispatchHandler::listen(const DWORD &sleepTime)
 	const HANDLE handle = PyCapsule_GetPointer(_handle.get(), NULL);
 	while (res == S_OK)
 	{
+		BOOST_FOREACH(const RadiusDataMapType::const_reference radiusData, radiusDataMap)
+		{
+			SimConnect_RequestDataOnSimObjectType(handle, radiusData.first, radiusData.second.get<0>(), radiusData.second.get<1>(),
+					radiusData.second.get<2>());
+		}
 		res = SimConnect_CallDispatch(handle, _internal::__dispatchCallback__, NULL);
 		Sleep(sleepTime);
 	}

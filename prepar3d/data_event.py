@@ -10,7 +10,7 @@ class DataEvent:
         self._variables = variables
         self._callback = self.event if callback is None else callback
         self._id = Id().get('DataEvent')
-        self._data_definition_id = Id().get("DataDefinition")
+        self._data_definition_id = Id().get("DataDefintiion")
         self._at_sim_start = at_sim_start
         self._period = period
         self._flags = flags

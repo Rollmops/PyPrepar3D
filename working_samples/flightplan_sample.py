@@ -1,4 +1,4 @@
-import prepar3d
+from prepar3d.planning import Flightplan
 
 
-route = prepar3d.planning.Flightplan('EDDC', 'EDDF', ('FL330', 'FL330'), '1412')
+route = Flightplan('EDDC', 'EDDF', ('FL330', 'FL330'), '1412')

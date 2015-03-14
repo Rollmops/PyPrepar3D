@@ -6,7 +6,7 @@ from setuptools import setup, Extension, find_packages
 
 
 BOOST_DIR = os.environ.get('BOOST_DIR', r'C:\SDK\\boost_1_56_0')
-PREPAR3D_SDK_DIR = os.environ.get('PREPAR3D_SDK_DIR', r'C:\Program Files (x86)\Lockheed Martin\Prepar3D v2 SDK 2.4.11570.0')
+PREPAR3D_SDK_DIR = os.environ.get('PREPAR3D_SDK_DIR', r'C:\Program Files (x86)\\Lockheed Martin\\Prepar3D v2 SDK 2.5.12943.0')
 
 def get_boost_lib_name(name):
     return 'boost_%s-vc100-mt-1_56' % name

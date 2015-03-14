@@ -10,9 +10,12 @@
 import prepar3d 
 from prepar3d.util import LatLon
 
-def data_callback(data):
+def title_callback(data):
+    print('Title: %s' % data['title'])
+
+def latlon_callback(data):
     lat_lon = LatLon.from_simconnect_data_latlonalt(data['STRUCT LATLONALT'])
-    print('Title [%s] at [%s]' % (data['title'], lat_lon))
+    print('LatLon: %s' % lat_lon)
     
 
 if __name__ == '__main__':
@@ -27,7 +30,18 @@ if __name__ == '__main__':
     print('Connected to Prepar3d!')
     
     request_data = [prepar3d.SimulationVariable(variable) for variable in ['title', 'STRUCT LATLONALT']]
+
+    title_event = prepar3d.DataEvent(prepar3d.SimulationVariable('title'),
+                                     callback=title_callback,
+                                     at_sim_start=False,
+                                     register=False)
+
+    latlon_event = prepar3d.DataEvent(prepar3d.SimulationVariable('STRUCT LATLONALT'),
+                                      callback=latlon_callback,
+                                      at_sim_start=False,
+                                      register=False)
     
-    prepar3d.DataEvent(request_data, callback=data_callback, at_sim_start=False)
+    title_event.register()
+    latlon_event.register()
     
     prepar3d.EventListener().listen()

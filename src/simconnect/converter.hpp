@@ -42,20 +42,10 @@ struct FROM_INT32
 	}
 };
 
-
-struct FROM_DWORD
-{
-	static PyObject *convert(const DWORD &value)
-	{
-		return PyLong_FromUnsignedLong(value);
-	}
-};
-
 struct FROM_CHAR
 {
 	static PyObject *convert(const char &value)
 	{
-		std::cout << "FROM_CHAR: " << value << std::endl;
 		return boost::python::incref(boost::python::object(value).ptr());
 	}
 };

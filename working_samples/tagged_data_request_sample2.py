@@ -21,7 +21,7 @@ def latlon_callback(data):
 if __name__ == '__main__':
     
     try:
-        # the connection closes either when it gets destroyed or if an SIMCONNECT_RECV_ID_QUIT event is received
+        # the connection closes either when it gets destroyed or if a SIMCONNECT_RECV_ID_QUIT event is received
         prepar3d.Connection().open('Data Request Sample', auto_close=True)
     except prepar3d.OpenConnectionException:
         print('Uups! Is Prepar3d running?')
@@ -29,8 +29,6 @@ if __name__ == '__main__':
         
     print('Connected to Prepar3d!')
     
-    request_data = [prepar3d.SimulationVariable(variable) for variable in ['title', 'STRUCT LATLONALT']]
-
     title_event = prepar3d.DataEvent(prepar3d.SimulationVariable('title'),
                                      callback=title_callback,
                                      at_sim_start=False,

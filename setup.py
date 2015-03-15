@@ -3,7 +3,7 @@ import glob
 import os
 
 from setuptools import setup, Extension, find_packages
-
+from prepar3d import __version__, __author__
 
 BOOST_DIR = os.environ.get('BOOST_DIR', r'C:\SDK\\boost_1_56_0')
 PREPAR3D_SDK_DIR = os.environ.get('PREPAR3D_SDK_DIR', r'C:\Program Files (x86)\\Lockheed Martin\\Prepar3D v2 SDK 2.5.12943.0')
@@ -28,12 +28,11 @@ simconnect_module = Extension('prepar3d._internal.simconnect',
                               )
 
 
-if __name__ == '__main__':
-    setup(name='prepar3d',
-          version='0.1.0',
-          author='Erik Tuerke',
-          packages=find_packages(),
-          ext_modules=[simconnect_module],
-          zip_safe=False,
-          data_files=[('prepar3d/_internal', glob.glob('lib/*.dll'))]
-          )
+setup(name='prepar3d',
+      version=__version__,
+      author=__author__,
+      packages=find_packages(),
+      ext_modules=[simconnect_module],
+      zip_safe=False,
+      data_files=[('prepar3d/_internal', glob.glob('lib/*.dll'))]
+      )

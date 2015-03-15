@@ -5,7 +5,7 @@ from math import sqrt
 class Position(LatLon):
 
     def __init__(self, lat_lon, altitude):
-        super(Position, self).__init__(lat_lon)
+        super().__init__(lat_lon)
         self._altitude_feet = altitude
         self._altitude_meters = altitude * FEET_TO_METERS_CONSTANT
         
@@ -29,7 +29,11 @@ class Position(LatLon):
         dalt = abs(self._altitude_meters - other._altitude_meters)
         return sqrt(super(Position, self).distance(other) ** 2 + dalt ** 2)
 
-    def move(self, distance_in_meters, heading, altitude_in_feet):
+    def move(self,
+             distance_in_meters,
+             heading,
+             altitude_in_feet):
+
         LatLon.move(self, distance_in_meters, heading)
         if (self._altitude_feet + altitude_in_feet) < 0:
             self._altitude_feet = 0
@@ -38,11 +42,12 @@ class Position(LatLon):
         
         self._altitude_meters = self._altitude_feet * FEET_TO_METERS_CONSTANT
 
-    def get_altitude_in_feet(self):
+    def _get_altitude_in_feet(self):
         return self._altitude_feet
-    
-    def get_altitude_in_meters(self):
+
+    def _get_altitude_in_meters(self):
         return self._altitude_meters
     
-    def get_lat_lon(self):
-        return super(Position, self)
+    #TODO add setter for both properties
+    altitude_feet = property(_get_altitude_in_feet)
+    altitude_meters = property(_get_altitude_in_meters)

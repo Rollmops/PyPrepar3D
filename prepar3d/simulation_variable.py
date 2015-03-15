@@ -11,3 +11,9 @@ class SimulationVariable:
         self._data_type = default[1] if data_type is None else data_type
         self._epsilon = epsilon
         self._id = Id().get('SimulationVariableID')
+        
+    def __str__(self):
+        return 'SimulationVariable<%s>' % self._name
+    
+    def __repr__(self):
+        return self.__str__()

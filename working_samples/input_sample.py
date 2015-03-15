@@ -13,19 +13,11 @@
 # key combination shift+ctrl+u does nothing at all!
 
 import prepar3d 
-
+from prepar3d.event import InputEvent
 
 if __name__ == '__main__':
     
-    try:
-        # the connection closes either when it gets destroyed or if an SIMCONNECT_RECV_ID_QUIT event is received
-        prepar3d.Connection().open('Input Event', auto_close=True)
-    except prepar3d.OpenConnectionException:
-        print('Uups! Is Prepar3d running?')
-        sys.exit(1)
-    
-    print('Connected to Prepar3d!')
-        
-    prepar3d.InputEvent('shift+ctrl+u', callback=lambda e, d: print('brakes!'), sim_event='brakes')
-    
-    prepar3d.EventListener().listen()
+    with prepar3d.connect('Input Event Sample') as connection:
+        brakes_event = InputEvent('ctrl+u', callback=lambda e,d: print('Brakes'), sim_event='parking_brakes')
+        connection.subscribe(brakes_event)
+        connection.listen()

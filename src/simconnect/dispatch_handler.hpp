@@ -16,6 +16,7 @@
 #include "recv_type_converter.hpp"
 #include "data_type_converter.hpp"
 
+
 namespace prepar3d
 {
 namespace simconnect
@@ -41,9 +42,13 @@ public:
 	DispatchHandler(PyObject *handle);
 
 	HRESULT subscribeSystemEvent(const char *eventName, const DWORD &recvID, object callable, const int &id, const SIMCONNECT_STATE &state);
+	HRESULT unsubscribeSystemEvent(const DWORD &recvID, const DWORD &eventId);
+
 	HRESULT subscribeInputEvent(const char *inputTrigger, object callable, const int &id, const SIMCONNECT_STATE &state,
 			const DWORD &priority, const char *simEvent);
+
 	void subscribeRecvIDEvent(const DWORD &recvID, object callable);
+	void unsubscribeRecvIDEvent(const DWORD &recvID);
 
 	HRESULT subscribeDataEvent(const object &event);
 

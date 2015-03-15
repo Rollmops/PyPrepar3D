@@ -5,7 +5,11 @@ from prepar3d.connection import Connection
 
 class EventGroup(list):
     
-    def __init__(self, name=None, events=[], priority=SIMCONNECT_GROUP_PRIORITY_HIGHEST):
+    def __init__(self,
+                 name=None,
+                 events=[],
+                 priority=SIMCONNECT_GROUP_PRIORITY_HIGHEST):
+
         self._id = Id().get('GroupID')
         self._priority = priority
         for event in events:

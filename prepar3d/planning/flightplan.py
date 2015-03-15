@@ -9,7 +9,14 @@ class AirwayLevel:
 
 class Flightplan(list):
     
-    def __init__(self, departure, destination, flightlevel, cycle=None, level=AirwayLevel.BOTH, service=ServiceRouteFinder()):
+    def __init__(self,
+                 departure,
+                 destination,
+                 flightlevel,
+                 cycle=None,
+                 level=AirwayLevel.BOTH,
+                 service=ServiceRouteFinder()):
+
         self._departure = departure
         self._destination = destination
         self._flightlevel = flightlevel

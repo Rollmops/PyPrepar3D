@@ -1,9 +1,9 @@
 import abc
 
-import prepar3d
 from prepar3d._internal.id import Id
-from prepar3d._internal.simconnect import SIMCONNECT_STATE, SIMCONNECT_GROUP_PRIORITY_HIGHEST, SimConnect_SetInputGroupState
+from prepar3d._internal.simconnect import SIMCONNECT_STATE, SIMCONNECT_GROUP_PRIORITY_HIGHEST  # @UnresolvedImport
 
+import logging
 
 class BaseEvent(object):
     __metaclass__ = abc.ABCMeta
@@ -12,26 +12,30 @@ class BaseEvent(object):
                  callback,
                  state=SIMCONNECT_STATE.SIMCONNECT_STATE_ON,
                  priority=SIMCONNECT_GROUP_PRIORITY_HIGHEST,
-                 register=True,
                  enabled=None,
                  at_sim_start=False):
 
         self._id = Id().get('EventID')
-        self._at_sim_start = at_sim_start
         self._callback = callback or self.event
+        self._priority = priority
+
         if enabled is not None:
             self._state = SIMCONNECT_STATE.SIMCONNECT_STATE_ON if enabled else SIMCONNECT_STATE.SIMCONNECT_STATE_OFF
         else:
             self._state = state
-        self._priority = priority
-        self._registered = False
+        self._at_sim_start = at_sim_start
         
-        if register:
-            self.register()
-
-    def register(self):
-        self._registered = prepar3d.EventListener().register_event(self)
-
+        self.connection = None
+        
+    @abc.abstractmethod
+    def subscribe(self, connection):
+        return
+    
+    @abc.abstractmethod
+    def unsubscribe(self):
+        return
+    
+    
     @abc.abstractmethod
     def set_state(self, state):
         return

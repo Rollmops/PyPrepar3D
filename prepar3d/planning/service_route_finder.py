@@ -1,6 +1,7 @@
 from html.parser import HTMLParser
 import re
-import urllib
+from urllib.request import urlopen, Request
+from urllib.parse import urlencode
 
 from prepar3d.planning.service_base import ServiceBase
 
@@ -29,7 +30,7 @@ class ServiceRouteFinder(ServiceBase):
 
         # retrieve k value from start page
         k_parser = ServiceRouteFinder._RouteFinderHTMLParser()
-        k_parser.feed(urllib.urlopen(self._base_url).read())
+        k_parser.feed(urlopen(self._base_url).read().decode())
                 
         if k_parser.k_value is not None:
             
@@ -48,11 +49,12 @@ class ServiceRouteFinder(ServiceBase):
                     'natis':'',
                     'k': k_parser.k_value}
             
-            request_data = '&'.join(['%s=%s' % (key, value) for key, value in data.iteritems()])
-            
-            route_request = urllib2.Request(self._base_url + self._find_script)
-            route_request.add_header('Referer', self._base_url)
-            route_request.add_header('Connection', 'keep-alive')
-            
-            route_repsonse = urllib2.urlopen(route_request, request_data).read()
+            request_data = urlencode(data).encode()
+            route_request = Request(self._base_url + self._find_script, request_data)
+            route_repsonse = urlopen(route_request).read().decode()
+            print(route_repsonse)
+            pattern = r'.*:\s+(?P<num_fixes>\d+)\s+fixes,\s+(?P<distance>\d+\.\d+).*'
+            pattern = re.match(pattern, route_repsonse, re.DOTALL)
+            if pattern:
+                print(pattern.groupdict())
             

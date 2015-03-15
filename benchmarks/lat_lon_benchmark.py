@@ -1,8 +1,3 @@
-'''
-Created on Nov 24, 2014
-
-@author: Erik
-'''
 import unittest
 from timeit import timeit
 

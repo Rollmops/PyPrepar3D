@@ -19,9 +19,6 @@ namespace simconnect
 {
 namespace _internal
 {
-struct DummyObject
-{
-};
 
 DispatchHandler *__dispatchHandler__;
 
@@ -43,7 +40,6 @@ void CALLBACK __dispatchCallback__(SIMCONNECT_RECV* pData, DWORD cbData, void *p
 	}
 	else if (pData->dwID == SIMCONNECT_RECV_ID_SIMOBJECT_DATA)
 	{
-
 		const SIMCONNECT_RECV_SIMOBJECT_DATA *pObjData = (const SIMCONNECT_RECV_SIMOBJECT_DATA *) pData;
 
 		// find our request id
@@ -63,7 +59,6 @@ void CALLBACK __dispatchCallback__(SIMCONNECT_RECV* pData, DWORD cbData, void *p
 	}
 	else
 	{
-
 		// handle all system events and input events
 		DispatchHandler::EventMapType::const_iterator iter = __dispatchHandler__->eventMap.find(static_cast<DWORD>(pData->dwID));
 		if (iter != __dispatchHandler__->eventMap.end())
@@ -108,6 +103,23 @@ HRESULT DispatchHandler::subscribeSystemEvent(const char *eventName, const DWORD
 	return res;
 }
 
+HRESULT DispatchHandler::unsubscribeSystemEvent(const DWORD &recvID, const DWORD &id)
+{
+	EventMapType::iterator iteratorRecvID = eventMap.find(recvID);
+	if ( iteratorRecvID != eventMap.end() ) {
+		EventIDCallbackType::iterator iteratorID = iteratorRecvID->second.find(id);
+		if (iteratorID != iteratorRecvID->second.end()) {
+			iteratorRecvID->second.erase(iteratorID);
+		} else {
+			return S_FALSE;
+		}
+	} else {
+		return S_FALSE;
+	}
+	return SimConnect_UnsubscribeFromSystemEvent(PyCapsule_GetPointer(_handle.get(), NULL), id);
+}
+
+
 HRESULT DispatchHandler::subscribeInputEvent(const char *inputTrigger, object callable, const int &id, const SIMCONNECT_STATE &state,
 		const DWORD &priority, const char *simEvent)
 {
@@ -133,6 +145,7 @@ HRESULT DispatchHandler::subscribeInputEvent(const char *inputTrigger, object ca
 	{
 		return E_FAIL;
 	}
+
 }
 
 void DispatchHandler::subscribeRecvIDEvent(const DWORD &recvID, object callable)
@@ -140,6 +153,15 @@ void DispatchHandler::subscribeRecvIDEvent(const DWORD &recvID, object callable)
 	recvIdMap[recvID] = std::make_pair(callable,
 			util::Singletons::get<RecvTypeConverter, 1>().getConverterForID(static_cast<SIMCONNECT_RECV_ID>(recvID)));
 }
+
+void DispatchHandler::unsubscribeRecvIDEvent(const DWORD &recvID)
+{
+	EventIDCallbackType::iterator iterator = recvIdMap.find(recvID);
+	if ( iterator != recvIdMap.end()) {
+		recvIdMap.erase(iterator);
+	}
+}
+
 
 HRESULT DispatchHandler::subscribeDataEvent(const object &event)
 {

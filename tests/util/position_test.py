@@ -30,7 +30,7 @@ class Test(unittest.TestCase):
         pos1 = Position.from_deg_min_sec_feet(('N37 36. 26.00.', 'W122 22. 49.59.'), altitude1)
         pos2 = Position.from_deg_min_sec_feet(('N36 36. 26.00.', 'W122 22. 49.59.'), altitude2)
         
-        self.assertAlmostEqual(pos1.distance(pos2), sqrt((altitude2 * FEET_TO_METERS_CONSTANT) ** 2 + LatLon(pos1._lat_lon).distance(LatLon(pos2._lat_lon)) ** 2))
+        self.assertAlmostEqual(pos1.distance(pos2), sqrt((altitude2 * FEET_TO_METERS_CONSTANT) ** 2 + LatLon(pos1.lat_lon).distance(LatLon(pos2.lat_lon)) ** 2))
 
 
 if __name__ == "__main__":

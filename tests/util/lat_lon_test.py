@@ -1,8 +1,3 @@
-'''
-Created on Nov 19, 2014
- 
-@author: Erik
-'''
 import unittest
 
 from prepar3d.util import LatLon

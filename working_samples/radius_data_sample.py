@@ -1,3 +1,5 @@
+import sys
+import re
 import prepar3d 
 
 class RollEvent(prepar3d.DataEvent):

@@ -1,6 +1,6 @@
 from prepar3d._internal.id import Id
-from prepar3d._internal.simconnect import SimConnect_AddClientEventToNotificationGroup, SIMCONNECT_GROUP_PRIORITY_HIGHEST
-from prepar3d.connection import Connection
+from prepar3d._internal.simconnect import SimConnect_AddClientEventToNotificationGroup, SIMCONNECT_GROUP_PRIORITY_HIGHEST  # @UnresolvedImport
+from prepar3d._internal.connection import Connection
 
 
 class EventGroup(list):

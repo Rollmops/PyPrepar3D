@@ -9,7 +9,7 @@ class Test(unittest.TestCase):
     def test_lat_lon_benchmark(self):
         print('LatLon.from_deg_min_sec(): ', timeit('LatLon.from_deg_min_sec(("N37 36. 26.00.", "W122 22. 49.59."))', setup=Test.SETUP))
         
-        print('LatLon.str_deg_min_sec(): ', timeit('lat_lon.str_deg_min_sec()'), setup=Test.SETUP + 'lat_lon=LatLon.from_deg_min_sec(("N37 36. 26.00.", "W122 22. 49.59."))')
+        print('LatLon.str_deg_min_sec(): ', timeit('l__l.str_deg_min_sec()'), setup=Test.SETUP + 'l__l=LatLon.from_deg_min_sec(("N37 36. 26.00.", "W122 22. 49.59."))')
 
 
 if __name__ == "__main__":

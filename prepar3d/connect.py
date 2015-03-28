@@ -1,7 +1,7 @@
 from contextlib import contextmanager
 
 from .event import RecvIdEvent
-from ._internal.simconnect import SIMCONNECT_RECV_ID
+from ._internal.simconnect import SIMCONNECT_RECV_ID  # @UnresolvedImport
 from ._internal.connection import Connection
 
 import logging

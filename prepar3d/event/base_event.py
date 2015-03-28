@@ -3,8 +3,6 @@ import abc
 from prepar3d._internal.id import Id
 from prepar3d._internal.simconnect import SIMCONNECT_STATE, SIMCONNECT_GROUP_PRIORITY_HIGHEST  # @UnresolvedImport
 
-import logging
-
 class BaseEvent(object):
     __metaclass__ = abc.ABCMeta
     

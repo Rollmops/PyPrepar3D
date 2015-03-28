@@ -9,21 +9,22 @@ class RecvIdEvent(BaseEvent):
                  callback=None,
                  at_sim_start=False):
 
+        self.logger = logging.getLogger(__name__)
         self._recv_id = recv_id
 
-        logging.info('Creating recvid event for id %d', self._recv_id)
+        self.logger.info('Creating recvid event for id %d', self._recv_id)
 
         super().__init__(callback=callback,
                          at_sim_start=at_sim_start)
 
 
     def subscribe(self, connection):
-        logging.info('Subscribing recvid event %s', self)
+        self.logger.info('Subscribing recvid event %s', self)
         connection._dispatch_handler.subscribeRecvIDEvent(self._recv_id, self._callback)
 
 
     def unsubscribe(self, connection=None):
-        logging.info('Unsubscribing recvid event %s', self)
+        self.logger.info('Unsubscribing recvid event %s', self)
         (connection or self.connection)._dispatch_handler.unsubscribeRecvIDEvent(self._recv_id)
 
 

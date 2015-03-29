@@ -15,13 +15,21 @@ def connect( name,
              config_index=0):
 
     connection = Connection()
-    connection.open(name, window_handle, user_event_win32, event_handle, config_index)
-    close_event = None
-    if auto_close:
-        close_event = RecvIdEvent(recv_id=SIMCONNECT_RECV_ID.SIMCONNECT_RECV_ID_QUIT,
-                                  callback=connection.close)
-        connection.subscribe(close_event)
+    try:
+        connection.open(name,
+                        window_handle,
+                        user_event_win32,
+                        event_handle,
+                        config_index)
 
-    logging.debug('Yielding connection %s', connection)
-    yield connection
-    connection.close()
+        close_event = None
+        if auto_close:
+            close_event = RecvIdEvent(recv_id=SIMCONNECT_RECV_ID.SIMCONNECT_RECV_ID_QUIT,
+                                      callback=connection.close)
+            connection.subscribe(close_event)
+
+        logging.debug('Yielding connection %s', connection)
+        yield connection
+
+    finally:
+        connection.close()

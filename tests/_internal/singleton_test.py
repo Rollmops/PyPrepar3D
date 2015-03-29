@@ -1,8 +1,3 @@
-'''
-Created on Nov 18, 2014
-
-@author: Erik
-'''
 import unittest
 
 from prepar3d._internal.singleton import Singleton

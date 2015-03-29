@@ -1,11 +1,3 @@
-//============================================================================
-// Name        : embedding_python.cpp
-// Author      : 
-// Version     :
-// Copyright   : Your copyright notice
-// Description : Hello World in C++, Ansi-style
-//============================================================================
-
 #include <iostream>
 #include <fstream>
 
@@ -40,7 +32,7 @@ void run_scipts(const boost::filesystem::path &p, PyObject *m)
 int main(int argc, char **argv)
 {
 	using namespace boost;
-	Py_SetProgramName(argv[0]);
+	Py_SetProgramName(static_cast<wchar_t*>(argv[0]));
 	Py_Initialize();
 	PyObject *mainModule = PyImport_AddModule("__main__");
 	PyObject *mainDict = PyModule_GetDict(mainModule);
@@ -60,8 +52,6 @@ int main(int argc, char **argv)
 		}
 
 	}
-	//Py_DECREF(mainDict);
-	//Py_DECREF(mainModule);
 	Py_Finalize();
 	return 0;
 }

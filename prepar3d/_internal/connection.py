@@ -1,7 +1,7 @@
 from prepar3d import Prepar3dException
 from .simconnect import SimConnect_Close, SimConnect_Open  # @UnresolvedImport
+from .simconnect import DispatchHandler  # @UnresolvedImport
 from .singleton import Singleton
-from prepar3d._internal.simconnect import DispatchHandler
 
 import logging
 from prepar3d.event.base_event import BaseEvent
@@ -34,6 +34,7 @@ class CloseConnectionException(ConnectionException):
 class Connection(metaclass=Singleton):
     
     def __init__(self):
+        self.logger = logging.getLogger(__name__)
         self._connected = False
         self._handle = None
         self._name = None
@@ -49,9 +50,9 @@ class Connection(metaclass=Singleton):
              config_index=0):
 
         self._name = name
-        logging.debug('About to call SimConnect_Open')
+        self.logger.debug('About to call SimConnect_Open')
         (result, self._handle) = SimConnect_Open(self._name, window_handle, user_event_win32, event_handle, config_index)
-        logging.info('SimConnect_Open -> result: %d', result)
+        self.logger.info('SimConnect_Open -> result: %d', result)
         self._connected = result == 0 and self._handle is not None
         if not self._connected:
             raise OpenConnectionException(self._name, result)
@@ -66,9 +67,9 @@ class Connection(metaclass=Singleton):
     # do not delete arguments since these are needed for using close as a callback function
     def close(self, _=None, __=None, ___=None):
         if self._connected and self._handle is not None:
-            logging.info('Closing connection \'%s\'', self._name)
+            self.logger.info('Closing connection \'%s\'', self._name)
             result = SimConnect_Close(self._handle)
-            logging.info('Closed connection \'%s\' with return code %d', self._name, result)
+            self.logger.info('Closed connection \'%s\' with return code %d', self._name, result)
             if result == 0:
                 self._connected = False
             else:
@@ -83,7 +84,7 @@ class Connection(metaclass=Singleton):
         if not isinstance(event, BaseEvent):
             raise TypeError('Expected BaseEvent derived type in Connection.subscribe() but got %s' % type(event))
         if not self._connected or self._dispatch_handler is None:
-            logging.info('Presubscribing event %s', event)
+            self.logger.info('Presubscribing event %s', event)
             self._predefined_events.append(event)
         else:
             event.subscribe(self)
@@ -100,5 +101,5 @@ class Connection(metaclass=Singleton):
     def listen(self, period=100):
         if not self._connected or self._dispatch_handler is None:
             raise RuntimeError('Trying to listen with a non yet connected connection')
-        logging.info('Start to listen for connection \'%s\'', self._name)
+        self.logger.info('Start to listen for connection \'%s\'', self._name)
         self._dispatch_handler.listen(period)

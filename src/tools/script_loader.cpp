@@ -1,19 +1,19 @@
 #include <iostream>
 #include <fstream>
+#include <regex>
 
 #include <Python.h>
 
 #define BOOST_FILESYSTEM_VERSION 3
 #include <boost/filesystem.hpp>
-#include <boost/regex.hpp>
 
-void run_scipts(const boost::filesystem::path &p, PyObject *m)
+void run_scripts(const boost::filesystem::path &p, PyObject *m)
 {
-	boost::regex filePattern("^.+\\.py$");
+	std::regex filePattern("^.+\\.py$");
 
 	if (!boost::filesystem::is_directory(p))
 	{
-		if (boost::regex_match(p.leaf().string(), filePattern))
+		if (std::regex_match(p.leaf().string(), filePattern))
 		{
 			std::ifstream input(p.string().c_str());
 
@@ -47,7 +47,7 @@ int main(int argc, char **argv)
 		for (filesystem::directory_iterator itr(workingDir);
 				itr != filesystem::directory_iterator(); ++itr)
 		{
-			run_scipts(*itr, mainDict);
+			run_scripts(*itr, mainDict);
 		}
 
 	}

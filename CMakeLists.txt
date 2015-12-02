@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.6)
 project(prepar3d)
 
 find_package(PythonLibs 3.5 REQUIRED)
-find_package(Boost REQUIRED COMPONENTS filesystem system regex python)
+find_package(Boost REQUIRED COMPONENTS filesystem system python)
 
 include_directories(${PYTHON_INCLUDE_DIRS})
 include_directories(${Boost_INCLUDE_DIRS})

@@ -4,11 +4,11 @@ import os
 from setuptools import setup, Extension, find_packages
 from prepar3d import __version__, __author__
 
-BOOST_DIR = os.environ.get('BOOST_DIR', r'C:\SDK\\boost_1_56_0')
-PREPAR3D_SDK_DIR = os.environ.get('PREPAR3D_SDK_DIR', r'C:\Program Files (x86)\\Lockheed Martin\\Prepar3D v2 SDK 2.5.12943.0')
+BOOST_DIR = os.environ.get('BOOST_DIR', r'C:\SDK\boost_1_59_0')
+PREPAR3D_SDK_DIR = os.environ.get('PREPAR3D_SDK_DIR', r'C:\SDK\Prepar3D v3 SDK')
 
 def get_boost_lib_name(name):
-    return 'boost_%s-vc100-mt-1_56' % name
+    return 'boost_%s-vc120-mt-1_59' % name
 
 simconnect_module = Extension('prepar3d._internal.simconnect',
                               sources=glob.glob('src/simconnect/*.cpp')
@@ -16,14 +16,14 @@ simconnect_module = Extension('prepar3d._internal.simconnect',
                               include_dirs=['src/util/',
                                             BOOST_DIR,
                                             os.path.join(PREPAR3D_SDK_DIR, 'Utilities', 'SimConnect SDK', 'Inc')],
-                              library_dirs=[os.path.join(BOOST_DIR, 'stage', 'lib'),
+                              library_dirs=[os.path.join(BOOST_DIR, 'lib32-msvc-12.0'),
                                             os.path.join(PREPAR3D_SDK_DIR, 'Utilities', 'SimConnect SDK', 'lib')],
                               libraries=[get_boost_lib_name('python'),
                                          get_boost_lib_name('regex'),
                                          get_boost_lib_name('system'),
                                          get_boost_lib_name('filesystem'),
                                          'SimConnect', 'Ole32', 'odbccp32', 'shell32', 'user32', 'AdvAPI32' ],
-                              extra_compile_args=['/EHsc']
+                              extra_compile_args=[]
                               )
 
 

@@ -8,7 +8,7 @@
 #ifndef __PREPAR3D_SIMCONNECT_RECV_TYPE_CONVERTER_HPP_
 #define __PREPAR3D_SIMCONNECT_RECV_TYPE_CONVERTER_HPP_
 
-#include <boost/function.hpp>
+#include <functional>
 #include "common.hpp"
 
 #define REGISTER_CONVERTER(NAME) _functionMap[SIMCONNECT_RECV_ID_ ## NAME] = _internal::castToRecvType<SIMCONNECT_RECV_ ## NAME>
@@ -21,7 +21,7 @@ class RecvTypeConverter
 {
 
 public:
-	typedef boost::function<object(SIMCONNECT_RECV*)> ConvertFunctionType;
+	typedef std::function<object(SIMCONNECT_RECV*)> ConvertFunctionType;
 	RecvTypeConverter()
 	{
 		init();

@@ -1,6 +1,8 @@
 #ifndef __PYPREPAR3D_SIMCONNECT_COMMON_HPP_
 #define __PYPREPAR3D_SIMCONNECT_COMMON_HPP_
 
+#define BOOST_PYTHON_STATIC_LIB
+
 #include <windows.h>
 #include <tchar.h>
 #include <stdio.h>

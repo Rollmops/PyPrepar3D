@@ -31,7 +31,7 @@ void CALLBACK __dispatchCallback__(SIMCONNECT_RECV* pData, DWORD cbData, void *p
 		DispatchHandler::RadiusDataType &radiusData = __dispatchHandler__->radiusDataMap.at(pObjData->dwRequestID);
 
 		size_t pos = 0;
-		BOOST_FOREACH( const DispatchHandler::DataEventStructureElemInfoType &ref, radiusData.get<3>())
+		for( const DispatchHandler::DataEventStructureElemInfoType &ref : radiusData.get<3>())
 		{
 			const DataTypeConverter::SizeFunctionType &sizeConverter = ref.second;
 			radiusData.get<4>().operator [](ref.first.c_str()) = sizeConverter.second((void*) &((&pObjData->dwData)[pos]));
@@ -48,7 +48,7 @@ void CALLBACK __dispatchCallback__(SIMCONNECT_RECV* pData, DWORD cbData, void *p
 		size_t pos = 0;
 		boost::python::dict *dataStructure = callbackDataTypeList.get<2>().get();
 
-		BOOST_FOREACH( const DispatchHandler::DataEventStructureElemInfoType &ref, callbackDataTypeList.get<1>())
+		for( const DispatchHandler::DataEventStructureElemInfoType &ref : callbackDataTypeList.get<1>())
 		{
 			const DataTypeConverter::SizeFunctionType &sizeConverter = ref.second;
 			dataStructure->operator [](ref.first.c_str()) = sizeConverter.second((void*) &((&pObjData->dwData)[pos]));
@@ -235,7 +235,7 @@ void DispatchHandler::listen(const DWORD &sleepTime)
 	const HANDLE handle = PyCapsule_GetPointer(_handle.get(), NULL);
 	while (res == S_OK)
 	{
-		BOOST_FOREACH(const RadiusDataMapType::const_reference radiusData, radiusDataMap)
+		for (const RadiusDataMapType::const_reference radiusData : radiusDataMap)
 		{
 			SimConnect_RequestDataOnSimObjectType(handle, radiusData.first, radiusData.second.get<0>(), radiusData.second.get<1>(),
 					radiusData.second.get<2>());

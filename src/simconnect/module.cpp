@@ -361,7 +361,7 @@ BOOST_PYTHON_MODULE(simconnect)
 	.add_property("dwIndex", &SIMCONNECT_RECV_EXCEPTION::dwIndex);
 
 	// when dwID == SIMCONNECT_RECV_ID_OPEN
-	boost::python::class_<SIMCONNECT_RECV_OPEN, bases<SIMCONNECT_RECV> >("SIMCONNECT_RECV_OPEN").add_property("szApplicationName",
+	class_<SIMCONNECT_RECV_OPEN, bases<SIMCONNECT_RECV> >("SIMCONNECT_RECV_OPEN").add_property("szApplicationName",
 			&SIMCONNECT_RECV_OPEN::szApplicationName).add_property("dwApplicationVersionMajor",
 			&SIMCONNECT_RECV_OPEN::dwApplicationVersionMajor).add_property("dwApplicationVersionMinor",
 			&SIMCONNECT_RECV_OPEN::dwApplicationVersionMinor).add_property("dwApplicationBuildMajor",

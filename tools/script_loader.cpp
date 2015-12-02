@@ -32,7 +32,6 @@ void run_scipts(const boost::filesystem::path &p, PyObject *m)
 int main(int argc, char **argv)
 {
 	using namespace boost;
-	Py_SetProgramName(static_cast<wchar_t*>(argv[0]));
 	Py_Initialize();
 	PyObject *mainModule = PyImport_AddModule("__main__");
 	PyObject *mainDict = PyModule_GetDict(mainModule);

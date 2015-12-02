@@ -3,9 +3,6 @@ cmake_minimum_required(VERSION 2.6)
 project(prepar3d)
 
 find_package(PythonLibs 3.5 REQUIRED)
-SET(Boost_USE_STATIC_LIBS OFF)
-SET(Boost_USE_MULTITHREADED ON)
-SET(Boost_USE_STATIC_RUNTIME OFF)
 find_package(Boost REQUIRED COMPONENTS filesystem system regex python)
 
 include_directories(${PYTHON_INCLUDE_DIRS})
@@ -31,8 +28,4 @@ include_directories(src/simconnect src/util)
 
 PYTHON_ADD_MODULE(simconnect SHARED ${SIMCONNECT_SOURCE_FILES} ${UTIL_SOURCE_FILES})
 
-target_link_libraries(simconnect
- ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} ${SIMCONNECT_LIBRARY})
-
- install(TARGETS simconnect DESTINATION lib)
- 
+target_link_libraries(simconnect ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} ${SIMCONNECT_LIBRARY})

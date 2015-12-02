@@ -3,7 +3,7 @@
 
 #include "common.hpp"
 #include <map>
-#include <boost/function.hpp>
+#include <functional>
 
 #define REGISTER_DATA_TYPE_CONVERTER(TYPE_NAME, TYPE, SIZE) _functionMap[SIMCONNECT_DATATYPE_ ## TYPE_NAME] = std::make_pair(SIZE / sizeof(DWORD), _internal::castToTypedObject<TYPE>)
 
@@ -16,7 +16,7 @@ namespace simconnect
 class DataTypeConverter
 {
 public:
-	typedef boost::function<boost::python::object(void*)> FunctionType;
+	typedef std::function<boost::python::object(void*)> FunctionType;
 	typedef std::pair<std::size_t, FunctionType> SizeFunctionType;
 	typedef std::map<SIMCONNECT_DATATYPE, SizeFunctionType> DataTypeConverterMapType;
 

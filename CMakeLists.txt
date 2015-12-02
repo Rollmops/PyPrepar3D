@@ -19,7 +19,7 @@ find_library(SIMCONNECT_LIBRARY NAMES SimConnect)
 
 # script loader
 
-add_executable(script_loader tools/script_loader.cpp ) 
+add_executable(script_loader src/tools/script_loader.cpp ) 
 target_link_libraries(script_loader  ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
 
 # python module
@@ -33,3 +33,6 @@ PYTHON_ADD_MODULE(simconnect SHARED ${SIMCONNECT_SOURCE_FILES} ${UTIL_SOURCE_FIL
 
 target_link_libraries(simconnect
  ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} ${SIMCONNECT_LIBRARY})
+
+ install(TARGETS simconnect DESTINATION lib)
+ 

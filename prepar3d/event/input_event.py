@@ -33,7 +33,7 @@ class InputEvent(BaseEvent):
             
     def subscribe(self, connection):
         self.logger.info('Subscribing event %s', self)
-        return connection._dispatch_handler.subscribeInputEvent(self._trigger, self._callback, self._id, self._state, self._priority, self._sim_event) == 0
+        connection._dispatch_handler.subscribeInputEvent(self._trigger, self._callback, self._id, self._state, self._priority, self._sim_event) == 0
 
 
     def event(self, event, data):

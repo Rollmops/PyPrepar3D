@@ -25,5 +25,9 @@ SYSTEM_EVENTS = {
      'WeatherModeChanged': simconnect.SIMCONNECT_RECV_ID.SIMCONNECT_RECV_ID_EVENT,  # @UndefinedVariable
      # AI related
      'ObjectAdded': simconnect.SIMCONNECT_RECV_ID.SIMCONNECT_RECV_ID_EVENT_OBJECT_ADDREMOVE,  # @UndefinedVariable
-     'ObjectRemoved': simconnect.SIMCONNECT_RECV_ID.SIMCONNECT_RECV_ID_EVENT_OBJECT_ADDREMOVE  # @UndefinedVariable
+     'ObjectRemoved': simconnect.SIMCONNECT_RECV_ID.SIMCONNECT_RECV_ID_EVENT_OBJECT_ADDREMOVE,  # @UndefinedVariable
+     # Mission related
+     'MissionCompleted': simconnect.SIMCONNECT_RECV_ID.SIMCONNECT_RECV_ID_EVENT,
+     'CustomMissionActionExecuted': simconnect.SIMCONNECT_RECV_ID.SIMCONNECT_RECV_ID_CUSTOM_ACTION,
+     'FlightSegmentReadyForGrading': simconnect.SIMCONNECT_RECV_ID.SIMCONNECT_RECV_ID_EVENT
 }

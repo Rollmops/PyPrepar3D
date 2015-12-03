@@ -47,9 +47,9 @@ class Singletons
 	};
 
 	typedef void (*destructer)();
-	typedef std::multimap<int, destructer> prioMap;
+	typedef std::multimap<int, destructer> PriorityMapType;
 
-	prioMap map;
+	PriorityMapType map;
 	Singletons();
 	virtual ~Singletons();
 	static Singletons &getMaster();
@@ -64,7 +64,7 @@ public:
 		if (!Singleton<T>::_instance)
 		{
 			Singleton<T>::_instance = new T();
-			prioMap &map = getMaster().map;
+			PriorityMapType &map = getMaster().map;
 			map.insert(map.find(PRIO), std::make_pair(PRIO, Singleton<T>::destruct));
 		}
 

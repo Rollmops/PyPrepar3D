@@ -22,7 +22,8 @@ namespace _internal
 
 DispatchHandler *__dispatchHandler__;
 
-void CALLBACK __dispatchCallback__(SIMCONNECT_RECV* pData, DWORD cbData, void *pContext)
+void CALLBACK
+__dispatchCallback__(SIMCONNECT_RECV* pData, DWORD cbData, void *pContext)
 {
 	if (pData->dwID == SIMCONNECT_RECV_ID_SIMOBJECT_DATA_BYTYPE)
 	{
@@ -31,7 +32,7 @@ void CALLBACK __dispatchCallback__(SIMCONNECT_RECV* pData, DWORD cbData, void *p
 		DispatchHandler::RadiusDataType &radiusData = __dispatchHandler__->radiusDataMap.at(pObjData->dwRequestID);
 
 		size_t pos = 0;
-		for( const DispatchHandler::DataEventStructureElemInfoType &ref : radiusData.get<3>())
+		for (const DispatchHandler::DataEventStructureElemInfoType &ref : radiusData.get<3>())
 		{
 			const DataTypeConverter::SizeFunctionType &sizeConverter = ref.second;
 			radiusData.get<4>().operator [](ref.first.c_str()) = sizeConverter.second((void*) &((&pObjData->dwData)[pos]));
@@ -48,7 +49,7 @@ void CALLBACK __dispatchCallback__(SIMCONNECT_RECV* pData, DWORD cbData, void *p
 		size_t pos = 0;
 		boost::python::dict *dataStructure = callbackDataTypeList.get<2>().get();
 
-		for( const DispatchHandler::DataEventStructureElemInfoType &ref : callbackDataTypeList.get<1>())
+		for (const DispatchHandler::DataEventStructureElemInfoType &ref : callbackDataTypeList.get<1>())
 		{
 			const DataTypeConverter::SizeFunctionType &sizeConverter = ref.second;
 			dataStructure->operator [](ref.first.c_str()) = sizeConverter.second((void*) &((&pObjData->dwData)[pos]));
@@ -106,19 +107,24 @@ HRESULT DispatchHandler::subscribeSystemEvent(const char *eventName, const DWORD
 HRESULT DispatchHandler::unsubscribeSystemEvent(const DWORD &recvID, const DWORD &id)
 {
 	EventMapType::iterator iteratorRecvID = eventMap.find(recvID);
-	if ( iteratorRecvID != eventMap.end() ) {
+	if (iteratorRecvID != eventMap.end())
+	{
 		EventIDCallbackType::iterator iteratorID = iteratorRecvID->second.find(id);
-		if (iteratorID != iteratorRecvID->second.end()) {
+		if (iteratorID != iteratorRecvID->second.end())
+		{
 			iteratorRecvID->second.erase(iteratorID);
-		} else {
+		}
+		else
+		{
 			return S_FALSE;
 		}
-	} else {
+	}
+	else
+	{
 		return S_FALSE;
 	}
 	return SimConnect_UnsubscribeFromSystemEvent(PyCapsule_GetPointer(_handle.get(), NULL), id);
 }
-
 
 HRESULT DispatchHandler::subscribeInputEvent(const char *inputTrigger, object callable, const int &id, const SIMCONNECT_STATE &state,
 		const DWORD &priority, const char *simEvent)
@@ -145,7 +151,6 @@ HRESULT DispatchHandler::subscribeInputEvent(const char *inputTrigger, object ca
 	{
 		return E_FAIL;
 	}
-
 }
 
 void DispatchHandler::subscribeRecvIDEvent(const DWORD &recvID, object callable)
@@ -157,11 +162,11 @@ void DispatchHandler::subscribeRecvIDEvent(const DWORD &recvID, object callable)
 void DispatchHandler::unsubscribeRecvIDEvent(const DWORD &recvID)
 {
 	EventIDCallbackType::iterator iterator = recvIdMap.find(recvID);
-	if ( iterator != recvIdMap.end()) {
+	if (iterator != recvIdMap.end())
+	{
 		recvIdMap.erase(iterator);
 	}
 }
-
 
 HRESULT DispatchHandler::subscribeDataEvent(const object &event)
 {

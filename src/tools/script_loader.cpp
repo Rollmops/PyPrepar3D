@@ -19,8 +19,7 @@ void run_scripts(const boost::filesystem::path &p, PyObject *m)
 
 			if (input.is_open())
 			{
-				std::string str((std::istreambuf_iterator<char>(input)),
-						std::istreambuf_iterator<char>());
+				std::string str((std::istreambuf_iterator<char>(input)), std::istreambuf_iterator<char>());
 
 				PyRun_String(str.c_str(), Py_file_input, m, m);
 				input.close();
@@ -44,8 +43,7 @@ int main(int argc, char **argv)
 
 	if (filesystem::is_directory(workingDir))
 	{
-		for (filesystem::directory_iterator itr(workingDir);
-				itr != filesystem::directory_iterator(); ++itr)
+		for (filesystem::directory_iterator itr(workingDir); itr != filesystem::directory_iterator(); ++itr)
 		{
 			run_scripts(*itr, mainDict);
 		}

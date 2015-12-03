@@ -13,16 +13,15 @@ BOOST_PYTHON_MODULE(simconnect)
 // advanced classes
 //#######################################################################################
 
-	class_<prepar3d::simconnect::DispatchHandler>("DispatchHandler", init<PyObject*>())
-			.def("subscribeSystemEvent", &prepar3d::simconnect::DispatchHandler::subscribeSystemEvent)
-			.def("unsubscribeSystemEvent", &prepar3d::simconnect::DispatchHandler::unsubscribeSystemEvent)
-			.def("subscribeInputEvent", &prepar3d::simconnect::DispatchHandler::subscribeInputEvent)
-			.def("subscribeRecvIDEvent", &prepar3d::simconnect::DispatchHandler::subscribeRecvIDEvent)
-			.def("unsubscribeRecvIDEvent", &prepar3d::simconnect::DispatchHandler::unsubscribeRecvIDEvent)
-			.def("subscribeDataEvent", &prepar3d::simconnect::DispatchHandler::subscribeDataEvent)
-			.def("subscribeRadiusData", &prepar3d::simconnect::DispatchHandler::subscribeRadiusData)
-			.def("listen", &prepar3d::simconnect::DispatchHandler::listen, ( arg ( "frequency" ) ) )
-			;
+	class_<prepar3d::simconnect::DispatchHandler>("DispatchHandler", init<PyObject*>()).def("subscribeSystemEvent",
+			&prepar3d::simconnect::DispatchHandler::subscribeSystemEvent).def("unsubscribeSystemEvent",
+			&prepar3d::simconnect::DispatchHandler::unsubscribeSystemEvent).def("subscribeInputEvent",
+			&prepar3d::simconnect::DispatchHandler::subscribeInputEvent).def("subscribeRecvIDEvent",
+			&prepar3d::simconnect::DispatchHandler::subscribeRecvIDEvent).def("unsubscribeRecvIDEvent",
+			&prepar3d::simconnect::DispatchHandler::unsubscribeRecvIDEvent).def("subscribeDataEvent",
+			&prepar3d::simconnect::DispatchHandler::subscribeDataEvent).def("subscribeRadiusData",
+			&prepar3d::simconnect::DispatchHandler::subscribeRadiusData).def("listen", &prepar3d::simconnect::DispatchHandler::listen,
+			(arg("frequency")));
 
 //#######################################################################################
 //  function section
@@ -52,8 +51,6 @@ BOOST_PYTHON_MODULE(simconnect)
 
 	def("SimConnect_CallDispatch", prepar3d::simconnect::wrapper::callDispatch);
 	def("SimConnect_SubscribeToSystemEvent", prepar3d::simconnect::wrapper::subscribeToSystemEvent);
-
-
 
 //----------------------------------------------------------------------------
 //        Constants

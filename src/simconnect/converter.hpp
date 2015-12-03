@@ -37,7 +37,8 @@ struct FROM_FLOAT
 
 struct FROM_INT32
 {
-	static PyObject *convert(const int32_t &value) {
+	static PyObject *convert(const int32_t &value)
+	{
 		return PyLong_FromLong(value);
 	}
 };
@@ -52,7 +53,7 @@ struct FROM_CHAR
 
 struct FROM_CHAR_PTR
 {
-	static PyObject *convert( char * const & value)
+	static PyObject *convert(char * const & value)
 	{
 		return PyBytes_FromString(value);
 	}

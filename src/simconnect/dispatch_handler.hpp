@@ -16,7 +16,6 @@
 #include "recv_type_converter.hpp"
 #include "data_type_converter.hpp"
 
-
 namespace prepar3d
 {
 namespace simconnect
@@ -37,7 +36,7 @@ public:
 
 	// RadiusData specific
 	typedef boost::tuple<SIMCONNECT_DATA_DEFINITION_ID, DWORD, SIMCONNECT_SIMOBJECT_TYPE, DataEventStructureInfoType, boost::python::dict> RadiusDataType;
-	typedef std::map<SIMCONNECT_DATA_REQUEST_ID, RadiusDataType > RadiusDataMapType;
+	typedef std::map<SIMCONNECT_DATA_REQUEST_ID, RadiusDataType> RadiusDataMapType;
 
 	DispatchHandler(PyObject *handle);
 

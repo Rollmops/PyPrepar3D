@@ -8,5 +8,6 @@ setup(name='prepar3d',
       version=__version__,
       author=__author__,
       packages=find_packages(),
-      zip_safe=False
+      zip_safe=False,
+      data_files=[('prepar3d/_internal', glob.glob('build/Release/*.pyd'))]
       )

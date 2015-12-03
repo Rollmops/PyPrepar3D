@@ -10,9 +10,11 @@
 
 #include "SimConnect.h"
 
-namespace pyprepar3d {
+namespace pyprepar3d
+{
 
-struct RadiusDataType {
+struct RadiusDataType
+{
 
 	SIMCONNECT_DATA_DEFINITION_ID dataDefinitionID;
 	DWORD radius;

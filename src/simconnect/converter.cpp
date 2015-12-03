@@ -34,7 +34,7 @@ void initializeConverters()
 	to_python_converter<char[MAX_PATH], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<MAX_PATH> >();
 	to_python_converter<char[256], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<256> >();
 	to_python_converter<char[32], prepar3d::simconnect::converter::FROM_CHAR_ARRAY<32> >();
-	to_python_converter<char *, prepar3d::simconnect::converter::FROM_CHAR_PTR >();
+	to_python_converter<char *, prepar3d::simconnect::converter::FROM_CHAR_PTR>();
 
 }
 

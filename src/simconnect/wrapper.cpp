@@ -126,10 +126,13 @@ tuple open(PCSTR szName, HWND hWnd, DWORD UserEventWin32, HANDLE hEventHandle, D
 {
 	HANDLE phSimConnect;
 	const HRESULT result = SimConnect_Open(&phSimConnect, szName, hWnd, UserEventWin32, hEventHandle, ConfigIndex);
-	if ( result == S_OK && phSimConnect != NULL ) {
-	//TODO check if we need to borrow the object
+	if (result == S_OK && phSimConnect != NULL)
+	{
+		//TODO check if we need to borrow the object
 		return make_tuple(result, handle<>(PyCapsule_New(phSimConnect, NULL, NULL)));
-	} else {
+	}
+	else
+	{
 		return make_tuple(result, object());
 	}
 }

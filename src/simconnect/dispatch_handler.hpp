@@ -51,7 +51,7 @@ public:
 
 	HRESULT subscribeDataEvent(const object &event);
 
-	HRESULT subscribeRadiusData(const object &radiusData);
+	HRESULT subscribeRadiusDataEvent(const object &radiusData);
 
 	void listen(const DWORD &sleepTime);
 

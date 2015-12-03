@@ -192,7 +192,7 @@ HRESULT DispatchHandler::subscribeDataEvent(const object &event)
 	return ret;
 }
 
-HRESULT DispatchHandler::subscribeRadiusData(const object &radiusData)
+HRESULT DispatchHandler::subscribeRadiusDataEvent(const object &radiusData)
 {
 	// retrieve data
 	const list simulationVariables = extract<list>(radiusData.attr("_variables"));

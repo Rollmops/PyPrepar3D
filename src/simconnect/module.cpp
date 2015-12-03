@@ -20,7 +20,7 @@ BOOST_PYTHON_MODULE(simconnect)
 			&prepar3d::simconnect::DispatchHandler::subscribeRecvIDEvent).def("unsubscribeRecvIDEvent",
 			&prepar3d::simconnect::DispatchHandler::unsubscribeRecvIDEvent).def("subscribeDataEvent",
 			&prepar3d::simconnect::DispatchHandler::subscribeDataEvent).def("subscribeRadiusData",
-			&prepar3d::simconnect::DispatchHandler::subscribeRadiusData).def("listen", &prepar3d::simconnect::DispatchHandler::listen,
+			&prepar3d::simconnect::DispatchHandler::subscribeRadiusDataEvent).def("listen", &prepar3d::simconnect::DispatchHandler::listen,
 			(arg("frequency")));
 
 //#######################################################################################

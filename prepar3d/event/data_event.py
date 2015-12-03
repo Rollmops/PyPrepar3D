@@ -34,7 +34,7 @@ class DataEvent(BaseEvent):
 
 
     def subscribe(self, connection):
-        self.logger.info('Subscribing event %s', self)
+        self.logger.info('Subscribing data event %s', self)
         connection._dispatch_handler.subscribeDataEvent(self)
 
     def event(self, data):

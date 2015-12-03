@@ -57,9 +57,9 @@ public:
 
 	EventMapType eventMap;
 	EventIDCallbackType recvIdMap;
-	DataEventCallbackMap dataEventMap;
 
-	RadiusDataMapType radiusDataMap;
+	DataEventCallbackMap dataEventMap;
+	RadiusDataMapType radiusDataEventMap;
 
 	boost::shared_ptr<PyObject> getHandle() const
 	{

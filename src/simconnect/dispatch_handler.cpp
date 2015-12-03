@@ -29,7 +29,7 @@ __dispatchCallback__(SIMCONNECT_RECV* pData, DWORD cbData, void *pContext)
 	{
 		const SIMCONNECT_RECV_SIMOBJECT_DATA_BYTYPE *pObjData = (const SIMCONNECT_RECV_SIMOBJECT_DATA_BYTYPE *) pData;
 
-		DispatchHandler::RadiusDataType &radiusData = __dispatchHandler__->radiusDataMap.at(pObjData->dwRequestID);
+		DispatchHandler::RadiusDataType &radiusData = __dispatchHandler__->radiusDataEventMap.at(pObjData->dwRequestID);
 
 		size_t pos = 0;
 		for (const DispatchHandler::DataEventStructureElemInfoType &ref : radiusData.get<3>())
@@ -207,7 +207,7 @@ HRESULT DispatchHandler::subscribeRadiusDataEvent(const object &radiusData)
 	const DataEventStructureInfoType &dataTypeList = dataToDefinition(handle, dataDefinitionID, simulationVariables);
 	HRESULT ret = SimConnect_RequestDataOnSimObjectType(handle, id, dataDefinitionID, radius, objectType);
 
-	radiusDataMap[id] = RadiusDataType(dataDefinitionID, radius, objectType, dataTypeList, data);
+	radiusDataEventMap[id] = RadiusDataType(dataDefinitionID, radius, objectType, dataTypeList, data);
 	return ret;
 }
 
@@ -240,7 +240,7 @@ void DispatchHandler::listen(const DWORD &sleepTime)
 	const HANDLE handle = PyCapsule_GetPointer(_handle.get(), NULL);
 	while (res == S_OK)
 	{
-		for (const RadiusDataMapType::const_reference radiusData : radiusDataMap)
+		for (const RadiusDataMapType::const_reference radiusData : radiusDataEventMap)
 		{
 			SimConnect_RequestDataOnSimObjectType(handle, radiusData.first, radiusData.second.get<0>(), radiusData.second.get<1>(),
 					radiusData.second.get<2>());

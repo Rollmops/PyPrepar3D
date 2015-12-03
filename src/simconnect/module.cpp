@@ -2,6 +2,7 @@
 #include "converter.hpp"
 #include "dispatch_handler.hpp"
 
+
 BOOST_PYTHON_MODULE(simconnect)
 {
 	prepar3d::simconnect::converter::initializeConverters();
@@ -33,21 +34,30 @@ BOOST_PYTHON_MODULE(simconnect)
 	def("SimConnect_ChangeVehicle", prepar3d::simconnect::wrapper::changeVehicle);
 	def("SimConnect_ClearClientDataDefinition", prepar3d::simconnect::wrapper::clearClientDataDefinition);
 	def("SimConnect_ClearDataDefinition", prepar3d::simconnect::wrapper::clearDataDefinition);
+	def("SimConnect_ClearNotificationGroup", prepar3d::simconnect::wrapper::clearNotificationGroup);
 	def("SimConnect_ClearInputGroup", prepar3d::simconnect::wrapper::clearInputGroup);
 	def("SimConnect_Close", prepar3d::simconnect::wrapper::close);
 	def("SimConnect_CreateClientData", prepar3d::simconnect::wrapper::createClientData);
 	def("SimConnect_FlightLoad", prepar3d::simconnect::wrapper::flightLoad);
 	def("SimConnect_FlightPlanLoad", prepar3d::simconnect::wrapper::flightPlanLoad);
+	def("SimConnect_FlightSave", prepar3d::simconnect::wrapper::flightSave);
 	def("SimConnect_GetLastSentPacketID", prepar3d::simconnect::wrapper::getLastSentPacketID);
 
 	def("SimConnect_Open", prepar3d::simconnect::wrapper::open);
 
+	def("SimConnect_MapClientDataNameToID", prepar3d::simconnect::wrapper::mapClientDataNameToID);
 	def("SimConnect_MapInputEventToClientEvent", prepar3d::simconnect::wrapper::mapInputEventToClientEvent);
+	def("SimConnect_RemoveClientEvent", prepar3d::simconnect::wrapper::removeClientEvent);
+	def("SimConnect_RemoveInputEvent", prepar3d::simconnect::wrapper::removeInputEvent);
+	def("SimConnect_RequestDataOnSimObjectType", prepar3d::simconnect::wrapper::requestDataOnSimObjectType);
+
+	def("SimConnect_SetDataOnSimObject", prepar3d::simconnect::wrapper::setDataOnSimObject);
 	def("SimConnect_SetInputGroupState", prepar3d::simconnect::wrapper::setInputGroupState);
 	def("SimConnect_SetInputGroupPriority", prepar3d::simconnect::wrapper::setInputGroupPriority);
 	def("SimConnect_SetNotificationGroupPriority", prepar3d::simconnect::wrapper::setNotificationGroupPriority);
 	def("SimConnect_SetSystemEventState", prepar3d::simconnect::wrapper::setSystemEventState);
-	def("SimConnect_RequestDataOnSimObjectType", prepar3d::simconnect::wrapper::requestDataOnSimObjectType);
+	def("SimConnect_SetTrafficSettings", prepar3d::simconnect::wrapper::setTrafficSettings);
+
 
 	def("SimConnect_CallDispatch", prepar3d::simconnect::wrapper::callDispatch);
 	def("SimConnect_SubscribeToSystemEvent", prepar3d::simconnect::wrapper::subscribeToSystemEvent);

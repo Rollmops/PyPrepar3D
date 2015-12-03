@@ -10,7 +10,7 @@
 
 #include "common.hpp"
 #include <vector>
-#include <map>
+#include <unordered_map>
 #include <list>
 #include <utility>
 #include "recv_type_converter.hpp"
@@ -25,18 +25,18 @@ class DispatchHandler
 
 public:
 	typedef std::pair<boost::python::object, RecvTypeConverter::ConvertFunctionType> EventCallbackConverterType;
-	typedef std::map<int, EventCallbackConverterType> EventIDCallbackType;
-	typedef std::map<DWORD, EventIDCallbackType> EventMapType;
+	typedef std::unordered_map<int, EventCallbackConverterType> EventIDCallbackType;
+	typedef std::unordered_map<DWORD, EventIDCallbackType> EventMapType;
 
 	// DataEvent specific
 	typedef std::pair<std::string, DataTypeConverter::SizeFunctionType> DataEventStructureElemInfoType;
 	typedef std::list<DataEventStructureElemInfoType> DataEventStructureInfoType;
 	typedef boost::tuple<boost::python::object, DataEventStructureInfoType, boost::shared_ptr<boost::python::dict> > DataEventObjectStructureInfoType;
-	typedef std::map<int, DataEventObjectStructureInfoType> DataEventCallbackMap;
+	typedef std::unordered_map<int, DataEventObjectStructureInfoType> DataEventCallbackMap;
 
 	// RadiusData specific
 	typedef boost::tuple<SIMCONNECT_DATA_DEFINITION_ID, DWORD, SIMCONNECT_SIMOBJECT_TYPE, DataEventStructureInfoType, boost::python::dict> RadiusDataType;
-	typedef std::map<SIMCONNECT_DATA_REQUEST_ID, RadiusDataType> RadiusDataMapType;
+	typedef std::unordered_map<SIMCONNECT_DATA_REQUEST_ID, RadiusDataType> RadiusDataMapType;
 
 	DispatchHandler(PyObject *handle);
 

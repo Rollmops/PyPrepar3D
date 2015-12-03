@@ -1,13 +1,14 @@
 import re
 
 from prepar3d._internal import simconnect
+from prepar3d._internal.simulation_variables import _get_unit_type
 
 
 class WildCardDict(dict):
     
     def __init__(self, _dict):
-        super(WildCardDict, self).__init__(_dict)
-    
+        super().__init__(_dict)
+
     def __getitem__(self, key):
         for _key, _value in self.items():
             if re.match(_key, key, re.IGNORECASE):
@@ -23,27 +24,41 @@ _UNIT_TYPES = {'number': simconnect.SIMCONNECT_DATATYPE.SIMCONNECT_DATATYPE_INT3
                 'feet': simconnect.SIMCONNECT_DATATYPE.SIMCONNECT_DATATYPE_FLOAT64,
                 'knots': simconnect.SIMCONNECT_DATATYPE.SIMCONNECT_DATATYPE_FLOAT64,
                 'rpm': simconnect.SIMCONNECT_DATATYPE.SIMCONNECT_DATATYPE_FLOAT32,
-                'xyz': simconnect.SIMCONNECT_DATATYPE.SIMCONNECT_DATATYPE_XYZ
+                'xyz': simconnect.SIMCONNECT_DATATYPE.SIMCONNECT_DATATYPE_XYZ,
+                'rankine': simconnect.SIMCONNECT_DATATYPE.SIMCONNECT_DATATYPE_FLOAT32,
+                'psf': simconnect.SIMCONNECT_DATATYPE.SIMCONNECT_DATATYPE_FLOAT32
+                
                 }
 
 
 def _get_unit_type(unit):
     return (unit, _UNIT_TYPES[unit])
 
-_SIMULATION_VARIABLES = WildCardDict({  'NUMBER OF ENGINES': _get_unit_type('number'),
+_SIMULATION_VARIABLES = WildCardDict({  
+                           'NUMBER OF ENGINES': _get_unit_type('number'),
                            'ENGINE CONTROL SELECT':  _get_unit_type('mask'),
                            'THROTTLE LOWER LIMIT': _get_unit_type('percent'),
                            'ENGINE TYPE': _get_unit_type('enum'),
                            'MASTER IGNITION SWITCH': _get_unit_type('bool'),
-                           'GENERAL ENG COMBUSTION:\\d': _get_unit_type('bool'),
-                           'GENERAL ENG MASTER ALTERNATOR:\\d': _get_unit_type('bool'),
-                           'GENERAL ENG FUEL PUMP SWITCH:\\d':  _get_unit_type('bool'),
-                           'GENERAL ENG FUEL PUMP ON:\\d': _get_unit_type('bool'),
-                           'GENERAL ENG RPM:\\d':  _get_unit_type('rpm'),
-                           'GENERAL ENG THROTTLE LEVER POSITION:\\d': _get_unit_type('percent'),
-                           'RECIP ENG FUEL FLOW:\\d': ('', simconnect.SIMCONNECT_DATATYPE.SIMCONNECT_DATATYPE_FLOAT64),
-                           'FUEL TANK CENTER LEVEL': _get_unit_type('percent'),
+                           'GENERAL ENG COMBUSTION:\\d+': _get_unit_type('bool'),
+                           'GENERAL ENG MASTER ALTERNATOR:\\d+': _get_unit_type('bool'),
+                           'GENERAL ENG FUEL PUMP SWITCH:\\d+':  _get_unit_type('bool'),
+                           'GENERAL ENG FUEL PUMP ON:\\d+': _get_unit_type('bool'),
+                           'GENERAL ENG RPM:\\d+':  _get_unit_type('rpm'),
+                           'GENERAL ENG MAX REACHED RPM:\\d+': _get_unit_type('rpm'),
+                           'GENERAL ENG THROTTLE LEVER POSITION:\\d+': _get_unit_type('percent'),
+                           'GENERAL ENG MIXTURE LEVER POSITION:\\d+': _get_unit_type('percent'),
+                           'GENERAL ENG PROPELLER LEVER POSITION:\\d+': _get_unit_type('percent'),
+                           'GENERAL ENG STARTER:\\d+': _get_unit_type('bool'),
+                           'GENERAL ENG EXHAUST GAS TEMPERATURE:\\d+': _get_unit_type('rankine'),
+                           'GENERAL ENG OIL PRESSURE:\\d+': _get_unit_type('psf'),
+                           'GENERAL ENG OIL LEAKED PERCENT:\\d+': _get_unit_type('percent'),
+                           'GENERAL ENG COMBUSTION SOUND PERCENT:\\d+': _get_unit_type('percent'),
                            
+                           'GENERAL ENG THROTTLE LEVER POSITION:\\d+': _get_unit_type('percent'),
+                           'RECIP ENG FUEL FLOW:\\d+': ('', simconnect.SIMCONNECT_DATATYPE.SIMCONNECT_DATATYPE_FLOAT64),
+                           'FUEL TANK CENTER LEVEL': _get_unit_type('percent'),
+
                            # Aircraft Lights Data
                            'LIGHT STROBE': _get_unit_type('bool'),
                            'LIGHT PANEL': _get_unit_type('bool'),

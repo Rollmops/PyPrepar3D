@@ -43,7 +43,7 @@ class Connection(metaclass=Singleton):
             self.subscribe(event)
             self._predefined_events.remove(event)
             
-        yield
+        yield self
         
         self.close()
             
